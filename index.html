@@ -8,1385 +8,347 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ============================================
-           RESEARCHV3 PORTFOLIO - ITERATIONS 1-3
-           Hero + About + Services
-           ============================================ */
-
-        :root {
-            /* Color Palette */
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #0d0d14;
-            --bg-tertiary: #12121a;
-            --accent-cyan: #00f0ff;
-            --accent-purple: #8b5cf6;
-            --accent-pink: #ff0080;
-            --accent-blue: #3b82f6;
-            --accent-green: #10b981;
-            --accent-orange: #f97316;
-            --text-primary: #ffffff;
-            --text-secondary: #a1a1aa;
-            --text-muted: #71717a;
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --glow-cyan: 0 0 30px rgba(0, 240, 255, 0.5);
-            --glow-purple: 0 0 30px rgba(139, 92, 246, 0.5);
-            --glow-pink: 0 0 30px rgba(255, 0, 128, 0.5);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-
-        body {
-            font-family: 'Outfit', sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-
-        /* ============================================
-           NOISE & GRAIN OVERLAY
-           ============================================ */
-        .noise-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9999;
-            opacity: 0.03;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-        }
-
-        /* ============================================
-           NEURAL PARTICLE SYSTEM (Mouse Trail)
-           ============================================ */
-        #particle-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-        /* ============================================
-           ANIMATED BACKGROUND GRADIENT MESH
-           ============================================ */
-        .gradient-mesh {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            overflow: hidden;
-        }
-
-        .gradient-mesh::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: 
-                radial-gradient(ellipse at 20% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 80%, rgba(0, 240, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(ellipse at 60% 30%, rgba(255, 0, 128, 0.08) 0%, transparent 40%);
-            animation: meshMove 20s ease-in-out infinite;
-        }
-
-        @keyframes meshMove {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(2%, 2%) rotate(1deg); }
-            50% { transform: translate(-1%, 3%) rotate(-1deg); }
-            75% { transform: translate(3%, -2%) rotate(2deg); }
-        }
-
-        /* Floating orbs */
-        .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.3;
-            animation: float 15s ease-in-out infinite;
-        }
-
-        .orb-1 {
-            width: 400px;
-            height: 400px;
-            background: var(--accent-purple);
-            top: 10%;
-            left: 10%;
-            animation-delay: 0s;
-        }
-
-        .orb-2 {
-            width: 300px;
-            height: 300px;
-            background: var(--accent-cyan);
-            top: 60%;
-            right: 10%;
-            animation-delay: -5s;
-        }
-
-        .orb-3 {
-            width: 250px;
-            height: 250px;
-            background: var(--accent-pink);
-            bottom: 20%;
-            left: 30%;
-            animation-delay: -10s;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(30px, -30px) scale(1.1); }
-            66% { transform: translate(-20px, 20px) scale(0.9); }
-        }
-
-        /* ============================================
-           NAVIGATION
-           ============================================ */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 1.5rem 4rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            background: linear-gradient(to bottom, rgba(10, 10, 15, 0.9), transparent);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-
-        nav.scrolled {
-            padding: 1rem 4rem;
-            background: rgba(10, 10, 15, 0.95);
-            border-bottom: 1px solid var(--glass-border);
-        }
-
-        .logo {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-transform: uppercase;
-        }
-
-        .logo span {
-            background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 3rem;
-            list-style: none;
-        }
-
-
-        .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover {
-            color: var(--text-primary);
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .nav-cta {
-            padding: 0.75rem 1.5rem;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            border: none;
-            border-radius: 8px;
-            color: var(--bg-primary);
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .nav-cta::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .nav-cta:hover::before {
-            left: 100%;
-        }
-
-        .nav-cta:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--glow-cyan);
-        }
+        :root { --bg-primary: #0a0a0f; --bg-secondary: #0d0d14; --bg-tertiary: #12121a; --accent-cyan: #00f0ff; --accent-purple: #8b5cf6; --accent-pink: #ff0080; --accent-blue: #3b82f6; --accent-green: #10b981; --text-primary: #ffffff; --text-secondary: #a1a1aa; --text-muted: #71717a; --glass-bg: rgba(255, 255, 255, 0.03); --glass-border: rgba(255, 255, 255, 0.08); --glow-cyan: 0 0 30px rgba(0, 240, 255, 0.5); --glow-purple: 0 0 30px rgba(139, 92, 246, 0.5); --glow-pink: 0 0 30px rgba(255, 0, 128, 0.5); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Outfit', sans-serif; background: var(--bg-primary); color: var(--text-primary); overflow-x: hidden; line-height: 1.6; }
+        .noise-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; opacity: 0.03; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); }
+        #particle-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+        .gradient-mesh { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; overflow: hidden; }
+        .gradient-mesh::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(ellipse at 20% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%), radial-gradient(ellipse at 80% 80%, rgba(0, 240, 255, 0.1) 0%, transparent 50%), radial-gradient(ellipse at 60% 30%, rgba(255, 0, 128, 0.08) 0%, transparent 40%); animation: meshMove 20s ease-in-out infinite; }
+        @keyframes meshMove { 0%, 100% { transform: translate(0, 0) rotate(0deg); } 25% { transform: translate(2%, 2%) rotate(1deg); } 50% { transform: translate(-1%, 3%) rotate(-1deg); } 75% { transform: translate(3%, -2%) rotate(2deg); } }
+        .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.3; animation: float 15s ease-in-out infinite; }
+        .orb-1 { width: 400px; height: 400px; background: var(--accent-purple); top: 10%; left: 10%; animation-delay: 0s; }
+        .orb-2 { width: 300px; height: 300px; background: var(--accent-cyan); top: 60%; right: 10%; animation-delay: -5s; }
+        .orb-3 { width: 250px; height: 250px; background: var(--accent-pink); bottom: 20%; left: 30%; animation-delay: -10s; }
+        @keyframes float { 0%, 100% { transform: translate(0, 0) scale(1); } 33% { transform: translate(30px, -30px) scale(1.1); } 66% { transform: translate(-20px, 20px) scale(0.9); } }
+        nav { position: fixed; top: 0; left: 0; width: 100%; padding: 1.5rem 4rem; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: linear-gradient(to bottom, rgba(10, 10, 15, 0.9), transparent); backdrop-filter: blur(10px); }
+        .logo { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; letter-spacing: -0.02em; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-transform: uppercase; }
+        .logo span { background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .nav-links { display: flex; gap: 3rem; list-style: none; }
+        .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: all 0.3s ease; position: relative; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple)); transition: width 0.3s ease; }
+        .nav-links a:hover { color: var(--text-primary); }
+        .nav-links a:hover::after { width: 100%; }
+        .nav-cta { padding: 0.75rem 1.5rem; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); border: none; border-radius: 8px; color: var(--bg-primary); font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .nav-cta::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 0.5s ease; }
+        .nav-cta:hover::before { left: 100%; }
+        .nav-cta:hover { transform: translateY(-2px); box-shadow: var(--glow-cyan); }
+        .hero { position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 8rem 4rem 4rem; z-index: 2; }
+        .hero-content { max-width: 1200px; text-align: center; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 50px; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 2rem; backdrop-filter: blur(10px); animation: fadeInUp 0.8s ease forwards; opacity: 0; }
+        .hero-badge .dot { width: 8px; height: 8px; background: var(--accent-green); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } }
+        .hero-title { font-family: 'Syne', sans-serif; font-size: clamp(3rem, 8vw, 7rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 1.5rem; animation: fadeInUp 0.8s ease 0.1s forwards; opacity: 0; }
+        .hero-title .line { display: block; }
+        .hero-title .gradient-text { background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 50%, var(--accent-pink) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; background-size: 200% 200%; animation: gradientShift 5s ease infinite; }
+        @keyframes gradientShift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+        .hero-subtitle { font-size: clamp(1.1rem, 2vw, 1.4rem); color: var(--text-secondary); max-width: 700px; margin: 0 auto 3rem; line-height: 1.7; animation: fadeInUp 0.8s ease 0.2s forwards; opacity: 0; }
+        .hero-cta-group { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; animation: fadeInUp 0.8s ease 0.3s forwards; opacity: 0; }
+        .btn-primary { padding: 1rem 2.5rem; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); border: none; border-radius: 12px; color: var(--bg-primary); font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .btn-primary::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink)); opacity: 0; transition: opacity 0.3s ease; }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 20px 40px rgba(0, 240, 255, 0.3); }
+        .btn-primary:hover::before { opacity: 1; }
+        .btn-secondary { padding: 1rem 2.5rem; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 12px; color: var(--text-primary); font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; backdrop-filter: blur(10px); }
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.08); border-color: var(--accent-cyan); transform: translateY(-3px); }
+        .hero-visual { position: absolute; top: 50%; right: 5%; transform: translateY(-50%); width: 400px; height: 400px; animation: fadeIn 1s ease 0.5s forwards; opacity: 0; }
+        .brain-container { position: relative; width: 100%; height: 100%; }
+        .brain-ring { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 2px solid; border-radius: 50%; animation: rotate 20s linear infinite; }
+        .brain-ring:nth-child(1) { width: 100%; height: 100%; border-color: rgba(0, 240, 255, 0.3); animation-duration: 30s; }
+        .brain-ring:nth-child(2) { width: 80%; height: 80%; border-color: rgba(139, 92, 246, 0.3); animation-direction: reverse; animation-duration: 25s; }
+        .brain-ring:nth-child(3) { width: 60%; height: 60%; border-color: rgba(255, 0, 128, 0.3); animation-duration: 20s; }
+        .brain-core { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); border-radius: 50%; filter: blur(20px); animation: corePulse 3s ease-in-out infinite; }
+        @keyframes rotate { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
+        @keyframes corePulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; } 50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .scroll-indicator { position: absolute; bottom: 3rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 0.5rem; animation: fadeIn 1s ease 0.8s forwards, bounce 2s ease-in-out 1s infinite; opacity: 0; }
+        .scroll-indicator span { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.2em; }
+        .scroll-arrow { width: 24px; height: 24px; border-right: 2px solid var(--accent-cyan); border-bottom: 2px solid var(--accent-cyan); transform: rotate(45deg); animation: arrowBounce 2s ease-in-out infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(10px); } }
+        @keyframes arrowBounce { 0%, 100% { transform: rotate(45deg) translateY(0); opacity: 1; } 50% { transform: rotate(45deg) translateY(5px); opacity: 0.5; } }
+        .stats-bar { position: absolute; bottom: 0; left: 0; width: 100%; padding: 2rem 4rem; display: flex; justify-content: space-between; background: linear-gradient(to top, rgba(10, 10, 15, 0.95), transparent); backdrop-filter: blur(10px); animation: fadeInUp 0.8s ease 0.4s forwards; opacity: 0; }
+        .stat-item { text-align: center; }
+        .stat-number { font-family: 'Syne', sans-serif; font-size: 2.5rem; font-weight: 800; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .stat-label { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
+        .section-header { text-align: center; max-width: 800px; margin: 0 auto 5rem; }
+        .section-tag { display: inline-block; padding: 0.5rem 1rem; background: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.2); border-radius: 50px; font-size: 0.8rem; font-weight: 600; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1.5rem; }
+        .section-title { font-family: 'Syne', sans-serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; line-height: 1.2; margin-bottom: 1.5rem; }
+        .section-title .highlight { background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .section-subtitle { font-size: 1.1rem; color: var(--text-secondary); line-height: 1.7; }
+        .about { position: relative; padding: 10rem 4rem; z-index: 2; background: var(--bg-secondary); }
+        .about::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent); }
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; max-width: 1400px; margin: 0 auto; align-items: center; }
+        .about-visual { position: relative; height: 500px; }
+        .about-card { position: relative; padding: 3rem; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 24px; backdrop-filter: blur(20px); overflow: hidden; }
+        .about-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(0, 240, 255, 0.05), rgba(139, 92, 246, 0.05)); pointer-events: none; }
+        .about-card-icon { width: 60px; height: 60px; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1.5rem; }
+        .about-card h3 { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; }
+        .about-card p { color: var(--text-secondary); line-height: 1.7; margin-bottom: 1.5rem; }
+        .about-card-stats { display: flex; gap: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--glass-border); }
+        .about-stat { text-align: center; }
+        .about-stat-number { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; color: var(--accent-cyan); }
+        .about-stat-label { font-size: 0.8rem; color: var(--text-muted); }
+        .neural-viz { position: relative; width: 100%; height: 100%; }
+        .neural-node { position: absolute; width: 12px; height: 12px; background: var(--accent-cyan); border-radius: 50%; box-shadow: var(--glow-cyan); animation: nodePulse 2s ease-in-out infinite; }
+        .neural-node:nth-child(1) { top: 20%; left: 30%; animation-delay: 0s; }
+        .neural-node:nth-child(2) { top: 40%; left: 70%; animation-delay: 0.2s; }
+        .neural-node:nth-child(3) { top: 60%; left: 20%; animation-delay: 0.4s; }
+        .neural-node:nth-child(4) { top: 70%; left: 60%; animation-delay: 0.6s; }
+        .neural-node:nth-child(5) { top: 30%; left: 50%; animation-delay: 0.8s; }
+        @keyframes nodePulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: 0.5; } }
+        .neural-line { position: absolute; height: 2px; background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple)); transform-origin: left center; animation: lineGlow 3s ease-in-out infinite; }
+        .neural-line:nth-child(6) { top: 22%; left: 30%; width: 120px; transform: rotate(15deg); animation-delay: 0.3s; }
+        .neural-line:nth-child(7) { top: 42%; left: 50%; width: 100px; transform: rotate(-20deg); animation-delay: 0.5s; }
+        .neural-line:nth-child(8) { top: 62%; left: 20%; width: 140px; transform: rotate(25deg); animation-delay: 0.7s; }
+        @keyframes lineGlow { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+        .about-content h2 { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; margin-bottom: 1.5rem; line-height: 1.2; }
+        .about-content p { color: var(--text-secondary); font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem; }
+        .about-features { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+        .about-feature { display: flex; align-items: center; gap: 1rem; padding: 1rem; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 12px; transition: all 0.3s ease; }
+        .about-feature:hover { border-color: var(--accent-cyan); transform: translateX(5px); }
+        .about-feature-icon { width: 40px; height: 40px; background: rgba(0, 240, 255, 0.1); border-radius: 10px; display: flex; align-items: center; justify-content: center; color: var(--accent-cyan); font-size: 1.2rem; }
+        .about-feature span { font-weight: 500; }
+        .timeline { margin-top: 5rem; padding-top: 5rem; border-top: 1px solid var(--glass-border); }
+        .timeline-title { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 700; text-align: center; margin-bottom: 3rem; }
+        .timeline-track { position: relative; max-width: 1000px; margin: 0 auto; display: flex; justify-content: space-between; }
+        .timeline-track::before { content: ''; position: absolute; top: 20px; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple), var(--accent-pink)); }
+        .timeline-item { position: relative; text-align: center; flex: 1; }
+        .timeline-dot { position: absolute; top: 10px; left: 50%; transform: translateX(-50%); width: 20px; height: 20px; background: var(--bg-primary); border: 3px solid var(--accent-cyan); border-radius: 50%; z-index: 1; }
+        .timeline-item:nth-child(2) .timeline-dot { border-color: var(--accent-purple); }
+        .timeline-item:nth-child(3) .timeline-dot { border-color: var(--accent-pink); }
+        .timeline-item:nth-child(4) .timeline-dot { border-color: var(--accent-cyan); }
+        .timeline-year { font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; margin-top: 2rem; }
+        .timeline-item:nth-child(1) .timeline-year { color: var(--accent-cyan); }
+        .timeline-item:nth-child(2) .timeline-year { color: var(--accent-purple); }
+        .timeline-item:nth-child(3) .timeline-year { color: var(--accent-pink); }
+        .timeline-item:nth-child(4) .timeline-year { color: var(--accent-cyan); }
+        .timeline-event { font-size: 0.9rem; color: var(--text-secondary); max-width: 200px; margin: 0 auto; }
+        .values { padding: 8rem 4rem; background: var(--bg-tertiary); }
+        .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; max-width: 1200px; margin: 0 auto; }
+        .value-card { padding: 2.5rem; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; text-align: center; transition: all 0.4s ease; }
+        .value-card:hover { transform: translateY(-10px); border-color: var(--accent-purple); box-shadow: 0 20px 40px rgba(139, 92, 246, 0.2); }
+        .value-icon { width: 70px; height: 70px; margin: 0 auto 1.5rem; background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(139, 92, 246, 0.1)); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2rem; }
+        .value-card h3 { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 1rem; }
+        .value-card p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.7; }
+        .services { position: relative; padding: 10rem 4rem; z-index: 2; background: var(--bg-primary); }
+        .services::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--accent-purple), transparent); }
+        .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; max-width: 1400px; margin: 0 auto; }
+        .service-card { position: relative; padding: 3rem; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 24px; transition: all 0.4s ease; overflow: hidden; }
+        .service-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(0, 240, 255, 0.03), rgba(139, 92, 246, 0.03)); opacity: 0; transition: opacity 0.4s ease; }
+        .service-card:hover::before { opacity: 1; }
+        .service-card:hover { transform: translateY(-10px); border-color: var(--accent-cyan); box-shadow: 0 30px 60px rgba(0, 240, 255, 0.15); }
+        .service-icon { position: relative; width: 80px; height: 80px; margin-bottom: 2rem; background: linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(139, 92, 246, 0.15)); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2.5rem; transition: all 0.4s ease; }
+        .service-card:hover .service-icon { transform: scale(1.1) rotate(5deg); }
+        .service-icon::after { content: ''; position: absolute; inset: -2px; border-radius: 22px; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); z-index: -1; opacity: 0; transition: opacity 0.4s ease; }
+        .service-card:hover .service-icon::after { opacity: 1; }
+        .service-card h3 { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; }
+        .service-card p { color: var(--text-secondary); line-height: 1.7; margin-bottom: 1.5rem; }
+        .service-features { list-style: none; margin-bottom: 2rem; }
+        .service-features li { display: flex; align-items: center; gap: 0.75rem; padding: 0.5rem 0; color: var(--text-secondary); font-size: 0.9rem; }
+        .service-features li::before { content: '→'; color: var(--accent-cyan); }
+        .service-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--accent-cyan); font-weight: 600; text-decoration: none; transition: all 0.3s ease; }
+        .service-link:hover { gap: 1rem; }
+        .service-link span { transition: transform 0.3s ease; }
+        .service-link:hover span { transform: translateX(5px); }
+        .service-card.cyan:hover { border-color: var(--accent-cyan); box-shadow: 0 30px 60px rgba(0, 240, 255, 0.15); }
+        .service-card.purple:hover { border-color: var(--accent-purple); box-shadow: 0 30px 60px rgba(139, 92, 246, 0.15); }
+        .service-card.pink:hover { border-color: var(--accent-pink); box-shadow: 0 30px 60px rgba(255, 0, 128, 0.15); }
+        .service-card.blue:hover { border-color: var(--accent-blue); box-shadow: 0 30px 60px rgba(59, 130, 246, 0.15); }
+        .service-card.green:hover { border-color: var(--accent-green); box-shadow: 0 30px 60px rgba(16, 185, 129, 0.15); }
+        .process { padding: 8rem 4rem; background: var(--bg-secondary); }
+        .process-steps { display: flex; gap: 2rem; max-width: 1200px; margin: 0 auto; position: relative; }
+        .process-steps::before { content: ''; position: absolute; top: 50px; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple), var(--accent-pink)); }
+        .process-step { flex: 1; text-align: center; position: relative; }
+        .step-number { width: 100px; height: 100px; margin: 0 auto 2rem; background: var(--bg-primary); border: 2px solid var(--accent-cyan); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Syne', sans-serif; font-size: 2.5rem; font-weight: 800; color: var(--accent-cyan); position: relative; z-index: 1; transition: all 0.3s ease; }
+        .process-step:nth-child(2) .step-number { border-color: var(--accent-purple); color: var(--accent-purple); }
+        .process-step:nth-child(3) .step-number { border-color: var(--accent-pink); color: var(--accent-pink); }
+        .process-step:nth-child(4) .step-number { border-color: var(--accent-cyan); color: var(--accent-cyan); }
+        .process-step:hover .step-number { transform: scale(1.1); background: var(--accent-cyan); color: var(--bg-primary); }
+        .process-step:nth-child(2):hover .step-number { background: var(--accent-purple); }
+        .process-step:nth-child(3):hover .step-number { background: var(--accent-pink); }
+        .process-step:nth-child(4):hover .step-number { background: var(--accent-cyan); }
+        .step-title { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 0.75rem; }
+        .step-desc { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6; }
+        .cta-section { padding: 10rem 4rem; position: relative; z-index: 2; text-align: center; }
+        .cta-content { max-width: 800px; margin: 0 auto; }
+        .cta-title { font-family: 'Syne', sans-serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; margin-bottom: 1.5rem; }
+        .cta-title .gradient { background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple), var(--accent-pink)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .cta-subtitle { font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 3rem; line-height: 1.7; }
+        .cta-buttons { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; }
+        .technology { position: relative; padding: 10rem 4rem; z-index: 2; background: var(--bg-secondary); }
+        .technology::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent); }
+        .tech-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; max-width: 1200px; margin: 0 auto; }
+        .tech-item { padding: 2rem; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 16px; text-align: center; transition: all 0.3s ease; }
+        .tech-item:hover { transform: translateY(-5px); border-color: var(--accent-cyan); box-shadow: 0 15px 30px rgba(0, 240, 255, 0.1); }
+        .tech-icon { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+        .tech-name { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem; }
+        .tech-desc { font-size: 0.8rem; color: var(--text-muted); }
+        .tech-stack { margin-top: 5rem; }
+        .stack-category { margin-bottom: 4rem; }
+        .stack-title { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 700; text-align: center; margin-bottom: 2rem; color: var(--text-secondary); }
+        .stack-items { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; max-width: 1000px; margin: 0 auto; }
+        .stack-item { padding: 0.75rem 1.5rem; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 50px; font-size: 0.9rem; color: var(--text-secondary); transition: all 0.3s ease; }
+        .stack-item:hover { border-color: var(--accent-cyan); color: var(--accent-cyan); transform: scale(1.05); }
+        .innovation { padding: 8rem 4rem; background: var(--bg-tertiary); }
+        .innovation-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; max-width: 1200px; margin: 0 auto; align-items: center; }
+        .innovation-visual { position: relative; height: 400px; }
+        .innovation-card { padding: 3rem; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 24px; }
+        .innovation-card h3 { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 700; margin-bottom: 1rem; }
+        .innovation-card p { color: var(--text-secondary); line-height: 1.7; margin-bottom: 2rem; }
+        .innovation-stats { display: flex; gap: 2rem; }
+        .innovation-stat { text-align: center; }
+        .innovation-stat-number { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; color: var(--accent-cyan); }
+        .innovation-stat-label { font-size: 0.8rem; color: var(--text-muted); }
+        .innovation-content h2 { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; margin-bottom: 1.5rem; }
+        .innovation-content p { color: var(--text-secondary); font-size: 1.1rem; line-height: 1.8; margin-bottom: 2rem; }
+        .innovation-features { list-style: none; }
+        .innovation-features li { display: flex; align-items: center; gap: 1rem; padding: 1rem 0; border-bottom: 1px solid var(--glass-border); }
+        .innovation-features li:last-child { border-bottom: none; }
+        .feature-check { width: 24px; height: 24px; background: rgba(16, 185, 129, 0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: var(--accent-green); font-size: 0.8rem; }
+        .case-studies { position: relative; padding: 10rem 4rem; z-index: 2; background: var(--bg-primary); }
+        .case-studies::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--accent-pink), transparent); }
+        .case-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 3rem; max-width: 1400px; margin: 0 auto; }
+        .case-card { position: relative; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 24px; overflow: hidden; transition: all 0.4s ease; }
+        .case-card:hover { transform: translateY(-10px); border-color: var(--accent-cyan); box-shadow: 0 30px 60px rgba(0, 240, 255, 0.15); }
+        .case-visual { position: relative; height: 250px; background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary)); overflow: hidden; }
+        .case-visual::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(139, 92, 246, 0.1)); }
+        .case-visual-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 5rem; opacity: 0.3; }
+        .case-visual-glow { position: absolute; width: 150px; height: 150px; background: var(--accent-cyan); border-radius: 50%; filter: blur(80px); opacity: 0.3; animation: glowPulse 3s ease-in-out infinite; }
+        .case-card:nth-child(2) .case-visual-glow { background: var(--accent-purple); }
+        .case-card:nth-child(3) .case-visual-glow { background: var(--accent-pink); }
+        .case-card:nth-child(4) .case-visual-glow { background: var(--accent-blue); }
+        @keyframes glowPulse { 0%, 100% { transform: scale(1); opacity: 0.3; } 50% { transform: scale(1.2); opacity: 0.5; } }
+        .case-content { padding: 2.5rem; }
+        .case-tag { display: inline-block; padding: 0.4rem 0.8rem; background: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.2); border-radius: 50px; font-size: 0.7rem; font-weight: 600; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; }
+        .case-card:nth-child(2) .case-tag { background: rgba(139, 92, 246, 0.1); border-color: rgba(139, 92, 246, 0.2); color: var(--accent-purple); }
+        .case-card:nth-child(3) .case-tag { background: rgba(255, 0, 128, 0.1); border-color: rgba(255, 0, 128, 0.2); color: var(--accent-pink); }
+        .case-card:nth-child(4) .case-tag { background: rgba(59, 130, 246, 0.1); border-color: rgba(59, 130, 246, 0.2); color: var(--accent-blue); }
+        .case-title { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; }
+        .case-description { color: var(--text-secondary); line-height: 1.7; margin-bottom: 1.5rem; }
+        .case-metrics { display: flex; gap: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--glass-border); }
+        .case-metric { text-align: center; }
+        .case-metric-value { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 800; color: var(--accent-cyan); }
+        .case-card:nth-child(2) .case-metric-value { color: var(--accent-purple); }
+        .case-card:nth-child(3) .case-metric-value { color: var(--accent-pink); }
+        .case-card:nth-child(4) .case-metric-value { color: var(--accent-blue); }
+        .case-metric-label { font-size: 0.75rem; color: var(--text-muted); }
+        .testimonials { padding: 8rem 4rem; background: var(--bg-secondary); }
+        .testimonial-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; max-width: 1200px; margin: 0 auto; }
+        .testimonial-card { padding: 2.5rem; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; }
+        .testimonial-quote { font-size: 1rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 2rem; font-style: italic; }
+        .testimonial-author { display: flex; align-items: center; gap: 1rem; }
+        .testimonial-avatar { width: 50px; height: 50px; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; font-weight: 700; }
+        .testimonial-info h4 { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem; }
+        .testimonial-info span { font-size: 0.8rem; color: var(--text-muted); }
+        .stats-section { padding: 8rem 4rem; background: var(--bg-tertiary); }
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3rem; max-width: 1200px; margin: 0 auto; text-align: center; }
+        .stats-item { padding: 2rem; }
+        .stats-number { font-family: 'Syne', sans-serif; font-size: clamp(3rem, 5vw, 5rem); font-weight: 800; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; margin-bottom: 0.5rem; }
+        .stats-label { font-size: 1rem; color: var(--text-secondary); }
 
         /* ============================================
-           HERO SECTION
+           CONTACT SECTION (ITERATION 6)
            ============================================ */
-        .hero {
-            position: relative;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 8rem 4rem 4rem;
-            z-index: 2;
-        }
-
-        .hero-content {
-            max-width: 1200px;
-            text-align: center;
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 50px;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            backdrop-filter: blur(10px);
-            animation: fadeInUp 0.8s ease forwards;
-            opacity: 0;
-        }
-
-        .hero-badge .dot {
-            width: 8px;
-            height: 8px;
-            background: var(--accent-green);
-            border-radius: 50%;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.2); }
-        }
-
-        .hero-title {
-            font-family: 'Syne', sans-serif;
-            font-size: clamp(3rem, 8vw, 7rem);
-            font-weight: 800;
-            line-height: 1.1;
-            letter-spacing: -0.03em;
-            margin-bottom: 1.5rem;
-            animation: fadeInUp 0.8s ease 0.1s forwards;
-            opacity: 0;
-        }
-
-        .hero-title .line {
-            display: block;
-        }
-
-        .hero-title .gradient-text {
-            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 50%, var(--accent-pink) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            background-size: 200% 200%;
-            animation: gradientShift 5s ease infinite;
-        }
-
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        .hero-subtitle {
-            font-size: clamp(1.1rem, 2vw, 1.4rem);
-            color: var(--text-secondary);
-            max-width: 700px;
-            margin: 0 auto 3rem;
-            line-height: 1.7;
-            animation: fadeInUp 0.8s ease 0.2s forwards;
-            opacity: 0;
-        }
-
-        .hero-cta-group {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            animation: fadeInUp 0.8s ease 0.3s forwards;
-            opacity: 0;
-        }
-
-        .btn-primary {
-            padding: 1rem 2.5rem;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            border: none;
-            border-radius: 12px;
-            color: var(--bg-primary);
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-
-        .btn-primary::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 20px 40px rgba(0, 240, 255, 0.3);
-        }
-
-        .btn-primary:hover::before {
-            opacity: 1;
-        }
-
-        .btn-secondary {
-            padding: 1rem 2.5rem;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            color: var(--text-primary);
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: var(--accent-cyan);
-            transform: translateY(-3px);
-        }
-
-        /* ============================================
-           HERO VISUAL - AI BRAIN ANIMATION
-           ============================================ */
-        .hero-visual {
-            position: absolute;
-            top: 50%;
-            right: 5%;
-            transform: translateY(-50%);
-            width: 400px;
-            height: 400px;
-            animation: fadeIn 1s ease 0.5s forwards;
-            opacity: 0;
-        }
-
-        .brain-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-
-        .brain-ring {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border: 2px solid;
-            border-radius: 50%;
-            animation: rotate 20s linear infinite;
-        }
-
-        .brain-ring:nth-child(1) {
-            width: 100%;
-            height: 100%;
-            border-color: rgba(0, 240, 255, 0.3);
-            animation-duration: 30s;
-        }
-
-        .brain-ring:nth-child(2) {
-            width: 80%;
-            height: 80%;
-            border-color: rgba(139, 92, 246, 0.3);
-            animation-direction: reverse;
-            animation-duration: 25s;
-        }
-
-        .brain-ring:nth-child(3) {
-            width: 60%;
-            height: 60%;
-            border-color: rgba(255, 0, 128, 0.3);
-            animation-duration: 20s;
-        }
-
-        .brain-core {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            border-radius: 50%;
-            filter: blur(20px);
-            animation: corePulse 3s ease-in-out infinite;
-        }
-
-        @keyframes rotate {
-            from { transform: translate(-50%, -50%) rotate(0deg); }
-            to { transform: translate(-50%, -50%) rotate(360deg); }
-        }
-
-        @keyframes corePulse {
-            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
-            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        /* ============================================
-           SCROLL INDICATOR
-           ============================================ */
-        .scroll-indicator {
-            position: absolute;
-            bottom: 3rem;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-            animation: fadeIn 1s ease 0.8s forwards, bounce 2s ease-in-out 1s infinite;
-            opacity: 0;
-        }
-
-        .scroll-indicator span {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-        }
-
-        .scroll-arrow {
-            width: 24px;
-            height: 24px;
-            border-right: 2px solid var(--accent-cyan);
-            border-bottom: 2px solid var(--accent-cyan);
-            transform: rotate(45deg);
-            animation: arrowBounce 2s ease-in-out infinite;
-        }
-
-        @keyframes bounce {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(10px); }
-        }
-
-
-        @keyframes arrowBounce {
-            0%, 100% { transform: rotate(45deg) translateY(0); opacity: 1; }
-            50% { transform: rotate(45deg) translateY(5px); opacity: 0.5; }
-        }
-
-        /* ============================================
-           STATS BAR
-           ============================================ */
-        .stats-bar {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 2rem 4rem;
-            display: flex;
-            justify-content: space-between;
-            background: linear-gradient(to top, rgba(10, 10, 15, 0.95), transparent);
-            backdrop-filter: blur(10px);
-            animation: fadeInUp 0.8s ease 0.4s forwards;
-            opacity: 0;
-        }
-
-        .stat-item {
-            text-align: center;
-        }
-
-        .stat-number {
-            font-family: 'Syne', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .stat-label {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        /* ============================================
-           ABOUT SECTION
-           ============================================ */
-        .about {
-            position: relative;
-            padding: 10rem 4rem;
-            z-index: 2;
-            background: linear-gradient(to bottom, transparent, rgba(13, 13, 20, 0.5), var(--bg-secondary));
-        }
-
-        .section-container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 6rem;
-        }
-
-        .section-label {
-            display: inline-block;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--accent-cyan);
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            margin-bottom: 1rem;
-            position: relative;
-        }
-
-        .section-label::before,
-        .section-label::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            width: 40px;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent-cyan));
-        }
-
-        .section-label::before {
-            right: calc(100% + 15px);
-        }
-
-        .section-label::after {
-            left: calc(100% + 15px);
-            background: linear-gradient(90deg, var(--accent-cyan), transparent);
-        }
-
-        .section-title {
-            font-family: 'Syne', sans-serif;
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 1.5rem;
-        }
-
-        .section-subtitle {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* About Grid */
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .about-content {
-            position: relative;
-        }
-
-        .about-text {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            line-height: 1.8;
-            margin-bottom: 2rem;
-        }
-
-        .about-text p {
-            margin-bottom: 1.5rem;
-        }
-
-        .about-highlight {
-            background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(139, 92, 246, 0.1));
-            border-left: 3px solid var(--accent-cyan);
-            padding: 1.5rem;
-            border-radius: 0 12px 12px 0;
-            margin: 2rem 0;
-        }
-
-        .about-highlight p {
-            font-size: 1.15rem;
-            color: var(--text-primary);
-            font-weight: 500;
-            margin: 0;
-        }
-
-        /* Mission Cards */
-        .mission-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-            margin-top: 3rem;
-        }
-
-        .mission-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 1.5rem;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-
-        .mission-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent-purple);
-            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.2);
-        }
-
-        .mission-icon {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .mission-card h4 {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .mission-card p {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin: 0;
-        }
-
-        /* About Visual */
-        .about-visual {
-            position: relative;
-            height: 500px;
-        }
-
-        .visual-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-
-        /* Neural Network Visualization */
-        .neural-network {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 350px;
-            height: 350px;
-        }
-
-        .node {
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            background: var(--accent-cyan);
-            border-radius: 50%;
-            filter: blur(2px);
-            animation: nodeGlow 2s ease-in-out infinite;
-        }
-
-        .node.purple { background: var(--accent-purple); animation-delay: -0.5s; }
-        .node.pink { background: var(--accent-pink); animation-delay: -1s; }
-
-        @keyframes nodeGlow {
-            0%, 100% { transform: scale(1); opacity: 0.8; box-shadow: 0 0 10px currentColor; }
-            50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 20px currentColor; }
-        }
-
-        /* Floating AI Cards */
-        .ai-card {
-            position: absolute;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            padding: 1rem;
-            backdrop-filter: blur(10px);
-            animation: floatCard 6s ease-in-out infinite;
-        }
-
-        .ai-card-1 {
-            top: 10%;
-            left: 10%;
-            animation-delay: 0s;
-        }
-
-        .ai-card-2 {
-            top: 20%;
-            right: 5%;
-            animation-delay: -2s;
-        }
-
-        .ai-card-3 {
-            bottom: 20%;
-            left: 20%;
-            animation-delay: -4s;
-        }
-
-        @keyframes floatCard {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(2deg); }
-        }
-
-
-        .ai-card-icon {
-            font-size: 1.5rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .ai-card-text {
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            font-weight: 500;
-        }
-
-        /* Team Section */
-        .team-section {
-            margin-top: 8rem;
-        }
-
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            margin-top: 4rem;
-        }
-
-        .team-card {
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
-        .team-card:hover {
-            transform: translateY(-10px);
-        }
-
-        .team-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            margin: 0 auto 1.5rem;
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            padding: 3px;
-        }
-
-        .team-avatar-inner {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: var(--bg-secondary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-        }
-
-        .team-name {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 0.25rem;
-        }
-
-        .team-role {
-            font-size: 0.9rem;
-            color: var(--accent-cyan);
-            margin-bottom: 0.5rem;
-        }
-
-        .team-bio {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        /* Values Section */
-        .values-section {
-            margin-top: 8rem;
-            padding-top: 6rem;
-            border-top: 1px solid var(--glass-border);
-        }
-
-        .values-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            margin-top: 4rem;
-        }
-
-        .value-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 2.5rem;
-            text-align: center;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .value-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple), var(--accent-pink));
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.4s ease;
-        }
-
-        .value-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        .value-card:hover {
-            transform: translateY(-10px);
-            border-color: transparent;
-            background: rgba(255, 255, 255, 0.05);
-        }
-
-        .value-icon {
-            width: 64px;
-            height: 64px;
-            background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(139, 92, 246, 0.2));
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            margin: 0 auto 1.5rem;
-        }
-
-        .value-card h3 {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-
-        .value-card p {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            line-height: 1.7;
-        }
-
-        /* ============================================
-           SERVICES SECTION (ITERATION 3)
-           ============================================ */
-        .services {
-            position: relative;
-            padding: 10rem 4rem;
-            z-index: 2;
-            background: var(--bg-secondary);
-        }
-
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            margin-top: 4rem;
-        }
-
-        .service-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 2.5rem;
-            backdrop-filter: blur(10px);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .service-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(0, 240, 255, 0.05), rgba(139, 92, 246, 0.05));
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
-        .service-card:hover::before {
-            opacity: 1;
-        }
-
-        .service-card:hover {
-            transform: translateY(-15px) scale(1.02);
-            border-color: var(--accent-cyan);
-            box-shadow: 
-                0 30px 60px rgba(0, 240, 255, 0.15),
-                0 0 0 1px var(--accent-cyan);
-        }
-
-        .service-icon-wrapper {
-            position: relative;
-            width: 80px;
-            height: 80px;
-            margin-bottom: 1.5rem;
-        }
-
-        .service-icon-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            border-radius: 20px;
-            animation: iconPulse 3s ease-in-out infinite;
-        }
-
-        @keyframes iconPulse {
-            0%, 100% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.05); opacity: 1; }
-        }
-
-        .service-icon {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 2.2rem;
-            z-index: 1;
-        }
-
-        .service-card h3 {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            position: relative;
-        }
-
-        .service-card > p {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            line-height: 1.7;
-            margin-bottom: 1.5rem;
-            position: relative;
-        }
-
-        .service-features {
-            list-style: none;
-            margin-bottom: 2rem;
-            position: relative;
-        }
-
-        .service-features li {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-bottom: 0.75rem;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
-
-        .service-features li:last-child {
-            border-bottom: none;
-        }
-
-        .feature-check {
-            width: 20px;
-            height: 20px;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.7rem;
-            flex-shrink: 0;
-        }
-
-        .service-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--accent-cyan);
-            font-weight: 600;
-            font-size: 0.95rem;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .service-cta::after {
-            content: '→';
-            transition: transform 0.3s ease;
-        }
-
-
-        .service-card:hover .service-cta::after {
-            transform: translateX(5px);
-        }
-
-        .service-card:hover .service-cta {
-            color: var(--accent-purple);
-        }
-
-        /* Service Card Color Variants */
-        .service-card.cyan .service-icon-bg {
-            background: linear-gradient(135deg, #00f0ff, #00a8b5);
-        }
-
-        .service-card.purple .service-icon-bg {
-            background: linear-gradient(135deg, #8b5cf6, #6d28d9);
-        }
-
-        .service-card.pink .service-icon-bg {
-            background: linear-gradient(135deg, #ff0080, #cc0066);
-        }
-
-        .service-card.orange .service-icon-bg {
-            background: linear-gradient(135deg, #f97316, #ea580c);
-        }
-
-        .service-card.green .service-icon-bg {
-            background: linear-gradient(135deg, #10b981, #059669);
-        }
-
-        .service-card.blue .service-icon-bg {
-            background: linear-gradient(135deg, #3b82f6, #2563eb);
-        }
-
-        /* Process Steps */
-        .process-section {
-            margin-top: 8rem;
-            padding-top: 6rem;
-            border-top: 1px solid var(--glass-border);
-        }
-
-        .process-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            margin-top: 4rem;
-        }
-
-        .process-step {
-            text-align: center;
-            position: relative;
-        }
-
-        .process-number {
-            font-family: 'Syne', sans-serif;
-            font-size: 4rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(139, 92, 246, 0.2));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1;
-            margin-bottom: 1rem;
-        }
-
-        .process-step h4 {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 0.75rem;
-        }
-
-        .process-step p {
-            font-size: 0.95rem;
-            color: var(--text-muted);
-            line-height: 1.6;
-        }
-
-
-        .process-connector {
-            position: absolute;
-            top: 40px;
-            right: -1rem;
-            width: calc(100% + 2rem);
-            height: 2px;
-            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple), var(--accent-pink));
-            opacity: 0.3;
-            z-index: 0;
-        }
-
-
-        .process-step:last-child .process-connector {
-            display: none;
-        }
-
-        /* CTA Banner */
-        .cta-banner {
-            margin-top: 8rem;
-            padding: 4rem;
-            background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(139, 92, 246, 0.1));
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta-banner::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(0, 240, 255, 0.1) 0%, transparent 50%);
-            animation: ctaGlow 5s ease-in-out infinite;
-        }
-
-        @keyframes ctaGlow {
-            0%, 100% { transform: scale(1); opacity: 0.5; }
-            50% { transform: scale(1.2); opacity: 0.8; }
-        }
-
-        .cta-banner h3 {
-            font-family: 'Syne', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            position: relative;
-        }
-
-        .cta-banner p {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            position: relative;
-        }
-
-        .cta-banner .btn-primary {
-            position: relative;
-            padding: 1rem 3rem;
-            font-size: 1.1rem;
-        }
-
-        /* ============================================
-           RESPONSIVE
-           ============================================ */
+        .contact { position: relative; padding: 10rem 4rem; z-index: 2; background: var(--bg-secondary); }
+        .contact::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--accent-cyan), transparent); }
+
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; max-width: 1200px; margin: 0 auto; }
+
+        .contact-info h2 { font-family: 'Syne', sans-serif; font-size: clamp(2rem, 4vw, 3rem); font-weight: 800; margin-bottom: 1.5rem; }
+        .contact-info p { color: var(--text-secondary); font-size: 1.1rem; line-height: 1.8; margin-bottom: 3rem; }
+
+        .contact-details { list-style: none; }
+        .contact-detail { display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem 0; border-bottom: 1px solid var(--glass-border); }
+        .contact-detail:last-child { border-bottom: none; }
+        .contact-icon { width: 50px; height: 50px; background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(139, 92, 246, 0.1)); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+        .contact-text h4 { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem; }
+        .contact-text span { color: var(--text-secondary); font-size: 0.95rem; }
+
+        .social-links { display: flex; gap: 1rem; margin-top: 2rem; }
+        .social-link { width: 50px; height: 50px; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: all 0.3s ease; }
+        .social-link:hover { border-color: var(--accent-cyan); transform: translateY(-3px); background: rgba(0, 240, 255, 0.1); }
+
+        .contact-form { padding: 3rem; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 24px; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; font-size: 0.9rem; font-weight: 500; margin-bottom: 0.5rem; color: var(--text-secondary); }
+        .form-group input, .form-group textarea { width: 100%; padding: 1rem 1.25rem; background: var(--bg-primary); border: 1px solid var(--glass-border); border-radius: 12px; color: var(--text-primary); font-family: 'Outfit', sans-serif; font-size: 1rem; transition: all 0.3s ease; }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent-cyan); box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.1); }
+        .form-group textarea { min-height: 150px; resize: vertical; }
+        .form-submit { width: 100%; padding: 1rem 2rem; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); border: none; border-radius: 12px; color: var(--bg-primary); font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; }
+        .form-submit:hover { transform: translateY(-3px); box-shadow: 0 20px 40px rgba(0, 240, 255, 0.3); }
+
+        /* Footer */
+        footer { padding: 5rem 4rem 2rem; background: var(--bg-tertiary); z-index: 2; position: relative; }
+        footer::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--accent-purple), transparent); }
+
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 4rem; max-width: 1400px; margin: 0 auto 4rem; }
+
+        .footer-brand .logo { margin-bottom: 1.5rem; display: inline-block; }
+        .footer-brand p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.7; margin-bottom: 2rem; }
+
+        .footer-column h4 { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--text-primary); }
+        .footer-column ul { list-style: none; }
+        .footer-column li { margin-bottom: 0.75rem; }
+        .footer-column a { color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; transition: all 0.3s ease; }
+        .footer-column a:hover { color: var(--accent-cyan); }
+
+        .footer-bottom { padding-top: 2rem; border-top: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; }
+        .footer-bottom p { color: var(--text-muted); font-size: 0.85rem; }
+        .footer-legal { display: flex; gap: 2rem; }
+        .footer-legal a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; transition: color 0.3s ease; }
+        .footer-legal a:hover { color: var(--accent-cyan); }
+
+        /* Responsive */
         @media (max-width: 1024px) {
-            .hero-visual {
-                display: none;
-            }
-
-            .hero {
-                padding: 6rem 2rem 4rem;
-            }
-
-
-            nav {
-                padding: 1rem 2rem;
-            }
-
-
-            .nav-links {
-                display: none;
-            }
-
-
-            .stats-bar {
-                padding: 1.5rem 2rem;
-                flex-wrap: wrap;
-                gap: 1.5rem;
-                justify-content: center;
-            }
-
-            .about, .services {
-                padding: 6rem 2rem;
-            }
-
-            .about-grid {
-                grid-template-columns: 1fr;
-                gap: 3rem;
-            }
-
-            .about-visual {
-                height: 400px;
-            }
-
-            .team-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .values-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .services-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .process-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-
-            .process-connector {
-                display: none;
-            }
+            .hero-visual { display: none; }
+            .hero { padding: 6rem 2rem 4rem; }
+            nav { padding: 1rem 2rem; }
+            .nav-links { display: none; }
+            .stats-bar { padding: 1.5rem 2rem; flex-wrap: wrap; gap: 1.5rem; justify-content: center; }
+            .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+            .about-visual { height: 300px; }
+            .values-grid { grid-template-columns: 1fr; }
+            .timeline-track { flex-direction: column; gap: 2rem; }
+            .timeline-track::before { display: none; }
+            .timeline-dot { display: none; }
+            .timeline-year { margin-top: 0; }
+            .services-grid { grid-template-columns: 1fr 1fr; }
+            .process-steps { flex-direction: column; }
+            .process-steps::before { display: none; }
+            .tech-grid { grid-template-columns: repeat(2, 1fr); }
+            .innovation-grid { grid-template-columns: 1fr; }
+            .case-grid { grid-template-columns: 1fr; }
+            .testimonial-grid { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); }
+            .contact-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
         }
-
         @media (max-width: 768px) {
-            .hero-title {
-                font-size: clamp(2.5rem, 10vw, 4rem);
-            }
-
-
-            .hero-subtitle {
-                font-size: 1rem;
-            }
-
-            .hero-cta-group {
-                flex-direction: column;
-                width: 100%;
-                max-width: 300px;
-                margin: 0 auto;
-            }
-
-            .btn-primary, .btn-secondary {
-                width: 100%;
-                text-align: center;
-            }
-
-            .stat-number {
-                font-size: 2rem;
-            }
-
-            .mission-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .team-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .services-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .process-grid {
-                grid-template-columns: 1fr;
-            }
-
-
-            .section-label::before,
-            .section-label::after {
-                display: none;
-            }
-
-            .cta-banner {
-                padding: 2rem;
-            }
+            .hero-title { font-size: clamp(2.5rem, 10vw, 4rem); }
+            .hero-subtitle { font-size: 1rem; }
+            .hero-cta-group { flex-direction: column; width: 100%; max-width: 300px; margin: 0 auto; }
+            .btn-primary, .btn-secondary { width: 100%; text-align: center; }
+            .stat-number { font-size: 2rem; }
+            .about, .values, .services, .process, .cta-section, .technology, .innovation, .case-studies, .testimonials, .stats-section, .contact, footer { padding: 5rem 2rem; }
+            .about-features { grid-template-columns: 1fr; }
+            .section-title { font-size: 2rem; }
+            .services-grid { grid-template-columns: 1fr; }
+            .cta-buttons { flex-direction: column; width: 100%; max-width: 300px; margin: 0 auto; }
+            .tech-grid { grid-template-columns: 1fr; }
+            .stack-items { flex-direction: column; align-items: center; }
+            .case-metrics { flex-wrap: wrap; gap: 1rem; }
+            .stats-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
         }
     </style>
 </head>
 <body>
-    <!-- Noise Overlay -->
     <div class="noise-overlay"></div>
-
-    <!-- Animated Background -->
-    <div class="gradient-mesh">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-    </div>
-
-
-    <!-- Neural Particle Canvas -->
+    <div class="gradient-mesh"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
     <canvas id="particle-canvas"></canvas>
-
-    <!-- Navigation -->
-    <nav id="navbar">
+    <nav>
         <div class="logo">Research<span>V3</span></div>
         <ul class="nav-links">
             <li><a href="#about">About</a></li>
@@ -1398,591 +360,370 @@
         <button class="nav-cta">Get Started</button>
     </nav>
 
-    <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
-            <div class="hero-badge">
-                <span class="dot"></span>
-                Now Available: Agentic AI Systems
-            </div>
-            <h1 class="hero-title">
-                <span class="line">The Future is</span>
-                <span class="line gradient-text">Agentic</span>
-            </h1>
-            <p class="hero-subtitle">
-                We build autonomous AI agents and intelligent systems that think, learn, and evolve. 
-                Pioneering the next generation of artificial intelligence for enterprise and beyond.
-            </p>
+            <div class="hero-badge"><span class="dot"></span>Now Available: Agentic AI Systems</div>
+            <h1 class="hero-title"><span class="line">The Future is</span><span class="line gradient-text">Agentic</span></h1>
+            <p class="hero-subtitle">We build autonomous AI agents and intelligent systems that think, learn, and evolve. Pioneering the next generation of artificial intelligence for enterprise and beyond.</p>
             <div class="hero-cta-group">
                 <button class="btn-primary">Explore Our Work</button>
                 <button class="btn-secondary">Watch Demo</button>
             </div>
         </div>
-
-        <!-- AI Brain Visual -->
-        <div class="hero-visual">
-            <div class="brain-container">
-                <div class="brain-ring"></div>
-                <div class="brain-ring"></div>
-                <div class="brain-ring"></div>
-                <div class="brain-core"></div>
-            </div>
-        </div>
-
-        <!-- Scroll Indicator -->
-        <div class="scroll-indicator">
-            <span>Scroll</span>
-            <div class="scroll-arrow"></div>
-        </div>
-
-        <!-- Stats Bar -->
+        <div class="hero-visual"><div class="brain-container"><div class="brain-ring"></div><div class="brain-ring"></div><div class="brain-ring"></div><div class="brain-core"></div></div></div>
+        <div class="scroll-indicator"><span>Scroll</span><div class="scroll-arrow"></div></div>
         <div class="stats-bar">
-            <div class="stat-item">
-                <div class="stat-number">50+</div>
-                <div class="stat-label">AI Agents Deployed</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">99.9%</div>
-                <div class="stat-label">Uptime</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">24/7</div>
-                <div class="stat-label">Active Monitoring</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">∞</div>
-                <div class="stat-label">Possibilities</div>
-            </div>
+            <div class="stat-item"><div class="stat-number">50+</div><div class="stat-label">AI Agents Deployed</div></div>
+            <div class="stat-item"><div class="stat-number">99.9%</div><div class="stat-label">Uptime</div></div>
+            <div class="stat-item"><div class="stat-number">24/7</div><div class="stat-label">Active Monitoring</div></div>
+            <div class="stat-item"><div class="stat-number">∞</div><div class="stat-label">Possibilities</div></div>
         </div>
     </section>
 
-    <!-- About Section -->
     <section class="about" id="about">
-        <div class="section-container">
-            <div class="section-header">
-                <span class="section-label">About Us</span>
-                <h2 class="section-title">Pioneering the Agentic AI Revolution</h2>
-                <p class="section-subtitle">
-                    We're not just building AI. We're creating autonomous systems that transform how businesses operate.
-                </p>
-            </div>
-
-            <div class="about-grid">
-                <div class="about-content">
-                    <div class="about-text">
-                        <p>
-                            ResearchV3 was founded with a singular vision: to build AI systems that don't just respond—they <strong>think</strong>, <strong>learn</strong>, and <strong>act autonomously</strong>. We believe the future of enterprise lies in agentic AI—systems that can make decisions, execute complex workflows, and continuously improve without constant human intervention.
-                        </p>
-                        <p>
-                            Our team combines decades of expertise in machine learning, neural networks, and cognitive computing to deliver cutting-edge AI solutions that push the boundaries of what's possible.
-                        </p>
-                    </div>
-
-
-                    <div class="about-highlight">
-                        <p>"We don't build tools. We build autonomous intelligence that becomes an extension of your team."</p>
-                    </div>
-
-                    <div class="mission-grid">
-                        <div class="mission-card">
-                            <div class="mission-icon">🧠</div>
-                            <h4>Intelligent Automation</h4>
-                            <p>AI that thinks and acts for you</p>
-                        </div>
-                        <div class="mission-card">
-                            <div class="mission-icon">🔄</div>
-                            <h4>Continuous Learning</h4>
-                            <p>Systems that evolve over time</p>
-                        </div>
-                        <div class="mission-card">
-                            <div class="mission-icon">⚡</div>
-                            <h4>Real-Time Decision</h4>
-                            <p>Instant responses at scale</p>
-                        </div>
-                        <div class="mission-card">
-                            <div class="mission-icon">🔒</div>
-                            <h4>Enterprise Security</h4>
-                            <p>Bank-grade protection</p>
-                        </div>
-                    </div>
-                </div>
-
-
-                <div class="about-visual">
-                    <div class="visual-container">
-                        <div class="neural-network">
-                            <div class="node" style="top: 20%; left: 50%;"></div>
-                            <div class="node purple" style="top: 35%; left: 25%;"></div>
-                            <div class="node purple" style="top: 35%; left: 75%;"></div>
-                            <div class="node pink" style="top: 50%; left: 15%;"></div>
-                            <div class="node" style="top: 50%; left: 40%;"></div>
-                            <div class="node purple" style="top: 50%; left: 60%;"></div>
-                            <div class="node pink" style="top: 50%; left: 85%;"></div>
-                            <div class="node" style="top: 65%; left: 30%;"></div>
-                            <div class="node purple" style="top: 65%; left: 70%;"></div>
-                            <div class="node pink" style="top: 80%; left: 50%;"></div>
-                        </div>
-
-                        <div class="ai-card ai-card-1">
-                            <div class="ai-card-icon">🤖</div>
-                            <div class="ai-card-text">NLP Processing</div>
-                        </div>
-                        <div class="ai-card ai-card-2">
-                            <div class="ai-card-icon">🧩</div>
-                            <div class="ai-card-text">Pattern Recognition</div>
-                        </div>
-                        <div class="ai-card ai-card-3">
-                            <div class="ai-card-icon">⚡</div>
-                            <div class="ai-card-text">Real-time Analytics</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Team Section -->
-            <div class="team-section">
-                <div class="section-header">
-                    <span class="section-label">Our Team</span>
-                    <h2 class="section-title">The Minds Behind the Machines</h2>
-                </div>
-
-                <div class="team-grid">
-                    <div class="team-card">
-                        <div class="team-avatar">
-                            <div class="team-avatar-inner">👨‍💻</div>
-                        </div>
-                        <h4 class="team-name">Dr. Alex Chen</h4>
-                        <div class="team-role">Chief AI Architect</div>
-                        <p class="team-bio">Former Google Brain researcher with 15+ years in deep learning</p>
-                    </div>
-                    <div class="team-card">
-                        <div class="team-avatar">
-                            <div class="team-avatar-inner">👩‍🔬</div>
-                        </div>
-                        <h4 class="team-name">Sarah Mitchell</h4>
-                        <div class="team-role">Head of Research</div>
-                        <p class="team-bio">PhD in Cognitive Computing from MIT</p>
-                    </div>
-                    <div class="team-card">
-                        <div class="team-avatar">
-                            <div class="team-avatar-inner">👨‍💼</div>
-                        </div>
-                        <h4 class="team-name">Marcus Johnson</h4>
-                        <div class="team-role">CEO & Co-Founder</div>
-                        <p class="team-bio">Serial entrepreneur, 3x AI startup exits</p>
-                    </div>
-                    <div class="team-card">
-                        <div class="team-avatar">
-                            <div class="team-avatar-inner">👩‍💻</div>
-                        </div>
-                        <h4 class="team-name">Elena Rodriguez</h4>
-                        <div class="team-role">Lead Engineer</div>
-                        <p class="team-bio">Expert in distributed AI systems</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Values Section -->
-            <div class="values-section">
-                <div class="section-header">
-                    <span class="section-label">Our Values</span>
-                    <h2 class="section-title">What Drives Us</h2>
-                </div>
-
-                <div class="values-grid">
-                    <div class="value-card">
-                        <div class="value-icon">🎯</div>
-                        <h3>Innovation First</h3>
-                        <p>We push the boundaries of what's possible, constantly exploring new frontiers in AI technology.</p>
-                    </div>
-                    <div class="value-card">
-                        <div class="value-icon">🤝</div>
-                        <h3>Partnership</h3>
-                        <p>Your success is our success. We work as an extension of your team, not just a vendor.</p>
-                    </div>
-                    <div class="value-card">
-                        <div class="value-icon">🔐</div>
-                        <h3>Trust & Security</h3>
-                        <p>Enterprise-grade security and privacy are built into everything we create.</p>
-                    </div>
+        <div class="section-header">
+            <span class="section-tag">About Us</span>
+            <h2 class="section-title">Pioneering the <span class="highlight">Agentic AI</span> Revolution</h2>
+            <p class="section-subtitle">We're not just building AI. We're architecting the future of autonomous intelligence.</p>
+        </div>
+        <div class="about-grid">
+            <div class="about-visual"><div class="neural-viz"><div class="neural-node"></div><div class="neural-node"></div><div class="neural-node"></div><div class="neural-node"></div><div class="neural-node"></div><div class="neural-line"></div><div class="neural-line"></div><div class="neural-line"></div></div></div>
+            <div class="about-content">
+                <h2>Building Intelligence That Thinks, Learns, and Evolves</h2>
+                <p>ResearchV3 was founded with a singular vision: to create AI systems that don't just follow instructions—they think, adapt, and improve autonomously.</p>
+                <div class="about-features">
+                    <div class="about-feature"><div class="about-feature-icon">🧠</div><span>Cognitive Architecture</span></div>
+                    <div class="about-feature"><div class="about-feature-icon">⚡</div><span>Real-time Processing</span></div>
+                    <div class="about-feature"><div class="about-feature-icon">🔄</div><span>Self-Learning Systems</span></div>
+                    <div class="about-feature"><div class="about-feature-icon">🛡️</div><span>Enterprise Security</span></div>
                 </div>
             </div>
         </div>
+        <div class="timeline">
+            <h3 class="timeline-title">Our Journey</h3>
+            <div class="timeline-track">
+                <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">2021</div><div class="timeline-event">Founded with a vision for agentic AI</div></div>
+                <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">2023</div><div class="timeline-event">First autonomous agent deployed</div></div>
+                <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">2024</div><div class="timeline-event">50+ enterprise clients worldwide</div></div>
+                <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-year">2025</div><div class="timeline-event">ResearchV3 Platform Launch</div></div>
+            </div>
+        </div>
     </section>
-
-
-    <!-- Services Section -->
+    <section class="values">
+        <div class="section-header">
+            <span class="section-tag">Our Values</span>
+            <h2 class="section-title">What <span class="highlight">Drives Us</span></h2>
+        </div>
+        <div class="values-grid">
+            <div class="value-card"><div class="value-icon">🎯</div><h3>Precision First</h3><p>Every algorithm we build is designed for accuracy, reliability, and predictable outcomes.</p></div>
+            <div class="value-card"><div class="value-icon">🔒</div><h3>Security by Design</h3><p>Enterprise-grade security is baked into every layer of our AI architecture.</p></div>
+            <div class="value-card"><div class="value-icon">🌟</div><h3>Innovation Without Limits</h3><p>We push boundaries and build what's next before anyone else imagines it.</p></div>
+        </div>
+    </section>
     <section class="services" id="services">
-        <div class="section-container">
-            <div class="section-header">
-                <span class="section-label">Services</span>
-                <h2 class="section-title">AI Solutions That Drive Results</h2>
-                <p class="section-subtitle">
-                    From custom AI agents to enterprise automation, we build intelligent systems that transform your business.
-                </p>
+        <div class="section-header">
+            <span class="section-tag">Services</span>
+            <h2 class="section-title">AI Solutions for <span class="highlight">Every Need</span></h2>
+            <p class="section-subtitle">From concept to deployment, we build intelligent systems that transform your business.</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card cyan"><div class="service-icon">🤖</div><h3>Autonomous Agents</h3><p>AI agents that autonomously handle complex workflows and make decisions.</p><ul class="service-features"><li>Multi-agent orchestration</li><li>Decision-making frameworks</li><li>Continuous learning</li></ul><a href="#contact" class="service-link">Learn more <span>→</span></a></div>
+            <div class="service-card purple"><div class="service-icon">🧠</div><h3>Cognitive Systems</h3><p>Advanced AI that understands, reasons, and generates human-like responses.</p><ul class="service-features"><li>Natural language understanding</li><li>Context-aware processing</li><li>Multi-modal intelligence</li></ul><a href="#contact" class="service-link">Learn more <span>→</span></a></div>
+            <div class="service-card pink"><div class="service-icon">📊</div><h3>Predictive Analytics</h3><p>ML models that forecast trends, detect anomalies, and provide insights.</p><ul class="service-features"><li>Time-series forecasting</li><li>Anomaly detection</li><li>Real-time predictions</li></ul><a href="#contact" class="service-link">Learn more <span>→</span></a></div>
+            <div class="service-card blue"><div class="service-icon">🔗</div><h3>AI Integration</h3><p>Seamlessly integrate AI into your existing infrastructure.</p><ul class="service-features"><li>API-first architecture</li><li>Cloud & on-premise</li><li>Real-time sync</li></ul><a href="#contact" class="service-link">Learn more <span>→</span></a></div>
+            <div class="service-card green"><div class="service-icon">🔍</div><h3>Computer Vision</h3><p>State-of-the-art image and video analysis for detection tasks.</p><ul class="service-features"><li>Object detection</li><li>Facial recognition</li><li>Quality inspection</li></ul><a href="#contact" class="service-link">Learn more <span>→</span></a></div>
+            <div class="service-card cyan"><div class="service-icon">💬</div><h3>Conversational AI</h3><p>Intelligent chatbots that understand context and deliver personalized experiences.</p><ul class="service-features"><li>Context-aware dialogue</li><li>Sentiment analysis</li><li>Multi-language support</li></ul><a href="#contact" class="service-link">Learn more <span>→</span></a></div>
+        </div>
+    </section>
+    <section class="process">
+        <div class="section-header">
+            <span class="section-tag">How We Work</span>
+            <h2 class="section-title">Our <span class="highlight">Process</span></h2>
+        </div>
+        <div class="process-steps">
+            <div class="process-step"><div class="step-number">01</div><h4 class="step-title">Discovery</h4><p class="step-desc">We dive deep into your business and understand challenges.</p></div>
+            <div class="process-step"><div class="step-number">02</div><h4 class="step-title">Development</h4><p class="step-desc">Our team builds custom AI solutions tailored to your needs.</p></div>
+            <div class="process-step"><div class="step-number">03</div><h4 class="step-title">Deployment</h4><p class="step-desc">We integrate AI into your infrastructure with thorough testing.</p></div>
+            <div class="process-step"><div class="step-number">04</div><h4 class="step-title">Optimization</h4><p class="step-desc">Continuous monitoring and improvement for peak performance.</p></div>
+        </div>
+    </section>
+    <section class="cta-section" id="contact">
+        <div class="cta-content">
+            <h2 class="cta-title">Ready to Build the <span class="gradient">Future?</span></h2>
+            <p class="cta-subtitle">Let's discuss how autonomous AI agents can transform your business.</p>
+            <div class="cta-buttons">
+                <button class="btn-primary">Get Started</button>
+                <button class="btn-secondary">Schedule Demo</button>
             </div>
-
-            <div class="services-grid">
-                <!-- Service Card 1 -->
-                <div class="service-card cyan">
-                    <div class="service-icon-wrapper">
-                        <div class="service-icon-bg"></div>
-                        <div class="service-icon">🧠</div>
-                    </div>
-                    <h3>AI Agent Development</h3>
-                    <p>Custom autonomous agents designed to handle complex workflows, make decisions, and learn from interactions.</p>
-                    <ul class="service-features">
-                        <li><span class="feature-check">✓</span>Multi-agent orchestration</li>
-                        <li><span class="feature-check">✓</span>Context-aware decision making</li>
-                        <li><span class="feature-check">✓</span>Continuous learning pipelines</li>
-                        <li><span class="feature-check">✓</span>Enterprise integration APIs</li>
-                    </ul>
-                    <a href="#contact" class="service-cta">Learn More</a>
-                </div>
-
-
-                <!-- Service Card 2 -->
-                <div class="service-card purple">
-                    <div class="service-icon-wrapper">
-                        <div class="service-icon-bg"></div>
-                        <div class="service-icon">💬</div>
-                    </div>
-                    <h3>Natural Language Processing</h3>
-                    <p>Advanced NLP solutions for understanding, generating, and responding to human language at scale.</p>
-                    <ul class="service-features">
-                        <li><span class="feature-check">✓</span>Custom LLM fine-tuning</li>
-                        <li><span class="feature-check">✓</span>Sentiment analysis engines</li>
-                        <li><span class="feature-check">✓</span>Multi-language support</li>
-                        <li><span class="feature-check">✓</span>Conversational AI chatbots</li>
-                    </ul>
-                    <a href="#contact" class="service-cta">Learn More</a>
-                </div>
-
-                <!-- Service Card 3 -->
-                <div class="service-card pink">
-                    <div class="service-icon-wrapper">
-                        <div class="service-icon-bg"></div>
-                        <div class="service-icon">📊</div>
-                    </div>
-                    <h3>Predictive Analytics</h3>
-                    <p>Machine learning models that forecast trends, predict outcomes, and uncover hidden patterns in your data.</p>
-                    <ul class="service-features">
-                        <li><span class="feature-check">✓</span>Time series forecasting</li>
-                        <li><span class="feature-check">✓</span>Anomaly detection systems</li>
-                        <li><span class="feature-check">✓</span>Customer behavior prediction</li>
-                        <li><span class="feature-check">✓</span>Risk assessment models</li>
-                    </ul>
-                    <a href="#contact" class="service-cta">Learn More</a>
-                </div>
-
-                <!-- Service Card 4 -->
-                <div class="service-card orange">
-                    <div class="service-icon-wrapper">
-                        <div class="service-icon-bg"></div>
-                        <div class="service-icon">🔄</div>
-                    </div>
-                    <h3>Process Automation</h3>
-                    <p>Intelligent automation solutions that streamline operations, reduce costs, and eliminate repetitive tasks.</p>
-                    <ul class="service-features">
-                        <li><span class="feature-check">✓</span>Workflow optimization</li>
-                        <li><span class="feature-check">✓</span>Intelligent document processing</li>
-                        <li><span class="feature-check">✓</span>Robotic process automation</li>
-                        <li><span class="feature-check">✓</span>Custom automation pipelines</li>
-                    </ul>
-                    <a href="#contact" class="service-cta">Learn More</a>
-                </div>
-
-                <!-- Service Card 5 -->
-                <div class="service-card green">
-                    <div class="service-icon-wrapper">
-                        <div class="service-icon-bg"></div>
-                        <div class="service-icon">🔍</div>
-                    </div>
-                    <h3>Computer Vision</h3>
-                    <p>State-of-the-art computer vision systems for image recognition, object detection, and visual analysis.</p>
-                    <ul class="service-features">
-                        <li><span class="feature-check">✓</span>Object detection & tracking</li>
-                        <li><span class="feature-check">✓</span>Facial recognition systems</li>
-                        <li><span class="feature-check">✓</span>Quality control automation</li>
-                        <li><span class="feature-check">✓</span>Medical imaging analysis</li>
-                    </ul>
-                    <a href="#contact" class="service-cta">Learn More</a>
-                </div>
-
-                <!-- Service Card 6 -->
-                <div class="service-card blue">
-                    <div class="service-icon-wrapper">
-                        <div class="service-icon-bg"></div>
-                        <div class="service-icon">🛡️</div>
-                    </div>
-                    <h3>AI Security & Compliance</h3>
-                    <p>Enterprise-grade AI security solutions ensuring your AI systems are protected and compliant.</p>
-                    <ul class="service-features">
-                        <li><span class="feature-check">✓</span>Threat detection systems</li>
-                        <li><span class="feature-check">✓</span>Data privacy protection</li>
-                        <li><span class="feature-check">✓</span>Regulatory compliance automation</li>
-                        <li><span class="feature-check">✓</span>Audit trail & monitoring</li>
-                    </ul>
-                    <a href="#contact" class="service-cta">Learn More</a>
-                </div>
-            </div>
-
-            <!-- Process Section -->
-            <div class="process-section">
-                <div class="section-header">
-                    <span class="section-label">Our Process</span>
-                    <h2 class="section-title">How We Work</h2>
-                </div>
-
-
-                <div class="process-grid">
-                    <div class="process-step">
-                        <div class="process-connector"></div>
-                        <div class="process-number">01</div>
-                        <h4>Discovery</h4>
-                        <p>We analyze your business needs, existing systems, and goals to identify AI opportunities.</p>
-                    </div>
-                    <div class="process-step">
-                        <div class="process-connector"></div>
-                        <div class="process-number">02</div>
-                        <h4>Strategy</h4>
-                        <p>We design a custom AI roadmap with technical architecture and implementation timeline.</p>
-                    </div>
-                    <div class="process-step">
-                        <div class="process-connector"></div>
-                        <div class="process-number">03</div>
-                        <h4>Development</h4>
-                        <p>Our team builds, trains, and deploys your AI solution with continuous iteration.</p>
-                    </div>
-                    <div class="process-step">
-                        <div class="process-connector"></div>
-                        <div class="process-number">04</div>
-                        <h4>Optimization</h4>
-                        <p>We monitor, refine, and improve your AI systems for ongoing peak performance.</p>
+        </div>
+    </section>
+    <section class="technology" id="technology">
+        <div class="section-header">
+            <span class="section-tag">Technology</span>
+            <h2 class="section-title">Powered by <span class="highlight">Cutting-Edge</span> Tech</h2>
+            <p class="section-subtitle">We leverage the latest advancements in AI to deliver unparalleled results.</p>
+        </div>
+        <div class="tech-grid">
+            <div class="tech-item"><span class="tech-icon">🧠</span><div class="tech-name">Neural Networks</div><div class="tech-desc">Deep learning architectures</div></div>
+            <div class="tech-item"><span class="tech-icon">⚡</span><div class="tech-name">TensorFlow</div><div class="tech-desc">Production ML pipelines</div></div>
+            <div class="tech-item"><span class="tech-icon">🐍</span><div class="tech-name">PyTorch</div><div class="tech-desc">Research & development</div></div>
+            <div class="tech-item"><span class="tech-icon">🔮</span><div class="tech-name">LangChain</div><div class="tech-desc">Agent frameworks</div></div>
+            <div class="tech-item"><span class="tech-icon">🌐</span><div class="tech-name">GPT Models</div><div class="tech-desc">Large language models</div></div>
+            <div class="tech-item"><span class="tech-icon">📡</span><div class="tech-name">Vector DB</div><div class="tech-desc">Semantic search</div></div>
+            <div class="tech-item"><span class="tech-icon">☁️</span><div class="tech-name">Cloud Native</div><div class="tech-desc">Scalable infrastructure</div></div>
+            <div class="tech-item"><span class="tech-icon">🔒</span><div class="tech-name">Encryption</div><div class="tech-desc">End-to-end security</div></div>
+        </div>
+    </section>
+    <section class="innovation">
+        <div class="section-header">
+            <span class="section-tag">Innovation</span>
+            <h2 class="section-title">What's <span class="highlight">Next</span></h2>
+        </div>
+        <div class="innovation-grid">
+            <div class="innovation-visual">
+                <div class="innovation-card">
+                    <h3>ResearchV3 Platform</h3>
+                    <p>Our proprietary platform combines multiple AI capabilities into a unified system.</p>
+                    <div class="innovation-stats">
+                        <div class="innovation-stat"><div class="innovation-stat-number">10x</div><div class="innovation-stat-label">Faster Processing</div></div>
+                        <div class="innovation-stat"><div class="innovation-stat-number">99.9%</div><div class="innovation-stat-label">Accuracy</div></div>
+                        <div class="innovation-stat"><div class="innovation-stat-number">50%</div><div class="innovation-stat-label">Cost Reduction</div></div>
                     </div>
                 </div>
             </div>
+            <div class="innovation-content">
+                <h2>Pioneering the Future of Autonomous AI</h2>
+                <p>We're not just following trends—we're setting them. Our R&D team is constantly pushing boundaries.</p>
+                <ul class="innovation-features">
+                    <li><span class="feature-check">✓</span>Self-improving algorithms</li>
+                    <li><span class="feature-check">✓</span>Multi-modal AI</li>
+                    <li><span class="feature-check">✓</span>Federated learning</li>
+                    <li><span class="feature-check">✓</span>Quantum-ready architecture</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+    <section class="case-studies" id="cases">
+        <div class="section-header">
+            <span class="section-tag">Case Studies</span>
+            <h2 class="section-title">Success <span class="highlight">Stories</span></h2>
+            <p class="section-subtitle">Real results from real clients. See how we've transformed businesses with AI.</p>
+        </div>
+        <div class="case-grid">
+            <div class="case-card">
+                <div class="case-visual"><div class="case-visual-icon">🏦</div><div class="case-visual-glow"></div></div>
+                <div class="case-content">
+                    <span class="case-tag">Finance</span>
+                    <h3 class="case-title">Global Bank Fraud Detection</h3>
+                    <p class="case-description">Implemented an autonomous AI agent system that reduced fraudulent transactions by 95%.</p>
+                    <div class="case-metrics">
+                        <div class="case-metric"><div class="case-metric-value">95%</div><div class="case-metric-label">Fraud Reduction</div></div>
+                        <div class="case-metric"><div class="case-metric-value">$2M+</div><div class="case-metric-label">Saved Monthly</div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="case-card">
+                <div class="case-visual"><div class="case-visual-icon">🏥</div><div class="case-visual-glow"></div></div>
+                <div class="case-content">
+                    <span class="case-tag">Healthcare</span>
+                    <h3 class="case-title">Medical Imaging Analysis</h3>
+                    <p class="case-description">Deployed computer vision AI that assists radiologists in detecting anomalies with 99.7% accuracy.</p>
+                    <div class="case-metrics">
+                        <div class="case-metric"><div class="case-metric-value">99.7%</div><div class="case-metric-label">Accuracy</div></div>
+                        <div class="case-metric"><div class="case-metric-value">60%</div><div class="case-metric-label">Faster Diagnosis</div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="case-card">
+                <div class="case-visual"><div class="case-visual-icon">🛒</div><div class="case-visual-glow"></div></div>
+                <div class="case-content">
+                    <span class="case-tag">E-Commerce</span>
+                    <h3 class="case-title">Retail Personalization Engine</h3>
+                    <p class="case-description">Built an AI-powered recommendation system that increased customer engagement by 150%.</p>
+                    <div class="case-metrics">
+                        <div class="case-metric"><div class="case-metric-value">150%</div><div class="case-metric-label">Engagement Up</div></div>
+                        <div class="case-metric"><div class="case-metric-value">40%</div><div class="case-metric-label">More Conversions</div></div>
+                    </div>
+                </div>
+            </div>
+            <div class="case-card">
+                <div class="case-visual"><div class="case-visual-icon">🏭</div><div class="case-visual-glow"></div></div>
+                <div class="case-content">
+                    <span class="case-tag">Manufacturing</span>
+                    <h3 class="case-title">Smart Factory Predictive Maintenance</h3>
+                    <p class="case-description">Implemented IoT sensors with AI analytics to predict equipment failures before they occur.</p>
+                    <div class="case-metrics">
+                        <div class="case-metric"><div class="case-metric-value">70%</div><div class="case-metric-label">Less Downtime</div></div>
+                        <div class="case-metric"><div class="case-metric-value">$5M+</div><div class="case-metric-label">Annual Savings</div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="testimonials">
+        <div class="section-header">
+            <span class="section-tag">Testimonials</span>
+            <h2 class="section-title">What Clients <span class="highlight">Say</span></h2>
+        </div>
+        <div class="testimonial-grid">
+            <div class="testimonial-card">
+                <p class="testimonial-quote">"ResearchV3 transformed our fraud detection system. The AI agents work 24/7 with incredible accuracy."</p>
+                <div class="testimonial-author"><div class="testimonial-avatar">JD</div><div class="testimonial-info"><h4>James Davidson</h4><span>CTO, Global Finance Corp</span></div></div>
+            </div>
+            <div class="testimonial-card">
+                <p class="testimonial-quote">"The medical imaging AI has been a game-changer for our radiologists. It's like having a second expert always available."</p>
+                <div class="testimonial-author"><div class="testimonial-avatar">SK</div><div class="testimonial-info"><h4>Dr. Sarah Kim</h4><span>Director, HealthTech Solutions</span></div></div>
+            </div>
+            <div class="testimonial-card">
+                <p class="testimonial-quote">"Our conversion rates skyrocketed after implementing the personalization engine. The ROI was immediate."</p>
+                <div class="testimonial-author"><div class="testimonial-avatar">MR</div><div class="testimonial-info"><h4>Michael Rodriguez</h4><span>VP of E-Commerce, ShopMax</span></div></div>
+            </div>
+        </div>
+    </section>
+    <section class="stats-section">
+        <div class="stats-grid">
+            <div class="stats-item"><div class="stats-number">50+</div><div class="stats-label">Enterprise Clients</div></div>
+            <div class="stats-item"><div class="stats-number">200+</div><div class="stats-label">AI Agents Deployed</div></div>
+            <div class="stats-item"><div class="stats-number">99.9%</div><div class="stats-label">Uptime Guaranteed</div></div>
+            <div class="stats-item"><div class="stats-number">24/7</div><div class="stats-label">Active Monitoring</div></div>
+        </div>
+    </section>
 
-            <!-- CTA Banner -->
-            <div class="cta-banner">
-                <h3>Ready to Transform Your Business with AI?</h3>
-                <p>Let's discuss how autonomous AI agents can revolutionize your operations.</p>
-                <button class="btn-primary">Schedule a Consultation</button>
+    <!-- CONTACT SECTION -->
+    <section class="contact" id="contact">
+        <div class="section-header">
+            <span class="section-tag">Contact Us</span>
+            <h2 class="section-title">Let's <span class="highlight">Connect</span></h2>
+            <p class="section-subtitle">Ready to transform your business with AI? Get in touch with our team today.</p>
+        </div>
+        <div class="contact-grid">
+            <div class="contact-info">
+                <h2>Ready to Build the Future?</h2>
+                <p>Whether you're looking to implement AI solutions or just want to explore possibilities, we're here to help. Reach out and let's discuss how autonomous AI can transform your business.</p>
+                <ul class="contact-details">
+                    <li class="contact-detail">
+                        <div class="contact-icon">📧</div>
+                        <div class="contact-text">
+                            <h4>Email</h4>
+                            <span>hello@researchv3.com</span>
+                        </div>
+                    </li>
+                    <li class="contact-detail">
+                        <div class="contact-icon">📍</div>
+                        <div class="contact-text">
+                            <h4>Location</h4>
+                            <span>San Francisco, CA</span>
+                        </div>
+                    </li>
+                    <li class="contact-detail">
+                        <div class="contact-icon">📱</div>
+                        <div class="contact-text">
+                            <h4>Phone</h4>
+                            <span>+1 (555) 123-4567</span>
+                        </div>
+                    </li>
+                </ul>
+                <div class="social-links">
+                    <a href="#" class="social-link">𝕏</a>
+                    <a href="#" class="social-link">in</a>
+                    <a href="#" class="social-link">▶</a>
+                    <a href="#" class="social-link">◆</a>
+                </div>
+            </div>
+            <div class="contact-form">
+                <form>
+                    <div class="form-group">
+                        <label>Name</label>
+                        <input type="text" placeholder="Your name">
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" placeholder="your@email.com">
+                    </div>
+                    <div class="form-group">
+                        <label>Message</label>
+                        <textarea placeholder="Tell us about your project..."></textarea>
+                    </div>
+                    <button type="submit" class="form-submit">Send Message</button>
+                </form>
             </div>
         </div>
     </section>
 
+    <!-- FOOTER -->
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <div class="logo">Research<span>V3</span></div>
+                <p>Building the future of autonomous AI. We're pioneering agentic systems that think, learn, and evolve to transform enterprises worldwide.</p>
+            </div>
+            <div class="footer-column">
+                <h4>Company</h4>
+                <ul>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#cases">Case Studies</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Technology</h4>
+                <ul>
+                    <li><a href="#technology">AI & ML</a></li>
+                    <li><a href="#technology">Cloud</a></li>
+                    <li><a href="#technology">Security</a></li>
+                    <li><a href="#technology">Integration</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Resources</h4>
+                <ul>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Documentation</a></li>
+                    <li><a href="#">API Reference</a></li>
+                    <li><a href="#">Support</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 ResearchV3. All rights reserved.</p>
+            <div class="footer-legal">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+            </div>
+        </div>
+    </footer>
 
     <script>
-        /* ============================================
-           NEURAL PARTICLE SYSTEM
-           Mouse-following particle network
-           ============================================ */
-        
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
-        
         let particles = [];
         let mouse = { x: null, y: null };
-        let animationId;
-        
-        const config = {
-            particleCount: 80,
-            connectionDistance: 150,
-            mouseDistance: 200,
-            particleSize: 2,
-            particleColor: '#00f0ff',
-            connectionColor: 'rgba(0, 240, 255, 0.15)',
-            mouseConnectionColor: 'rgba(139, 92, 246, 0.4)'
-        };
-        
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        
+        const config = { particleCount: 80, connectionDistance: 150, mouseDistance: 200, particleSize: 2, particleColor: '#00f0ff', connectionColor: 'rgba(0, 240, 255, 0.15)', mouseConnectionColor: 'rgba(139, 92, 246, 0.4)' };
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
-                this.size = Math.random() * config.particleSize + 1;
-                this.color = config.particleColor;
-            }
-            
+            constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.vx = (Math.random() - 0.5) * 0.5; this.vy = (Math.random() - 0.5) * 0.5; this.size = Math.random() * config.particleSize + 1; this.color = config.particleColor; }
             update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                
+                this.x += this.vx; this.y += this.vy;
                 if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
                 if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-                
-                if (mouse.x !== null) {
-                    const dx = mouse.x - this.x;
-                    const dy = mouse.y - this.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    
-                    if (distance < config.mouseDistance) {
-                        const force = (config.mouseDistance - distance) / config.mouseDistance;
-                        this.vx += (dx / distance) * force * 0.02;
-                        this.vy += (dy / distance) * force * 0.02;
-                    }
-                }
+                if (mouse.x !== null) { const dx = mouse.x - this.x; const dy = mouse.y - this.y; const distance = Math.sqrt(dx * dx + dy * dy); if (distance < config.mouseDistance) { const force = (config.mouseDistance - distance) / config.mouseDistance; this.vx += (dx / distance) * force * 0.02; this.vy += (dy / distance) * force * 0.02; } }
             }
-            
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = this.color;
-                ctx.fill();
-            }
+            draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fillStyle = this.color; ctx.fill(); }
         }
-        
-        function initParticles() {
-            particles = [];
-            for (let i = 0; i < config.particleCount; i++) {
-                particles.push(new Particle());
-            }
-        }
-        
-        function drawConnections() {
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    
-                    if (distance < config.connectionDistance) {
-                        const opacity = (1 - distance / config.connectionDistance) * 0.3;
-                        ctx.beginPath();
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.strokeStyle = config.connectionColor.replace('0.15', opacity.toString());
-                        ctx.lineWidth = 1;
-                        ctx.stroke();
-                    }
-                }
-            }
-        }
-        
-        function drawMouseConnections() {
-            if (mouse.x === null) return;
-            
-            for (let i = 0; i < particles.length; i++) {
-                const dx = mouse.x - particles[i].x;
-                const dy = mouse.y - particles[i].y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                
-                if (distance < config.mouseDistance) {
-                    const opacity = (1 - distance / config.mouseDistance) * 0.6;
-                    ctx.beginPath();
-                    ctx.moveTo(mouse.x, mouse.y);
-                    ctx.lineTo(particles[i].x, particles[i].y);
-                    ctx.strokeStyle = config.mouseConnectionColor.replace('0.4', opacity.toString());
-                    ctx.lineWidth = 1.5;
-                    ctx.stroke();
-                }
-            }
-        }
-        
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            particles.forEach(particle => {
-                particle.update();
-                particle.draw();
-            });
-            
-            drawConnections();
-            drawMouseConnections();
-            
-            animationId = requestAnimationFrame(animate);
-        }
-        
-        window.addEventListener('mousemove', (e) => {
-            mouse.x = e.clientX;
-            mouse.y = e.clientY;
-        });
-        
-        window.addEventListener('mouseleave', () => {
-            mouse.x = null;
-            mouse.y = null;
-        });
-        
-        window.addEventListener('resize', () => {
-            resizeCanvas();
-            initParticles();
-        });
-        
-        resizeCanvas();
-        initParticles();
-        animate();
-        
-        /* ============================================
-           NAVBAR SCROLL EFFECT
-           ============================================ */
-        
-        const navbar = document.getElementById('navbar');
-        
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
-        
-        /* ============================================
-           SCROLL ANIMATIONS
-           Intersection Observer
-           ============================================ */
-        
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-        
-        document.querySelectorAll('.stat-item, .mission-card, .team-card, .value-card, .service-card, .process-step').forEach((item, index) => {
-            item.style.opacity = '0';
-            item.style.transform = 'translateY(20px)';
-            item.style.transition = `all 0.6s ease ${index * 0.1}s`;
-            observer.observe(item);
-        });
-        
-        const style = document.createElement('style');
-        style.textContent = `
-            .visible {
-                opacity: 1 !important;
-                transform: translateY(0) !important;
-            }
-        `;
-        document.head.appendChild(style);
-        
-        /* ============================================
-           SMOOTH SCROLL FOR NAV LINKS
-           ============================================ */
-        
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
+        function initParticles() { particles = []; for (let i = 0; i < config.particleCount; i++) { particles.push(new Particle()); } }
+        function drawConnections() { for (let i = 0; i < particles.length; i++) { for (let j = i + 1; j < particles.length; j++) { const dx = particles[i].x - particles[j].x; const dy = particles[i].y - particles[j].y; const distance = Math.sqrt(dx * dx + dy * dy); if (distance < config.connectionDistance) { const opacity = (1 - distance / config.connectionDistance) * 0.3; ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); ctx.strokeStyle = config.connectionColor.replace('0.15', opacity.toString()); ctx.lineWidth = 1; ctx.stroke(); } } } }
+        function drawMouseConnections() { if (mouse.x === null) return; for (let i = 0; i < particles.length; i++) { const dx = mouse.x - particles[i].x; const dy = mouse.y - particles[i].y; const distance = Math.sqrt(dx * dx + dy * dy); if (distance < config.mouseDistance) { const opacity = (1 - distance / config.mouseDistance) * 0.6; ctx.beginPath(); ctx.moveTo(mouse.x, mouse.y); ctx.lineTo(particles[i].x, particles[i].y); ctx.strokeStyle = config.mouseConnectionColor.replace('0.4', opacity.toString()); ctx.lineWidth = 1.5; ctx.stroke(); } } }
+        function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(particle => { particle.update(); particle.draw(); }); drawConnections(); drawMouseConnections(); requestAnimationFrame(animate); }
+        window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
+        window.addEventListener('mouseleave', () => { mouse.x = null; mouse.y = null; });
+        window.addEventListener('resize', () => { resizeCanvas(); initParticles(); });
+        resizeCanvas(); initParticles(); animate();
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+        const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); } }); }, observerOptions);
+        document.querySelectorAll('.stat-item, .value-card, .timeline-item, .service-card, .process-step, .tech-item, .stack-item, .case-card, .testimonial-card, .stats-item, .contact-detail, .footer-column').forEach((item, index) => { item.style.opacity = '0'; item.style.transform = 'translateY(20px)'; item.style.transition = `all 0.6s ease ${index * 0.05}s`; observer.observe(item); });
+        const style = document.createElement('style'); style.textContent = `.visible { opacity: 1 !important; transform: translateY(0) !important; }`; document.head.appendChild(style);
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => { anchor.addEventListener('click', function(e) { e.preventDefault(); const target = document.querySelector(this.getAttribute('href')); if (target) { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); } }); });
     </script>
 </body>
 </html>
