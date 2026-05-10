@@ -8,1281 +8,254 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* ============================================
-           RESEARCHV3 PORTFOLIO - ITERATIONS 1-4
-           Hero + About + Services + Technology + Case Studies
-           ============================================ */
-
-        :root {
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #0d0d14;
-            --bg-tertiary: #12121a;
-            --accent-cyan: #00f0ff;
-            --accent-purple: #8b5cf6;
-            --accent-pink: #ff0080;
-            --accent-blue: #3b82f6;
-            --accent-green: #10b981;
-            --accent-orange: #f97316;
-            --accent-yellow: #fbbf24;
-            --text-primary: #ffffff;
-            --text-secondary: #a1a1aa;
-            --text-muted: #71717a;
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --glow-cyan: 0 0 30px rgba(0, 240, 255, 0.5);
-            --glow-purple: 0 0 30px rgba(139, 92, 246, 0.5);
-            --glow-pink: 0 0 30px rgba(255, 0, 128, 0.5);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-
-        body {
-            font-family: 'Outfit', sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-
-        /* NOISE OVERLAY */
-        .noise-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 9999;
-            opacity: 0.03;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-        }
-
-        /* PARTICLE CANVAS */
-        #particle-canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-            pointer-events: none;
-        }
-
-
-        /* GRADIENT MESH */
-        .gradient-mesh {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 0;
-            overflow: hidden;
-        }
-
-        .gradient-mesh::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: 
-                radial-gradient(ellipse at 20% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 80%, rgba(0, 240, 255, 0.1) 0%, transparent 50%),
-                radial-gradient(ellipse at 60% 30%, rgba(255, 0, 128, 0.08) 0%, transparent 40%);
-            animation: meshMove 20s ease-in-out infinite;
-        }
-
-        @keyframes meshMove {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            25% { transform: translate(2%, 2%) rotate(1deg); }
-            50% { transform: translate(-1%, 3%) rotate(-1deg); }
-            75% { transform: translate(3%, -2%) rotate(2deg); }
-        }
-
-        .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.3;
-            animation: float 15s ease-in-out infinite;
-        }
-
+        :root { --bg-primary: #0a0a0f; --bg-secondary: #0d0d14; --bg-tertiary: #12121a; --accent-cyan: #00f0ff; --accent-purple: #8b5cf6; --accent-pink: #ff0080; --accent-blue: #3b82f6; --accent-green: #10b981; --accent-orange: #f97316; --text-primary: #ffffff; --text-secondary: #a1a1aa; --text-muted: #71717a; --glass-bg: rgba(255, 255, 255, 0.03); --glass-border: rgba(255, 255, 255, 0.08); --glow-cyan: 0 0 30px rgba(0, 240, 255, 0.5); --glow-purple: 0 0 30px rgba(139, 92, 246, 0.5); }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Outfit', sans-serif; background: var(--bg-primary); color: var(--text-primary); overflow-x: hidden; line-height: 1.6; }
+        .noise-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; opacity: 0.03; background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E"); }
+        #particle-canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+        .gradient-mesh { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; overflow: hidden; }
+        .gradient-mesh::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(ellipse at 20% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%), radial-gradient(ellipse at 80% 80%, rgba(0, 240, 255, 0.1) 0%, transparent 50%), radial-gradient(ellipse at 60% 30%, rgba(255, 0, 128, 0.08) 0%, transparent 40%); animation: meshMove 20s ease-in-out infinite; }
+        @keyframes meshMove { 0%, 100% { transform: translate(0, 0) rotate(0deg); } 25% { transform: translate(2%, 2%) rotate(1deg); } 50% { transform: translate(-1%, 3%) rotate(-1deg); } 75% { transform: translate(3%, -2%) rotate(2deg); } }
+        .orb { position: absolute; border-radius: 50%; filter: blur(80px); opacity: 0.3; animation: float 15s ease-in-out infinite; }
         .orb-1 { width: 400px; height: 400px; background: var(--accent-purple); top: 10%; left: 10%; animation-delay: 0s; }
         .orb-2 { width: 300px; height: 300px; background: var(--accent-cyan); top: 60%; right: 10%; animation-delay: -5s; }
         .orb-3 { width: 250px; height: 250px; background: var(--accent-pink); bottom: 20%; left: 30%; animation-delay: -10s; }
-
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(30px, -30px) scale(1.1); }
-            66% { transform: translate(-20px, 20px) scale(0.9); }
-        }
-
-        /* NAVIGATION */
-        nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            padding: 1.5rem 4rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            background: linear-gradient(to bottom, rgba(10, 10, 15, 0.9), transparent);
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-
-        nav.scrolled {
-            padding: 1rem 4rem;
-            background: rgba(10, 10, 15, 0.95);
-            border-bottom: 1px solid var(--glass-border);
-        }
-
-        .logo {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 800;
-            letter-spacing: -0.02em;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            text-transform: uppercase;
-        }
-
-        .logo span {
-            background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 3rem;
-            list-style: none;
-        }
-
-        .nav-links a {
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
-            transition: width 0.3s ease;
-        }
-
+        @keyframes float { 0%, 100% { transform: translate(0, 0) scale(1); } 33% { transform: translate(30px, -30px) scale(1.1); } 66% { transform: translate(-20px, 20px) scale(0.9); } }
+        nav { position: fixed; top: 0; left: 0; width: 100%; padding: 1.5rem 4rem; display: flex; justify-content: space-between; align-items: center; z-index: 1000; background: linear-gradient(to bottom, rgba(10, 10, 15, 0.9), transparent); backdrop-filter: blur(10px); transition: all 0.3s ease; }
+        nav.scrolled { padding: 1rem 4rem; background: rgba(10, 10, 15, 0.95); border-bottom: 1px solid var(--glass-border); }
+        .logo { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; letter-spacing: -0.02em; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; text-transform: uppercase; }
+        .logo span { background: linear-gradient(135deg, var(--accent-pink), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .nav-links { display: flex; gap: 3rem; list-style: none; }
+        .nav-links a { color: var(--text-secondary); text-decoration: none; font-size: 0.95rem; font-weight: 500; transition: all 0.3s ease; position: relative; }
+        .nav-links a::after { content: ''; position: absolute; bottom: -4px; left: 0; width: 0; height: 2px; background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple)); transition: width 0.3s ease; }
         .nav-links a:hover { color: var(--text-primary); }
         .nav-links a:hover::after { width: 100%; }
-
-        .nav-cta {
-            padding: 0.75rem 1.5rem;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            border: none;
-            border-radius: 8px;
-            color: var(--bg-primary);
-            font-weight: 600;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .nav-cta::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            transition: left 0.5s ease;
-        }
-
+        .nav-cta { padding: 0.75rem 1.5rem; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); border: none; border-radius: 8px; color: var(--bg-primary); font-weight: 600; font-size: 0.9rem; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .nav-cta::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent); transition: left 0.5s ease; }
         .nav-cta:hover::before { left: 100%; }
         .nav-cta:hover { transform: translateY(-2px); box-shadow: var(--glow-cyan); }
-
-        /* HERO SECTION */
-        .hero {
-            position: relative;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 8rem 4rem 4rem;
-            z-index: 2;
-        }
-
-        .hero-content {
-            max-width: 1200px;
-            text-align: center;
-        }
-
-        .hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1rem;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 50px;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            backdrop-filter: blur(10px);
-            animation: fadeInUp 0.8s ease forwards;
-            opacity: 0;
-        }
-
-        .hero-badge .dot {
-            width: 8px;
-            height: 8px;
-            background: var(--accent-green);
-            border-radius: 50%;
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        @keyframes pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.2); }
-        }
-
-        .hero-title {
-            font-family: 'Syne', sans-serif;
-            font-size: clamp(3rem, 8vw, 7rem);
-            font-weight: 800;
-            line-height: 1.1;
-            letter-spacing: -0.03em;
-            margin-bottom: 1.5rem;
-            animation: fadeInUp 0.8s ease 0.1s forwards;
-            opacity: 0;
-        }
-
+        .hero { position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 8rem 4rem 4rem; z-index: 2; }
+        .hero-content { max-width: 1200px; text-align: center; }
+        .hero-badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.5rem 1rem; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 50px; font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 2rem; backdrop-filter: blur(10px); animation: fadeInUp 0.8s ease forwards; opacity: 0; }
+        .hero-badge .dot { width: 8px; height: 8px; background: var(--accent-green); border-radius: 50%; animation: pulse 2s ease-in-out infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.5; transform: scale(1.2); } }
+        .hero-title { font-family: 'Syne', sans-serif; font-size: clamp(3rem, 8vw, 7rem); font-weight: 800; line-height: 1.1; letter-spacing: -0.03em; margin-bottom: 1.5rem; animation: fadeInUp 0.8s ease 0.1s forwards; opacity: 0; }
         .hero-title .line { display: block; }
-
-
-        .hero-title .gradient-text {
-            background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 50%, var(--accent-pink) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            background-size: 200% 200%;
-            animation: gradientShift 5s ease infinite;
-        }
-
-        @keyframes gradientShift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        .hero-subtitle {
-            font-size: clamp(1.1rem, 2vw, 1.4rem);
-            color: var(--text-secondary);
-            max-width: 700px;
-            margin: 0 auto 3rem;
-            line-height: 1.7;
-            animation: fadeInUp 0.8s ease 0.2s forwards;
-            opacity: 0;
-        }
-
-        .hero-cta-group {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            animation: fadeInUp 0.8s ease 0.3s forwards;
-            opacity: 0;
-        }
-
-        .btn-primary {
-            padding: 1rem 2.5rem;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            border: none;
-            border-radius: 12px;
-            color: var(--bg-primary);
-            font-weight: 700;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-primary::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 20px 40px rgba(0, 240, 255, 0.3);
-        }
-
+        .hero-title .gradient-text { background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 50%, var(--accent-pink) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; background-size: 200% 200%; animation: gradientShift 5s ease infinite; }
+        @keyframes gradientShift { 0%, 100% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } }
+        .hero-subtitle { font-size: clamp(1.1rem, 2vw, 1.4rem); color: var(--text-secondary); max-width: 700px; margin: 0 auto 3rem; line-height: 1.7; animation: fadeInUp 0.8s ease 0.2s forwards; opacity: 0; }
+        .hero-cta-group { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; animation: fadeInUp 0.8s ease 0.3s forwards; opacity: 0; }
+        .btn-primary { padding: 1rem 2.5rem; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); border: none; border-radius: 12px; color: var(--bg-primary); font-weight: 700; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .btn-primary::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink)); opacity: 0; transition: opacity 0.3s ease; }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 20px 40px rgba(0, 240, 255, 0.3); }
         .btn-primary:hover::before { opacity: 1; }
-
-        .btn-secondary {
-            padding: 1rem 2.5rem;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            color: var(--text-primary);
-            font-weight: 600;
-            font-size: 1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-        }
-
-        .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: var(--accent-cyan);
-            transform: translateY(-3px);
-        }
-
-        /* HERO VISUAL */
-        .hero-visual {
-            position: absolute;
-            top: 50%;
-            right: 5%;
-            transform: translateY(-50%);
-            width: 400px;
-            height: 400px;
-            animation: fadeIn 1s ease 0.5s forwards;
-            opacity: 0;
-        }
-
-        .brain-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-
-        .brain-ring {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            border: 2px solid;
-            border-radius: 50%;
-            animation: rotate 20s linear infinite;
-        }
-
+        .btn-secondary { padding: 1rem 2.5rem; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 12px; color: var(--text-primary); font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.3s ease; backdrop-filter: blur(10px); }
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.08); border-color: var(--accent-cyan); transform: translateY(-3px); }
+        .hero-visual { position: absolute; top: 50%; right: 5%; transform: translateY(-50%); width: 400px; height: 400px; animation: fadeIn 1s ease 0.5s forwards; opacity: 0; }
+        .brain-container { position: relative; width: 100%; height: 100%; }
+        .brain-ring { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); border: 2px solid; border-radius: 50%; animation: rotate 20s linear infinite; }
         .brain-ring:nth-child(1) { width: 100%; height: 100%; border-color: rgba(0, 240, 255, 0.3); animation-duration: 30s; }
         .brain-ring:nth-child(2) { width: 80%; height: 80%; border-color: rgba(139, 92, 246, 0.3); animation-direction: reverse; animation-duration: 25s; }
         .brain-ring:nth-child(3) { width: 60%; height: 60%; border-color: rgba(255, 0, 128, 0.3); animation-duration: 20s; }
-
-        .brain-core {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80px;
-            height: 80px;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            border-radius: 50%;
-            filter: blur(20px);
-            animation: corePulse 3s ease-in-out infinite;
-        }
-
+        .brain-core { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80px; height: 80px; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); border-radius: 50%; filter: blur(20px); animation: corePulse 3s ease-in-out infinite; }
         @keyframes rotate { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
         @keyframes corePulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; } 50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; } }
         @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        /* SCROLL INDICATOR */
-        .scroll-indicator {
-            position: absolute;
-            bottom: 3rem;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-            animation: fadeIn 1s ease 0.8s forwards, bounce 2s ease-in-out 1s infinite;
-            opacity: 0;
-        }
-
-        .scroll-indicator span {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-        }
-
-        .scroll-arrow {
-            width: 24px;
-            height: 24px;
-            border-right: 2px solid var(--accent-cyan);
-            border-bottom: 2px solid var(--accent-cyan);
-            transform: rotate(45deg);
-            animation: arrowBounce 2s ease-in-out infinite;
-        }
-
+        .scroll-indicator { position: absolute; bottom: 3rem; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 0.5rem; animation: fadeIn 1s ease 0.8s forwards, bounce 2s ease-in-out 1s infinite; opacity: 0; }
+        .scroll-indicator span { font-size: 0.75rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.2em; }
+        .scroll-arrow { width: 24px; height: 24px; border-right: 2px solid var(--accent-cyan); border-bottom: 2px solid var(--accent-cyan); transform: rotate(45deg); animation: arrowBounce 2s ease-in-out infinite; }
         @keyframes bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(10px); } }
         @keyframes arrowBounce { 0%, 100% { transform: rotate(45deg) translateY(0); opacity: 1; } 50% { transform: rotate(45deg) translateY(5px); opacity: 0.5; } }
-
-        /* STATS BAR */
-        .stats-bar {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            padding: 2rem 4rem;
-            display: flex;
-            justify-content: space-between;
-            background: linear-gradient(to top, rgba(10, 10, 15, 0.95), transparent);
-            backdrop-filter: blur(10px);
-            animation: fadeInUp 0.8s ease 0.4s forwards;
-            opacity: 0;
-        }
-
+        .stats-bar { position: absolute; bottom: 0; left: 0; width: 100%; padding: 2rem 4rem; display: flex; justify-content: space-between; background: linear-gradient(to top, rgba(10, 10, 15, 0.95), transparent); backdrop-filter: blur(10px); animation: fadeInUp 0.8s ease 0.4s forwards; opacity: 0; }
         .stat-item { text-align: center; }
-
-        .stat-number {
-            font-family: 'Syne', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .stat-label {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        /* SECTION STYLES */
-        .about, .services, .technology, .case-studies, .contact {
-            position: relative;
-            padding: 10rem 4rem;
-            z-index: 2;
-        }
-
+        .stat-number { font-family: 'Syne', sans-serif; font-size: 2.5rem; font-weight: 800; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .stat-label { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.1em; }
+        .section-container { max-width: 1400px; margin: 0 auto; }
+        .section-header { text-align: center; margin-bottom: 6rem; }
+        .section-label { display: inline-block; font-size: 0.85rem; font-weight: 600; color: var(--accent-cyan); text-transform: uppercase; letter-spacing: 0.2em; margin-bottom: 1rem; position: relative; }
+        .section-label::before, .section-label::after { content: ''; position: absolute; top: 50%; width: 40px; height: 1px; background: linear-gradient(90deg, transparent, var(--accent-cyan)); }
+        .section-label::before { right: calc(100% + 15px); }
+        .section-label::after { left: calc(100% + 15px); background: linear-gradient(90deg, var(--accent-cyan), transparent); }
+        .section-title { font-family: 'Syne', sans-serif; font-size: clamp(2.5rem, 5vw, 4rem); font-weight: 800; line-height: 1.2; margin-bottom: 1.5rem; }
+        .section-subtitle { font-size: 1.2rem; color: var(--text-secondary); max-width: 600px; margin: 0 auto; }
+        .about, .services, .technology, .case-studies, .contact { position: relative; padding: 10rem 4rem; z-index: 2; }
         .about { background: linear-gradient(to bottom, transparent, rgba(13, 13, 20, 0.5), var(--bg-secondary)); }
         .services { background: var(--bg-secondary); }
         .technology { background: var(--bg-tertiary); }
         .case-studies { background: var(--bg-secondary); }
-
-        .section-container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 6rem;
-        }
-
-        .section-label {
-            display: inline-block;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--accent-cyan);
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            margin-bottom: 1rem;
-            position: relative;
-        }
-
-        .section-label::before, .section-label::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            width: 40px;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent-cyan));
-        }
-
-        .section-label::before { right: calc(100% + 15px); }
-        .section-label::after { left: calc(100% + 15px); background: linear-gradient(90deg, var(--accent-cyan), transparent); }
-
-        .section-title {
-            font-family: 'Syne', sans-serif;
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 800;
-            line-height: 1.2;
-            margin-bottom: 1.5rem;
-        }
-
-        .section-subtitle {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* ABOUT GRID */
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .about-text {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            line-height: 1.8;
-            margin-bottom: 2rem;
-        }
-
+        .contact { background: var(--bg-tertiary); }
+        .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+        .about-text { font-size: 1.1rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 2rem; }
         .about-text p { margin-bottom: 1.5rem; }
-
-        .about-highlight {
-            background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(139, 92, 246, 0.1));
-            border-left: 3px solid var(--accent-cyan);
-            padding: 1.5rem;
-            border-radius: 0 12px 12px 0;
-            margin: 2rem 0;
-        }
-
-        .about-highlight p {
-            font-size: 1.15rem;
-            color: var(--text-primary);
-            font-weight: 500;
-            margin: 0;
-        }
-
-        .mission-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 1.5rem;
-            margin-top: 3rem;
-        }
-
-        .mission-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 1.5rem;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-        }
-
-        .mission-card:hover {
-            transform: translateY(-5px);
-            border-color: var(--accent-purple);
-            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.2);
-        }
-
-        .mission-icon {
-            width: 48px;
-            height: 48px;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .mission-card h4 {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
+        .about-text strong { color: var(--text-primary); }
+        .about-highlight { background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(139, 92, 246, 0.1)); border-left: 3px solid var(--accent-cyan); padding: 1.5rem; border-radius: 0 12px 12px 0; margin: 2rem 0; }
+        .about-highlight p { font-size: 1.15rem; color: var(--text-primary); font-weight: 500; margin: 0; }
+        .mission-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; margin-top: 3rem; }
+        .mission-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 16px; padding: 1.5rem; backdrop-filter: blur(10px); transition: all 0.3s ease; }
+        .mission-card:hover { transform: translateY(-5px); border-color: var(--accent-purple); box-shadow: 0 20px 40px rgba(139, 92, 246, 0.2); }
+        .mission-icon { width: 48px; height: 48px; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; margin-bottom: 1rem; }
+        .mission-card h4 { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.5rem; }
         .mission-card p { font-size: 0.9rem; color: var(--text-muted); margin: 0; }
-
-        /* ABOUT VISUAL */
-        .about-visual {
-            position: relative;
-            height: 500px;
-        }
-
-        .visual-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-
-        .neural-network {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 350px;
-            height: 350px;
-        }
-
-        .node {
-            position: absolute;
-            width: 12px;
-            height: 12px;
-            background: var(--accent-cyan);
-            border-radius: 50%;
-            filter: blur(2px);
-            animation: nodeGlow 2s ease-in-out infinite;
-        }
-
+        .about-visual { position: relative; height: 500px; }
+        .visual-container { position: relative; width: 100%; height: 100%; }
+        .neural-network { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 350px; height: 350px; }
+        .node { position: absolute; width: 12px; height: 12px; background: var(--accent-cyan); border-radius: 50%; filter: blur(2px); animation: nodeGlow 2s ease-in-out infinite; }
         .node.purple { background: var(--accent-purple); animation-delay: -0.5s; }
         .node.pink { background: var(--accent-pink); animation-delay: -1s; }
-
-        @keyframes nodeGlow {
-            0%, 100% { transform: scale(1); opacity: 0.8; box-shadow: 0 0 10px currentColor; }
-            50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 20px currentColor; }
-        }
-
-        .ai-card {
-            position: absolute;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            padding: 1rem;
-            backdrop-filter: blur(10px);
-            animation: floatCard 6s ease-in-out infinite;
-        }
-
+        @keyframes nodeGlow { 0%, 100% { transform: scale(1); opacity: 0.8; box-shadow: 0 0 10px currentColor; } 50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 20px currentColor; } }
+        .ai-card { position: absolute; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 12px; padding: 1rem; backdrop-filter: blur(10px); animation: floatCard 6s ease-in-out infinite; }
         .ai-card-1 { top: 10%; left: 10%; animation-delay: 0s; }
         .ai-card-2 { top: 20%; right: 5%; animation-delay: -2s; }
         .ai-card-3 { bottom: 20%; left: 20%; animation-delay: -4s; }
-
-        @keyframes floatCard {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-15px) rotate(2deg); }
-        }
-
+        @keyframes floatCard { 0%, 100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-15px) rotate(2deg); } }
         .ai-card-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
         .ai-card-text { font-size: 0.8rem; color: var(--text-secondary); font-weight: 500; }
-
-        /* TEAM & VALUES */
         .team-section { margin-top: 8rem; }
-
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            margin-top: 4rem;
-        }
-
-
-        .team-card {
-            text-align: center;
-            transition: all 0.3s ease;
-        }
-
+        .team-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-top: 4rem; }
+        .team-card { text-align: center; transition: all 0.3s ease; }
         .team-card:hover { transform: translateY(-10px); }
-
-        .team-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            margin: 0 auto 1.5rem;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            padding: 3px;
-        }
-
-
-        .team-avatar-inner {
-            width: 100%;
-            height: 100%;
-            border-radius: 50%;
-            background: var(--bg-secondary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-        }
-
+        .team-avatar { width: 120px; height: 120px; border-radius: 50%; margin: 0 auto 1.5rem; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); padding: 3px; }
+        .team-avatar-inner { width: 100%; height: 100%; border-radius: 50%; background: var(--bg-secondary); display: flex; align-items: center; justify-content: center; font-size: 2.5rem; }
         .team-name { font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 700; margin-bottom: 0.25rem; }
         .team-role { font-size: 0.9rem; color: var(--accent-cyan); margin-bottom: 0.5rem; }
         .team-bio { font-size: 0.85rem; color: var(--text-muted); }
-
-        .values-section {
-            margin-top: 8rem;
-            padding-top: 6rem;
-            border-top: 1px solid var(--glass-border);
-        }
-
-        .values-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            margin-top: 4rem;
-        }
-
-        .value-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            padding: 2.5rem;
-            text-align: center;
-            transition: all 0.4s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .value-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple), var(--accent-pink));
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.4s ease;
-        }
-
+        .values-section { margin-top: 8rem; padding-top: 6rem; border-top: 1px solid var(--glass-border); }
+        .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 4rem; }
+        .value-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 20px; padding: 2.5rem; text-align: center; transition: all 0.4s ease; position: relative; overflow: hidden; }
+        .value-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 3px; background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple), var(--accent-pink)); transform: scaleX(0); transform-origin: left; transition: transform 0.4s ease; }
         .value-card:hover::before { transform: scaleX(1); }
         .value-card:hover { transform: translateY(-10px); border-color: transparent; background: rgba(255, 255, 255, 0.05); }
-
-        .value-icon {
-            width: 64px;
-            height: 64px;
-            background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(139, 92, 246, 0.2));
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            margin: 0 auto 1.5rem;
-        }
-
+        .value-icon { width: 64px; height: 64px; background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(139, 92, 246, 0.2)); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 2rem; margin: 0 auto 1.5rem; }
         .value-card h3 { font-family: 'Syne', sans-serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 1rem; }
         .value-card p { font-size: 0.95rem; color: var(--text-secondary); line-height: 1.7; }
-
-        /* SERVICES */
-        .services-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            margin-top: 4rem;
-        }
-
-        .service-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 2.5rem;
-            backdrop-filter: blur(10px);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .service-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(0, 240, 255, 0.05), rgba(139, 92, 246, 0.05));
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
+        .services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 4rem; }
+        .service-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 24px; padding: 2.5rem; backdrop-filter: blur(10px); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden; }
+        .service-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(0, 240, 255, 0.05), rgba(139, 92, 246, 0.05)); opacity: 0; transition: opacity 0.4s ease; }
         .service-card:hover::before { opacity: 1; }
         .service-card:hover { transform: translateY(-15px) scale(1.02); border-color: var(--accent-cyan); box-shadow: 0 30px 60px rgba(0, 240, 255, 0.15), 0 0 0 1px var(--accent-cyan); }
-
-        .service-icon-wrapper {
-            position: relative;
-            width: 80px;
-            height: 80px;
-            margin-bottom: 1.5rem;
-        }
-
-        .service-icon-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            border-radius: 20px;
-            animation: iconPulse 3s ease-in-out infinite;
-        }
-
+        .service-icon-wrapper { position: relative; width: 80px; height: 80px; margin-bottom: 1.5rem; }
+        .service-icon-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); border-radius: 20px; animation: iconPulse 3s ease-in-out infinite; }
         @keyframes iconPulse { 0%, 100% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.05); opacity: 1; } }
-
-        .service-icon {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-size: 2.2rem;
-            z-index: 1;
-        }
-
-        .service-card h3 {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            position: relative;
-        }
-
-        .service-card > p {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            line-height: 1.7;
-            margin-bottom: 1.5rem;
-            position: relative;
-        }
-
-        .service-features {
-            list-style: none;
-            margin-bottom: 2rem;
-            position: relative;
-        }
-
-        .service-features li {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            margin-bottom: 0.75rem;
-            padding: 0.5rem 0;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-        }
-
+        .service-icon { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 2.2rem; z-index: 1; }
+        .service-card h3 { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; position: relative; }
+        .service-card > p { font-size: 1rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 1.5rem; position: relative; }
+        .service-features { list-style: none; margin-bottom: 2rem; position: relative; }
+        .service-features li { display: flex; align-items: center; gap: 0.75rem; font-size: 0.9rem; color: var(--text-muted); margin-bottom: 0.75rem; padding: 0.5rem 0; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
         .service-features li:last-child { border-bottom: none; }
-
-
-        .feature-check {
-            width: 20px;
-            height: 20px;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.7rem;
-            flex-shrink: 0;
-        }
-
-        .service-cta {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--accent-cyan);
-            font-weight: 600;
-            font-size: 0.95rem;
-            text-decoration: none;
-            transition: all 0.3s ease;
-            position: relative;
-        }
-
+        .feature-check { width: 20px; height: 20px; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; flex-shrink: 0; }
+        .service-cta { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--accent-cyan); font-weight: 600; font-size: 0.95rem; text-decoration: none; transition: all 0.3s ease; position: relative; }
         .service-cta::after { content: '→'; transition: transform 0.3s ease; }
         .service-card:hover .service-cta::after { transform: translateX(5px); }
         .service-card:hover .service-cta { color: var(--accent-purple); }
-
         .service-card.cyan .service-icon-bg { background: linear-gradient(135deg, #00f0ff, #00a8b5); }
         .service-card.purple .service-icon-bg { background: linear-gradient(135deg, #8b5cf6, #6d28d9); }
         .service-card.pink .service-icon-bg { background: linear-gradient(135deg, #ff0080, #cc0066); }
         .service-card.orange .service-icon-bg { background: linear-gradient(135deg, #f97316, #ea580c); }
         .service-card.green .service-icon-bg { background: linear-gradient(135deg, #10b981, #059669); }
         .service-card.blue .service-icon-bg { background: linear-gradient(135deg, #3b82f6, #2563eb); }
-
-        /* PROCESS */
-        .process-section {
-            margin-top: 8rem;
-            padding-top: 6rem;
-            border-top: 1px solid var(--glass-border);
-        }
-
-        .process-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-            margin-top: 4rem;
-        }
-
-        .process-step {
-            text-align: center;
-            position: relative;
-        }
-
-        .process-number {
-            font-family: 'Syne', sans-serif;
-            font-size: 4rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(139, 92, 246, 0.2));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1;
-            margin-bottom: 1rem;
-        }
-
-        .process-step h4 {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 0.75rem;
-        }
-
+        .process-section { margin-top: 8rem; padding-top: 6rem; border-top: 1px solid var(--glass-border); }
+        .process-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; margin-top: 4rem; }
+        .process-step { text-align: center; position: relative; }
+        .process-number { font-family: 'Syne', sans-serif; font-size: 4rem; font-weight: 800; background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(139, 92, 246, 0.2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1; margin-bottom: 1rem; }
+        .process-step h4 { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 0.75rem; }
         .process-step p { font-size: 0.95rem; color: var(--text-muted); line-height: 1.6; }
-
-        .process-connector {
-            position: absolute;
-            top: 40px;
-            right: -1rem;
-            width: calc(100% + 2rem);
-            height: 2px;
-            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple), var(--accent-pink));
-            opacity: 0.3;
-            z-index: 0;
-        }
-
+        .process-connector { position: absolute; top: 40px; right: -1rem; width: calc(100% + 2rem); height: 2px; background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple), var(--accent-pink)); opacity: 0.3; z-index: 0; }
         .process-step:last-child .process-connector { display: none; }
-
-        /* CTA BANNER */
-        .cta-banner {
-            margin-top: 8rem;
-            padding: 4rem;
-            background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(139, 92, 246, 0.1));
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .cta-banner::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle, rgba(0, 240, 255, 0.1) 0%, transparent 50%);
-            animation: ctaGlow 5s ease-in-out infinite;
-        }
-
+        .cta-banner { margin-top: 8rem; padding: 4rem; background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(139, 92, 246, 0.1)); border: 1px solid var(--glass-border); border-radius: 24px; text-align: center; position: relative; overflow: hidden; }
+        .cta-banner::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(0, 240, 255, 0.1) 0%, transparent 50%); animation: ctaGlow 5s ease-in-out infinite; }
         @keyframes ctaGlow { 0%, 100% { transform: scale(1); opacity: 0.5; } 50% { transform: scale(1.2); opacity: 0.8; } }
-
-        .cta-banner h3 {
-            font-family: 'Syne', sans-serif;
-            font-size: 2rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-            position: relative;
-        }
-
-        .cta-banner p {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            position: relative;
-        }
-
-        .cta-banner .btn-primary {
-            position: relative;
-            padding: 1rem 3rem;
-            font-size: 1.1rem;
-        }
-
-        /* ============================================
-           TECHNOLOGY SECTION (ITERATION 4)
-           ============================================ */
-        
-        .tech-grid {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 1.5rem;
-            margin-top: 4rem;
-        }
-
-        .tech-item {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 1.5rem;
-            text-align: center;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .tech-item::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(139, 92, 246, 0.1));
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
+        .cta-banner h3 { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 700; margin-bottom: 1rem; position: relative; }
+        .cta-banner p { font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 2rem; position: relative; }
+        .cta-banner .btn-primary { position: relative; padding: 1rem 3rem; font-size: 1.1rem; }
+        .tech-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 1.5rem; margin-top: 4rem; }
+        .tech-item { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 16px; padding: 1.5rem; text-align: center; transition: all 0.3s ease; position: relative; overflow: hidden; }
+        .tech-item::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(139, 92, 246, 0.1)); opacity: 0; transition: opacity 0.3s ease; }
         .tech-item:hover::before { opacity: 1; }
         .tech-item:hover { transform: translateY(-5px); border-color: var(--accent-cyan); }
-
-        .tech-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            position: relative;
-        }
-
-        .tech-item h4 {
-            font-size: 0.95rem;
-            font-weight: 600;
-            position: relative;
-        }
-
-        /* Innovation Cards */
-        .innovation-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 2rem;
-            margin-top: 6rem;
-        }
-
-        .innovation-card {
-            background: linear-gradient(135deg, rgba(0, 240, 255, 0.05), rgba(139, 92, 246, 0.05));
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 2.5rem;
-            transition: all 0.4s ease;
-            position: relative;
-        }
-
-        .innovation-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--accent-purple);
-            box-shadow: 0 30px 60px rgba(139, 92, 246, 0.2);
-        }
-
-        .innovation-badge {
-            display: inline-block;
-            padding: 0.4rem 0.8rem;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            border-radius: 20px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--bg-primary);
-            margin-bottom: 1.5rem;
-        }
-
-        .innovation-card h3 {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 1rem;
-        }
-
-        .innovation-card p {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            line-height: 1.7;
-            margin-bottom: 1.5rem;
-        }
-
-        .innovation-stats {
-            display: flex;
-            gap: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--glass-border);
-        }
-
+        .tech-icon { font-size: 2.5rem; margin-bottom: 1rem; position: relative; }
+        .tech-item h4 { font-size: 0.95rem; font-weight: 600; position: relative; }
+        .innovation-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem; margin-top: 6rem; }
+        .innovation-card { background: linear-gradient(135deg, rgba(0, 240, 255, 0.05), rgba(139, 92, 246, 0.05)); border: 1px solid var(--glass-border); border-radius: 24px; padding: 2.5rem; transition: all 0.4s ease; position: relative; }
+        .innovation-card:hover { transform: translateY(-10px); border-color: var(--accent-purple); box-shadow: 0 30px 60px rgba(139, 92, 246, 0.2); }
+        .innovation-badge { display: inline-block; padding: 0.4rem 0.8rem; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); border-radius: 20px; font-size: 0.75rem; font-weight: 600; color: var(--bg-primary); margin-bottom: 1.5rem; }
+        .innovation-card h3 { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem; }
+        .innovation-card p { font-size: 1rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 1.5rem; }
+        .innovation-stats { display: flex; gap: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--glass-border); }
         .innovation-stat { text-align: center; }
-
-        .innovation-stat-value {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--accent-cyan);
-        }
-
-        .innovation-stat-label {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        /* ============================================
-           CASE STUDIES SECTION (ITERATION 4)
-           ============================================ */
-        
-        .cases-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2.5rem;
-            margin-top: 4rem;
-        }
-
-        .case-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            overflow: hidden;
-            transition: all 0.4s ease;
-            position: relative;
-        }
-
-        .case-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--accent-purple);
-            box-shadow: 0 30px 60px rgba(139, 92, 246, 0.2);
-        }
-
-        .case-visual {
-            height: 250px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .case-visual-bg {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 5rem;
-            background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(139, 92, 246, 0.1));
-        }
-
-        .case-visual::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 100px;
-            background: linear-gradient(to top, var(--bg-secondary), transparent);
-        }
-
-        .case-content {
-            padding: 2rem;
-        }
-
-        .case-tags {
-            display: flex;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
-            flex-wrap: wrap;
-        }
-
-        .case-tag {
-            padding: 0.3rem 0.8rem;
-            background: rgba(0, 240, 255, 0.1);
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            border-radius: 20px;
-            font-size: 0.75rem;
-            color: var(--accent-cyan);
-            font-weight: 500;
-        }
-
-        .case-tag.purple {
-            background: rgba(139, 92, 246, 0.1);
-            border-color: rgba(139, 92, 246, 0.3);
-            color: var(--accent-purple);
-        }
-
-        .case-tag.pink {
-            background: rgba(255, 0, 128, 0.1);
-            border-color: rgba(255, 0, 128, 0.3);
-            color: var(--accent-pink);
-        }
-
-        .case-card h3 {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 0.75rem;
-        }
-
-        .case-card > p {
-            font-size: 1rem;
-            color: var(--text-secondary);
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-        }
-
-        .case-results {
-            display: flex;
-            gap: 2rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--glass-border);
-        }
-
-        .case-result {
-            text-align: center;
-            flex: 1;
-        }
-
-        .case-result-value {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.8rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .case-result-label {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        .case-link {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            color: var(--accent-cyan);
-            font-weight: 600;
-            text-decoration: none;
-            margin-top: 1.5rem;
-            transition: all 0.3s ease;
-        }
-
+        .innovation-stat-value { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 700; color: var(--accent-cyan); }
+        .innovation-stat-label { font-size: 0.8rem; color: var(--text-muted); }
+        .cases-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2.5rem; margin-top: 4rem; }
+        .case-card { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 24px; overflow: hidden; transition: all 0.4s ease; position: relative; }
+        .case-card:hover { transform: translateY(-10px); border-color: var(--accent-purple); box-shadow: 0 30px 60px rgba(139, 92, 246, 0.2); }
+        .case-visual { height: 250px; position: relative; overflow: hidden; }
+        .case-visual-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 5rem; background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(139, 92, 246, 0.1)); }
+        .case-visual::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 100px; background: linear-gradient(to top, var(--bg-secondary), transparent); }
+        .case-content { padding: 2rem; }
+        .case-tags { display: flex; gap: 0.5rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .case-tag { padding: 0.3rem 0.8rem; background: rgba(0, 240, 255, 0.1); border: 1px solid rgba(0, 240, 255, 0.3); border-radius: 20px; font-size: 0.75rem; color: var(--accent-cyan); font-weight: 500; }
+        .case-tag.purple { background: rgba(139, 92, 246, 0.1); border-color: rgba(139, 92, 246, 0.3); color: var(--accent-purple); }
+        .case-tag.pink { background: rgba(255, 0, 128, 0.1); border-color: rgba(255, 0, 128, 0.3); color: var(--accent-pink); }
+        .case-card h3 { font-family: 'Syne', sans-serif; font-size: 1.5rem; font-weight: 700; margin-bottom: 0.75rem; }
+        .case-card > p { font-size: 1rem; color: var(--text-secondary); line-height: 1.6; margin-bottom: 1.5rem; }
+        .case-results { display: flex; gap: 2rem; padding-top: 1.5rem; border-top: 1px solid var(--glass-border); }
+        .case-result { text-align: center; flex: 1; }
+        .case-result-value { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .case-result-label { font-size: 0.8rem; color: var(--text-muted); }
+        .case-link { display: inline-flex; align-items: center; gap: 0.5rem; color: var(--accent-cyan); font-weight: 600; text-decoration: none; margin-top: 1.5rem; transition: all 0.3s ease; }
         .case-link::after { content: '→'; transition: transform 0.3s ease; }
         .case-card:hover .case-link::after { transform: translateX(5px); }
 
-        /* RESPONSIVE */
+        /* CONTACT SECTION */
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; margin-top: 4rem; }
+        .contact-info h2 { font-family: 'Syne', sans-serif; font-size: 2.5rem; font-weight: 800; margin-bottom: 1.5rem; }
+        .contact-info > p { font-size: 1.1rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 2.5rem; }
+        .contact-details { list-style: none; }
+        .contact-item { display: flex; align-items: center; gap: 1.5rem; padding: 1.5rem 0; border-bottom: 1px solid var(--glass-border); transition: all 0.3s ease; }
+        .contact-item:hover { padding-left: 1rem; }
+        .contact-item:last-child { border-bottom: none; }
+        .contact-icon { width: 56px; height: 56px; background: linear-gradient(135deg, rgba(0, 240, 255, 0.15), rgba(139, 92, 246, 0.15)); border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+        .contact-text h4 { font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 0.25rem; }
+        .contact-text span { color: var(--text-secondary); font-size: 0.95rem; }
+        .social-links { display: flex; gap: 1rem; margin-top: 2rem; }
+        .social-link { width: 48px; height: 48px; background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; transition: all 0.3s ease; }
+        .social-link:hover { border-color: var(--accent-cyan); transform: translateY(-3px); background: rgba(0, 240, 255, 0.1); }
+        .contact-form { background: var(--glass-bg); border: 1px solid var(--glass-border); border-radius: 24px; padding: 3rem; }
+        .contact-form h3 { font-family: 'Syne', sans-serif; font-size: 1.8rem; font-weight: 700; margin-bottom: 0.5rem; }
+        .contact-form > p { color: var(--text-secondary); margin-bottom: 2rem; }
+        .form-group { margin-bottom: 1.5rem; }
+        .form-group label { display: block; font-size: 0.9rem; font-weight: 500; margin-bottom: 0.5rem; color: var(--text-secondary); }
+        .form-group input, .form-group textarea { width: 100%; padding: 1rem 1.25rem; background: var(--bg-primary); border: 1px solid var(--glass-border); border-radius: 12px; color: var(--text-primary); font-family: 'Outfit', sans-serif; font-size: 1rem; transition: all 0.3s ease; }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--accent-cyan); box-shadow: 0 0 0 3px rgba(0, 240, 255, 0.1); }
+        .form-group textarea { min-height: 140px; resize: vertical; }
+        .form-submit { width: 100%; padding: 1.1rem 2rem; background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple)); border: none; border-radius: 12px; color: var(--bg-primary); font-family: 'Syne', sans-serif; font-size: 1.05rem; font-weight: 700; cursor: pointer; transition: all 0.3s ease; }
+        .form-submit:hover { transform: translateY(-3px); box-shadow: 0 20px 40px rgba(0, 240, 255, 0.3); }
+
+        /* FOOTER */
+        footer { background: var(--bg-primary); padding: 5rem 4rem 2rem; position: relative; z-index: 2; }
+        footer::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 1px; background: linear-gradient(90deg, transparent, var(--accent-purple), transparent); }
+        .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 4rem; max-width: 1400px; margin: 0 auto 4rem; }
+        .footer-brand .logo { margin-bottom: 1.5rem; display: inline-block; }
+        .footer-brand p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.7; margin-bottom: 2rem; }
+        .footer-column h4 { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 1.5rem; color: var(--text-primary); }
+        .footer-column ul { list-style: none; }
+        .footer-column li { margin-bottom: 0.75rem; }
+        .footer-column a { color: var(--text-secondary); text-decoration: none; font-size: 0.9rem; transition: all 0.3s ease; }
+        .footer-column a:hover { color: var(--accent-cyan); }
+        .footer-bottom { padding-top: 2rem; border-top: 1px solid var(--glass-border); display: flex; justify-content: space-between; align-items: center; max-width: 1400px; margin: 0 auto; }
+        .footer-bottom p { color: var(--text-muted); font-size: 0.85rem; }
+        .footer-legal { display: flex; gap: 2rem; }
+        .footer-legal a { color: var(--text-muted); text-decoration: none; font-size: 0.85rem; transition: color 0.3s ease; }
+        .footer-legal a:hover { color: var(--accent-cyan); }
+
         @media (max-width: 1024px) {
             .hero-visual { display: none; }
             .hero { padding: 6rem 2rem 4rem; }
             nav { padding: 1rem 2rem; }
             .nav-links { display: none; }
             .stats-bar { padding: 1.5rem 2rem; flex-wrap: wrap; gap: 1.5rem; justify-content: center; }
-            .about, .services, .technology, .case-studies { padding: 6rem 2rem; }
+            .about, .services, .technology, .case-studies, .contact, footer { padding: 6rem 2rem; }
             .about-grid { grid-template-columns: 1fr; gap: 3rem; }
             .about-visual { height: 400px; }
             .team-grid { grid-template-columns: repeat(2, 1fr); }
@@ -1291,8 +264,9 @@
             .process-connector { display: none; }
             .tech-grid { grid-template-columns: repeat(3, 1fr); }
             .cases-grid { grid-template-columns: 1fr; }
+            .contact-grid { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr 1fr; }
         }
-
         @media (max-width: 768px) {
             .hero-title { font-size: clamp(2.5rem, 10vw, 4rem); }
             .hero-subtitle { font-size: 1rem; }
@@ -1303,24 +277,15 @@
             .section-label::before, .section-label::after { display: none; }
             .cta-banner { padding: 2rem; }
             .case-results { flex-direction: column; gap: 1rem; }
+            .footer-grid { grid-template-columns: 1fr; }
+            .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
         }
     </style>
 </head>
 <body>
-    <!-- Noise Overlay -->
     <div class="noise-overlay"></div>
-
-    <!-- Animated Background -->
-    <div class="gradient-mesh">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-    </div>
-
-    <!-- Neural Particle Canvas -->
+    <div class="gradient-mesh"><div class="orb orb-1"></div><div class="orb orb-2"></div><div class="orb orb-3"></div></div>
     <canvas id="particle-canvas"></canvas>
-
-    <!-- Navigation -->
     <nav id="navbar">
         <div class="logo">Research<span>V3</span></div>
         <ul class="nav-links">
@@ -1332,722 +297,146 @@
         </ul>
         <button class="nav-cta">Get Started</button>
     </nav>
-
-    <!-- Hero Section -->
     <section class="hero">
         <div class="hero-content">
-            <div class="hero-badge">
-                <span class="dot"></span>
-                Now Available: Agentic AI Systems
-            </div>
-            <h1 class="hero-title">
-                <span class="line">The Future is</span>
-                <span class="line gradient-text">Agentic</span>
-            </h1>
-            <p class="hero-subtitle">
-                We build autonomous AI agents and intelligent systems that think, learn, and evolve. 
-                Pioneering the next generation of artificial intelligence for enterprise and beyond.
-            </p>
+            <div class="hero-badge"><span class="dot"></span>Now Available: Agentic AI Systems</div>
+            <h1 class="hero-title"><span class="line">The Future is</span><span class="line gradient-text">Agentic</span></h1>
+            <p class="hero-subtitle">We build autonomous AI agents and intelligent systems that think, learn, and evolve. Pioneering the next generation of artificial intelligence for enterprise and beyond.</p>
             <div class="hero-cta-group">
                 <button class="btn-primary">Explore Our Work</button>
                 <button class="btn-secondary">Watch Demo</button>
             </div>
         </div>
-
-        <div class="hero-visual">
-            <div class="brain-container">
-                <div class="brain-ring"></div>
-                <div class="brain-ring"></div>
-                <div class="brain-ring"></div>
-                <div class="brain-core"></div>
-            </div>
-        </div>
-
-        <div class="scroll-indicator">
-            <span>Scroll</span>
-            <div class="scroll-arrow"></div>
-        </div>
-
+        <div class="hero-visual"><div class="brain-container"><div class="brain-ring"></div><div class="brain-ring"></div><div class="brain-ring"></div><div class="brain-core"></div></div></div>
+        <div class="scroll-indicator"><span>Scroll</span><div class="scroll-arrow"></div></div>
         <div class="stats-bar">
-            <div class="stat-item">
-                <div class="stat-number">50+</div>
-                <div class="stat-label">AI Agents Deployed</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">99.9%</div>
-                <div class="stat-label">Uptime</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">24/7</div>
-                <div class="stat-label">Active Monitoring</div>
-            </div>
-            <div class="stat-item">
-                <div class="stat-number">∞</div>
-                <div class="stat-label">Possibilities</div>
-            </div>
+            <div class="stat-item"><div class="stat-number">50+</div><div class="stat-label">AI Agents Deployed</div></div>
+            <div class="stat-item"><div class="stat-number">99.9%</div><div class="stat-label">Uptime</div></div>
+            <div class="stat-item"><div class="stat-number">24/7</div><div class="stat-label">Active Monitoring</div></div>
+            <div class="stat-item"><div class="stat-number">∞</div><div class="stat-label">Possibilities</div></div>
         </div>
     </section>
-
-    <!-- About Section -->
     <section class="about" id="about">
         <div class="section-container">
-            <div class="section-header">
-                <span class="section-label">About Us</span>
-                <h2 class="section-title">Pioneering the Agentic AI Revolution</h2>
-                <p class="section-subtitle">We're not just building AI. We're creating autonomous systems that transform how businesses operate.</p>
-            </div>
-
+            <div class="section-header"><span class="section-label">About Us</span><h2 class="section-title">Pioneering the Agentic AI Revolution</h2><p class="section-subtitle">We're not just building AI. We're creating autonomous systems that transform how businesses operate.</p></div>
             <div class="about-grid">
                 <div class="about-content">
-                    <div class="about-text">
-                        <p>ResearchV3 was founded with a singular vision: to build AI systems that don't just respond—they <strong>think</strong>, <strong>learn</strong>, and <strong>act autonomously</strong>. We believe the future of enterprise lies in agentic AI—systems that can make decisions, execute complex workflows, and continuously improve without constant human intervention.</p>
-                        <p>Our team combines decades of expertise in machine learning, neural networks, and cognitive computing to deliver cutting-edge AI solutions that push the boundaries of what's possible.</p>
-                    </div>
-                    <div class="about-highlight">
-                        <p>"We don't build tools. We build autonomous intelligence that becomes an extension of your team."</p>
-                    </div>
+                    <div class="about-text"><p>ResearchV3 was founded with a singular vision: to build AI systems that don't just respond—they <strong>think</strong>, <strong>learn</strong>, and <strong>act autonomously</strong>. We believe the future of enterprise lies in agentic AI—systems that can make decisions, execute complex workflows, and continuously improve without constant human intervention.</p><p>Our team combines decades of expertise in machine learning, neural networks, and cognitive computing to deliver cutting-edge AI solutions that push the boundaries of what's possible.</p></div>
+                    <div class="about-highlight"><p>"We don't build tools. We build autonomous intelligence that becomes an extension of your team."</p></div>
                     <div class="mission-grid">
-                        <div class="mission-card">
-                            <div class="mission-icon">🧠</div>
-                            <h4>Intelligent Automation</h4>
-                            <p>AI that thinks and acts for you</p>
-                        </div>
-                        <div class="mission-card">
-                            <div class="mission-icon">🔄</div>
-                            <h4>Continuous Learning</h4>
-                            <p>Systems that evolve over time</p>
-                        </div>
-                        <div class="mission-card">
-                            <div class="mission-icon">⚡</div>
-                            <h4>Real-Time Decision</h4>
-                            <p>Instant responses at scale</p>
-                        </div>
-                        <div class="mission-card">
-                            <div class="mission-icon">🔒</div>
-                            <h4>Enterprise Security</h4>
-                            <p>Bank-grade protection</p>
-                        </div>
+                        <div class="mission-card"><div class="mission-icon">🧠</div><h4>Intelligent Automation</h4><p>AI that thinks and acts for you</p></div>
+                        <div class="mission-card"><div class="mission-icon">🔄</div><h4>Continuous Learning</h4><p>Systems that evolve over time</p></div>
+                        <div class="mission-card"><div class="mission-icon">⚡</div><h4>Real-Time Decision</h4><p>Instant responses at scale</p></div>
+                        <div class="mission-card"><div class="mission-icon">🔒</div><h4>Enterprise Security</h4><p>Bank-grade protection</p></div>
                     </div>
                 </div>
-                <div class="about-visual">
-                    <div class="visual-container">
-                        <div class="neural-network">
-                            <div class="node" style="top: 20%; left: 50%;"></div>
-                            <div class="node purple" style="top: 35%; left: 25%;"></div>
-                            <div class="node purple" style="top: 35%; left: 75%;"></div>
-                            <div class="node pink" style="top: 50%; left: 15%;"></div>
-                            <div class="node" style="top: 50%; left: 40%;"></div>
-                            <div class="node purple" style="top: 50%; left: 60%;"></div>
-                            <div class="node pink" style="top: 50%; left: 85%;"></div>
-                            <div class="node" style="top: 65%; left: 30%;"></div>
-                            <div class="node purple" style="top: 65%; left: 70%;"></div>
-                            <div class="node pink" style="top: 80%; left: 50%;"></div>
-                        </div>
-                        <div class="ai-card ai-card-1">
-                            <div class="ai-card-icon">🤖</div>
-                            <div class="ai-card-text">NLP Processing</div>
-                        </div>
-                        <div class="ai-card ai-card-2">
-                            <div class="ai-card-icon">🧩</div>
-                            <div class="ai-card-text">Pattern Recognition</div>
-                        </div>
-                        <div class="ai-card ai-card-3">
-                            <div class="ai-card-icon">⚡</div>
-                            <div class="ai-card-text">Real-time Analytics</div>
-                        </div>
-                    </div>
-                </div>
+                <div class="about-visual"><div class="visual-container"><div class="neural-network"><div class="node" style="top: 20%; left: 50%;"></div><div class="node purple" style="top: 35%; left: 25%;"></div><div class="node purple" style="top: 35%; left: 75%;"></div><div class="node pink" style="top: 50%; left: 15%;"></div><div class="node" style="top: 50%; left: 40%;"></div><div class="node purple" style="top: 50%; left: 60%;"></div><div class="node pink" style="top: 50%; left: 85%;"></div><div class="node" style="top: 65%; left: 30%;"></div><div class="node purple" style="top: 65%; left: 70%;"></div><div class="node pink" style="top: 80%; left: 50%;"></div></div><div class="ai-card ai-card-1"><div class="ai-card-icon">🤖</div><div class="ai-card-text">NLP Processing</div></div><div class="ai-card ai-card-2"><div class="ai-card-icon">🧩</div><div class="ai-card-text">Pattern Recognition</div></div><div class="ai-card ai-card-3"><div class="ai-card-icon">⚡</div><div class="ai-card-text">Real-time Analytics</div></div></div></div>
             </div>
-
-            <div class="team-section">
-                <div class="section-header">
-                    <span class="section-label">Our Team</span>
-                    <h2 class="section-title">The Minds Behind the Machines</h2>
-                </div>
-                <div class="team-grid">
-                    <div class="team-card">
-                        <div class="team-avatar"><div class="team-avatar-inner">👨‍💻</div></div>
-                        <h4 class="team-name">Dr. Alex Chen</h4>
-                        <div class="team-role">Chief AI Architect</div>
-                        <p class="team-bio">Former Google Brain researcher with 15+ years in deep learning</p>
-                    </div>
-                    <div class="team-card">
-                        <div class="team-avatar"><div class="team-avatar-inner">👩‍🔬</div></div>
-                        <h4 class="team-name">Sarah Mitchell</h4>
-                        <div class="team-role">Head of Research</div>
-                        <p class="team-bio">PhD in Cognitive Computing from MIT</p>
-                    </div>
-                    <div class="team-card">
-                        <div class="team-avatar"><div class="team-avatar-inner">👨‍💼</div></div>
-                        <h4 class="team-name">Marcus Johnson</h4>
-                        <div class="team-role">CEO & Co-Founder</div>
-                        <p class="team-bio">Serial entrepreneur, 3x AI startup exits</p>
-                    </div>
-                    <div class="team-card">
-                        <div class="team-avatar"><div class="team-avatar-inner">👩‍💻</div></div>
-                        <h4 class="team-name">Elena Rodriguez</h4>
-                        <div class="team-role">Lead Engineer</div>
-                        <p class="team-bio">Expert in distributed AI systems</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="values-section">
-                <div class="section-header">
-                    <span class="section-label">Our Values</span>
-                    <h2 class="section-title">What Drives Us</h2>
-                </div>
-                <div class="values-grid">
-                    <div class="value-card">
-                        <div class="value-icon">🎯</div>
-                        <h3>Innovation First</h3>
-                        <p>We push the boundaries of what's possible, constantly exploring new frontiers in AI technology.</p>
-                    </div>
-                    <div class="value-card">
-                        <div class="value-icon">🤝</div>
-                        <h3>Partnership</h3>
-                        <p>Your success is our success. We work as an extension of your team, not just a vendor.</p>
-                    </div>
-                    <div class="value-card">
-                        <div class="value-icon">🔐</div>
-                        <h3>Trust & Security</h3>
-                        <p>Enterprise-grade security and privacy are built into everything we create.</p>
-                    </div>
-                </div>
-            </div>
+            <div class="team-section"><div class="section-header"><span class="section-label">Our Team</span><h2 class="section-title">The Minds Behind the Machines</h2></div><div class="team-grid"><div class="team-card"><div class="team-avatar"><div class="team-avatar-inner">👨‍💻</div></div><h4 class="team-name">Dr. Alex Chen</h4><div class="team-role">Chief AI Architect</div><p class="team-bio">Former Google Brain researcher with 15+ years in deep learning</p></div><div class="team-card"><div class="team-avatar"><div class="team-avatar-inner">👩‍🔬</div></div><h4 class="team-name">Sarah Mitchell</h4><div class="team-role">Head of Research</div><p class="team-bio">PhD in Cognitive Computing from MIT</p></div><div class="team-card"><div class="team-avatar"><div class="team-avatar-inner">👨‍💼</div></div><h4 class="team-name">Marcus Johnson</h4><div class="team-role">CEO & Co-Founder</div><p class="team-bio">Serial entrepreneur, 3x AI startup exits</p></div><div class="team-card"><div class="team-avatar"><div class="team-avatar-inner">👩‍💻</div></div><h4 class="team-name">Elena Rodriguez</h4><div class="team-role">Lead Engineer</div><p class="team-bio">Expert in distributed AI systems</p></div></div></div>
+            <div class="values-section"><div class="section-header"><span class="section-label">Our Values</span><h2 class="section-title">What Drives Us</h2></div><div class="values-grid"><div class="value-card"><div class="value-icon">🎯</div><h3>Innovation First</h3><p>We push the boundaries of what's possible, constantly exploring new frontiers in AI technology.</p></div><div class="value-card"><div class="value-icon">🤝</div><h3>Partnership</h3><p>Your success is our success. We work as an extension of your team, not just a vendor.</p></div><div class="value-card"><div class="value-icon">🔐</div><h3>Trust & Security</h3><p>Enterprise-grade security and privacy are built into everything we create.</p></div></div></div>
         </div>
     </section>
-
-    <!-- Services Section -->
     <section class="services" id="services">
         <div class="section-container">
-            <div class="section-header">
-                <span class="section-label">Services</span>
-                <h2 class="section-title">AI Solutions That Drive Results</h2>
-                <p class="section-subtitle">From custom AI agents to enterprise automation, we build intelligent systems that transform your business.</p>
-            </div>
+            <div class="section-header"><span class="section-label">Services</span><h2 class="section-title">AI Solutions That Drive Results</h2><p class="section-subtitle">From custom AI agents to enterprise automation, we build intelligent systems that transform your business.</p></div>
             <div class="services-grid">
-                <div class="service-card cyan">
-                    <div class="service-icon-wrapper">
-                        <div class="service-icon-bg"></div>
-                        <div class="service-icon">🧠</div>
-                    </div>
-                    <h3>AI Agent Development</h3>
-                    <p>Custom autonomous agents designed to handle complex workflows, make decisions, and learn from interactions.</p>
-                    <ul class="service-features">
-                        <li><span class="feature-check">✓</span>Multi-agent orchestration</li>
-                        <li><span class="feature-check">✓</span>Context-aware decision making</li>
-                        <li><span class="feature-check">✓</span>Continuous learning pipelines</li>
-                        <li><span class="feature-check">✓</span>Enterprise integration APIs</li>
-                    </ul>
-                    <a href="#contact" class="service-cta">Learn More</a>
-                </div>
-                <div class="service-card purple">
-                    <div class="service-icon-wrapper">
-                        <div class="service-icon-bg"></div>
-                        <div class="service-icon">💬</div>
-                    </div>
-                    <h3>Natural Language Processing</h3>
-                    <p>Advanced NLP solutions for understanding, generating, and responding to human language at scale.</p>
-                    <ul class="service-features">
-                        <li><span class="feature-check">✓</span>Custom LLM fine-tuning</li>
-                        <li><span class="feature-check">✓</span>Sentiment analysis engines</li>
-                        <li><span class="feature-check">✓</span>Multi-language support</li>
-                        <li><span class="feature-check">✓</span>Conversational AI chatbots</li>
-                    </ul>
-                    <a href="#contact" class="service-cta">Learn More</a>
-                </div>
-                <div class="service-card pink">
-                    <div class="service-icon-wrapper">
-                        <div class="service-icon-bg"></div>
-                        <div class="service-icon">📊</div>
-                    </div>
-                    <h3>Predictive Analytics</h3>
-                    <p>Machine learning models that forecast trends, predict outcomes, and uncover hidden patterns in your data.</p>
-                    <ul class="service-features">
-                        <li><span class="feature-check">✓</span>Time series forecasting</li>
-                        <li><span class="feature-check">✓</span>Anomaly detection systems</li>
-                        <li><span class="feature-check">✓</span>Customer behavior prediction</li>
-                        <li><span class="feature-check">✓</span>Risk assessment models</li>
-                    </ul>
-                    <a href="#contact" class="service-cta">Learn More</a>
-                </div>
-                <div class="service-card orange">
-                    <div class="service-icon-wrapper">
-                        <div class="service-icon-bg"></div>
-                        <div class="service-icon">🔄</div>
-                    </div>
-                    <h3>Process Automation</h3>
-                    <p>Intelligent automation solutions that streamline operations, reduce costs, and eliminate repetitive tasks.</p>
-                    <ul class="service-features">
-                        <li><span class="feature-check">✓</span>Workflow optimization</li>
-                        <li><span class="feature-check">✓</span>Intelligent document processing</li>
-                        <li><span class="feature-check">✓</span>Robotic process automation</li>
-                        <li><span class="feature-check">✓</span>Custom automation pipelines</li>
-                    </ul>
-                    <a href="#contact" class="service-cta">Learn More</a>
-                </div>
-                <div class="service-card green">
-                    <div class="service-icon-wrapper">
-                        <div class="service-icon-bg"></div>
-                        <div class="service-icon">🔍</div>
-                    </div>
-                    <h3>Computer Vision</h3>
-                    <p>State-of-the-art computer vision systems for image recognition, object detection, and visual analysis.</p>
-                    <ul class="service-features">
-                        <li><span class="feature-check">✓</span>Object detection & tracking</li>
-                        <li><span class="feature-check">✓</span>Facial recognition systems</li>
-                        <li><span class="feature-check">✓</span>Quality control automation</li>
-                        <li><span class="feature-check">✓</span>Medical imaging analysis</li>
-                    </ul>
-                    <a href="#contact" class="service-cta">Learn More</a>
-                </div>
-                <div class="service-card blue">
-                    <div class="service-icon-wrapper">
-                        <div class="service-icon-bg"></div>
-                        <div class="service-icon">🛡️</div>
-                    </div>
-                    <h3>AI Security & Compliance</h3>
-                    <p>Enterprise-grade AI security solutions ensuring your AI systems are protected and compliant.</p>
-                    <ul class="service-features">
-                        <li><span class="feature-check">✓</span>Threat detection systems</li>
-                        <li><span class="feature-check">✓</span>Data privacy protection</li>
-                        <li><span class="feature-check">✓</span>Regulatory compliance automation</li>
-                        <li><span class="feature-check">✓</span>Audit trail & monitoring</li>
-                    </ul>
-                    <a href="#contact" class="service-cta">Learn More</a>
-                </div>
+                <div class="service-card cyan"><div class="service-icon-wrapper"><div class="service-icon-bg"></div><div class="service-icon">🧠</div></div><h3>AI Agent Development</h3><p>Custom autonomous agents designed to handle complex workflows, make decisions, and learn from interactions.</p><ul class="service-features"><li><span class="feature-check">✓</span>Multi-agent orchestration</li><li><span class="feature-check">✓</span>Context-aware decision making</li><li><span class="feature-check">✓</span>Continuous learning pipelines</li><li><span class="feature-check">✓</span>Enterprise integration APIs</li></ul><a href="#contact" class="service-cta">Learn More</a></div>
+                <div class="service-card purple"><div class="service-icon-wrapper"><div class="service-icon-bg"></div><div class="service-icon">💬</div></div><h3>Natural Language Processing</h3><p>Advanced NLP solutions for understanding, generating, and responding to human language at scale.</p><ul class="service-features"><li><span class="feature-check">✓</span>Custom LLM fine-tuning</li><li><span class="feature-check">✓</span>Sentiment analysis engines</li><li><span class="feature-check">✓</span>Multi-language support</li><li><span class="feature-check">✓</span>Conversational AI chatbots</li></ul><a href="#contact" class="service-cta">Learn More</a></div>
+                <div class="service-card pink"><div class="service-icon-wrapper"><div class="service-icon-bg"></div><div class="service-icon">📊</div></div><h3>Predictive Analytics</h3><p>Machine learning models that forecast trends, predict outcomes, and uncover hidden patterns in your data.</p><ul class="service-features"><li><span class="feature-check">✓</span>Time series forecasting</li><li><span class="feature-check">✓</span>Anomaly detection systems</li><li><span class="feature-check">✓</span>Customer behavior prediction</li><li><span class="feature-check">✓</span>Risk assessment models</li></ul><a href="#contact" class="service-cta">Learn More</a></div>
+                <div class="service-card orange"><div class="service-icon-wrapper"><div class="service-icon-bg"></div><div class="service-icon">🔄</div></div><h3>Process Automation</h3><p>Intelligent automation solutions that streamline operations, reduce costs, and eliminate repetitive tasks.</p><ul class="service-features"><li><span class="feature-check">✓</span>Workflow optimization</li><li><span class="feature-check">✓</span>Intelligent document processing</li><li><span class="feature-check">✓</span>Robotic process automation</li><li><span class="feature-check">✓</span>Custom automation pipelines</li></ul><a href="#contact" class="service-cta">Learn More</a></div>
+                <div class="service-card green"><div class="service-icon-wrapper"><div class="service-icon-bg"></div><div class="service-icon">🔍</div></div><h3>Computer Vision</h3><p>State-of-the-art computer vision systems for image recognition, object detection, and visual analysis.</p><ul class="service-features"><li><span class="feature-check">✓</span>Object detection & tracking</li><li><span class="feature-check">✓</span>Facial recognition systems</li><li><span class="feature-check">✓</span>Quality control automation</li><li><span class="feature-check">✓</span>Medical imaging analysis</li></ul><a href="#contact" class="service-cta">Learn More</a></div>
+                <div class="service-card blue"><div class="service-icon-wrapper"><div class="service-icon-bg"></div><div class="service-icon">🛡️</div></div><h3>AI Security & Compliance</h3><p>Enterprise-grade AI security solutions ensuring your AI systems are protected and compliant.</p><ul class="service-features"><li><span class="feature-check">✓</span>Threat detection systems</li><li><span class="feature-check">✓</span>Data privacy protection</li><li><span class="feature-check">✓</span>Regulatory compliance automation</li><li><span class="feature-check">✓</span>Audit trail & monitoring</li></ul><a href="#contact" class="service-cta">Learn More</a></div>
             </div>
-
-            <div class="process-section">
-                <div class="section-header">
-                    <span class="section-label">Our Process</span>
-                    <h2 class="section-title">How We Work</h2>
-                </div>
-                <div class="process-grid">
-                    <div class="process-step">
-                        <div class="process-connector"></div>
-                        <div class="process-number">01</div>
-                        <h4>Discovery</h4>
-                        <p>We analyze your business needs, existing systems, and goals to identify AI opportunities.</p>
-                    </div>
-                    <div class="process-step">
-                        <div class="process-connector"></div>
-                        <div class="process-number">02</div>
-                        <h4>Strategy</h4>
-                        <p>We design a custom AI roadmap with technical architecture and implementation timeline.</p>
-                    </div>
-                    <div class="process-step">
-                        <div class="process-connector"></div>
-                        <div class="process-number">03</div>
-                        <h4>Development</h4>
-                        <p>Our team builds, trains, and deploys your AI solution with continuous iteration.</p>
-                    </div>
-                    <div class="process-step">
-                        <div class="process-connector"></div>
-                        <div class="process-number">04</div>
-                        <h4>Optimization</h4>
-                        <p>We monitor, refine, and improve your AI systems for ongoing peak performance.</p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="cta-banner">
-                <h3>Ready to Transform Your Business with AI?</h3>
-                <p>Let's discuss how autonomous AI agents can revolutionize your operations.</p>
-                <button class="btn-primary">Schedule a Consultation</button>
-            </div>
+            <div class="process-section"><div class="section-header"><span class="section-label">Our Process</span><h2 class="section-title">How We Work</h2></div><div class="process-grid"><div class="process-step"><div class="process-connector"></div><div class="process-number">01</div><h4>Discovery</h4><p>We analyze your business needs, existing systems, and goals to identify AI opportunities.</p></div><div class="process-step"><div class="process-connector"></div><div class="process-number">02</div><h4>Strategy</h4><p>We design a custom AI roadmap with technical architecture and implementation timeline.</p></div><div class="process-step"><div class="process-connector"></div><div class="process-number">03</div><h4>Development</h4><p>Our team builds, trains, and deploys your AI solution with continuous iteration.</p></div><div class="process-step"><div class="process-connector"></div><div class="process-number">04</div><h4>Optimization</h4><p>We monitor, refine, and improve your AI systems for ongoing peak performance.</p></div></div></div>
+            <div class="cta-banner"><h3>Ready to Transform Your Business with AI?</h3><p>Let's discuss how autonomous AI agents can revolutionize your operations.</p><button class="btn-primary">Schedule a Consultation</button></div>
         </div>
     </section>
-
-    <!-- Technology Section -->
     <section class="technology" id="technology">
         <div class="section-container">
-            <div class="section-header">
-                <span class="section-label">Technology</span>
-                <h2 class="section-title">Powered by Cutting-Edge AI</h2>
-                <p class="section-subtitle">We leverage the latest advancements in artificial intelligence to build solutions that set new standards.</p>
-            </div>
-
-            <div class="tech-grid">
-                <div class="tech-item">
-                    <div class="tech-icon">🧠</div>
-                    <h4>TensorFlow</h4>
-                </div>
-                <div class="tech-item">
-                    <div class="tech-icon">🔥</div>
-                    <h4>PyTorch</h4>
-                </div>
-                <div class="tech-item">
-                    <div class="tech-icon">⚡</div>
-                    <h4>LangChain</h4>
-                </div>
-                <div class="tech-item">
-                    <div class="tech-icon">🤗</div>
-                    <h4>Hugging Face</h4>
-                </div>
-                <div class="tech-item">
-                    <div class="tech-icon">🐍</div>
-                    <h4>Python</h4>
-                </div>
-                <div class="tech-item">
-                    <div class="tech-icon">☁️</div>
-                    <h4>AWS AI</h4>
-                </div>
-                <div class="tech-item">
-                    <div class="tech-icon">🌐</div>
-                    <h4>OpenAI</h4>
-                </div>
-                <div class="tech-item">
-                    <div class="tech-icon">🔷</div>
-                    <h4>Azure AI</h4>
-                </div>
-                <div class="tech-item">
-                    <div class="tech-icon">📦</div>
-                    <h4>Docker</h4>
-                </div>
-                <div class="tech-item">
-                    <div class="tech-icon">☸️</div>
-                    <h4>Kubernetes</h4>
-                </div>
-                <div class="tech-item">
-                    <div class="tech-icon">🗄️</div>
-                    <h4>PostgreSQL</h4>
-                </div>
-                <div class="tech-item">
-                    <div class="tech-icon">⚡</div>
-                    <h4>Redis</h4>
-                </div>
-            </div>
-
-            <div class="innovation-grid">
-                <div class="innovation-card">
-                    <span class="innovation-badge">Proprietary</span>
-                    <h3>Agentic Core™</h3>
-                    <p>Our proprietary framework for building autonomous AI agents that can reason, plan, and execute complex tasks with minimal human oversight.</p>
-                    <div class="innovation-stats">
-                        <div class="innovation-stat">
-                            <div class="innovation-stat-value">10x</div>
-                            <div class="innovation-stat-label">Faster Processing</div>
-                        </div>
-                        <div class="innovation-stat">
-                            <div class="innovation-stat-value">99.9%</div>
-                            <div class="innovation-stat-label">Accuracy</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="innovation-card">
-                    <span class="innovation-badge">Innovation</span>
-                    <h3>Neural Sync™</h3>
-                    <p>Real-time neural network synchronization enabling distributed AI systems to learn and adapt collectively in milliseconds.</p>
-                    <div class="innovation-stats">
-                        <div class="innovation-stat">
-                            <div class="innovation-stat-value">50ms</div>
-                            <div class="innovation-stat-label">Sync Time</div>
-                        </div>
-                        <div class="innovation-stat">
-                            <div class="innovation-stat-value">∞</div>
-                            <div class="innovation-stat-label">Scalability</div>
-                        </div>
-                    </div>
-                </div>
-                <div class="innovation-card">
-                    <span class="innovation-badge">Research</span>
-                    <h3>Cognitive Bridge™</h3>
-                    <p>Our breakthrough technology enabling seamless communication between human cognition and AI systems for intuitive collaboration.</p>
-                    <div class="innovation-stats">
-                        <div class="innovation-stat">
-                            <div class="innovation-stat-value">95%</div>
-                            <div class="innovation-stat-label">Comprehension</div>
-                        </div>
-                        <div class="innovation-stat">
-                            <div class="innovation-stat-value">0.1s</div>
-                            <div class="innovation-stat-label">Response</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <div class="section-header"><span class="section-label">Technology</span><h2 class="section-title">Powered by Cutting-Edge AI</h2><p class="section-subtitle">We leverage the latest advancements in artificial intelligence to build solutions that set new standards.</p></div>
+            <div class="tech-grid"><div class="tech-item"><div class="tech-icon">🧠</div><h4>TensorFlow</h4></div><div class="tech-item"><div class="tech-icon">🔥</div><h4>PyTorch</h4></div><div class="tech-item"><div class="tech-icon">⚡</div><h4>LangChain</h4></div><div class="tech-item"><div class="tech-icon">🤗</div><h4>Hugging Face</h4></div><div class="tech-item"><div class="tech-icon">🐍</div><h4>Python</h4></div><div class="tech-item"><div class="tech-icon">☁️</div><h4>AWS AI</h4></div><div class="tech-item"><div class="tech-icon">🌐</div><h4>OpenAI</h4></div><div class="tech-item"><div class="tech-icon">🔷</div><h4>Azure AI</h4></div><div class="tech-item"><div class="tech-icon">📦</div><h4>Docker</h4></div><div class="tech-item"><div class="tech-icon">☸️</div><h4>Kubernetes</h4></div><div class="tech-item"><div class="tech-icon">🗄️</div><h4>PostgreSQL</h4></div><div class="tech-item"><div class="tech-icon">⚡</div><h4>Redis</h4></div></div>
+            <div class="innovation-grid"><div class="innovation-card"><span class="innovation-badge">Proprietary</span><h3>Agentic Core™</h3><p>Our proprietary framework for building autonomous AI agents that can reason, plan, and execute complex tasks with minimal human oversight.</p><div class="innovation-stats"><div class="innovation-stat"><div class="innovation-stat-value">10x</div><div class="innovation-stat-label">Faster Processing</div></div><div class="innovation-stat"><div class="innovation-stat-value">99.9%</div><div class="innovation-stat-label">Accuracy</div></div></div></div><div class="innovation-card"><span class="innovation-badge">Innovation</span><h3>Neural Sync™</h3><p>Real-time neural network synchronization enabling distributed AI systems to learn and adapt collectively in milliseconds.</p><div class="innovation-stats"><div class="innovation-stat"><div class="innovation-stat-value">50ms</div><div class="innovation-stat-label">Sync Time</div></div><div class="innovation-stat"><div class="innovation-stat-value">∞</div><div class="innovation-stat-label">Scalability</div></div></div></div><div class="innovation-card"><span class="innovation-badge">Research</span><h3>Cognitive Bridge™</h3><p>Our breakthrough technology enabling seamless communication between human cognition and AI systems for intuitive collaboration.</p><div class="innovation-stats"><div class="innovation-stat"><div class="innovation-stat-value">95%</div><div class="innovation-stat-label">Comprehension</div></div><div class="innovation-stat"><div class="innovation-stat-value">0.1s</div><div class="innovation-stat-label">Response</div></div></div></div></div>
         </div>
     </section>
-
-    <!-- Case Studies Section -->
     <section class="case-studies" id="cases">
         <div class="section-container">
-            <div class="section-header">
-                <span class="section-label">Case Studies</span>
-                <h2 class="section-title">Success Stories</h2>
-                <p class="section-subtitle">See how we've helped leading enterprises transform their operations with AI.</p>
-            </div>
-
+            <div class="section-header"><span class="section-label">Case Studies</span><h2 class="section-title">Success Stories</h2><p class="section-subtitle">See how we've helped leading enterprises transform their operations with AI.</p></div>
             <div class="cases-grid">
-                <div class="case-card">
-                    <div class="case-visual">
-                        <div class="case-visual-bg">🏦</div>
-                    </div>
-                    <div class="case-content">
-                        <div class="case-tags">
-                            <span class="case-tag">FinTech</span>
-                            <span class="case-tag purple">NLP</span>
-                        </div>
-                        <h3>Global Bank Fraud Detection</h3>
-                        <p>Implemented an AI-powered fraud detection system that analyzes millions of transactions in real-time, identifying suspicious patterns with 99.8% accuracy.</p>
-                        <div class="case-results">
-                            <div class="case-result">
-                                <div class="case-result-value">$50M</div>
-                                <div class="case-result-label">Fraud Prevented</div>
-                            </div>
-                            <div class="case-result">
-                                <div class="case-result-value">85%</div>
-                                <div class="case-result-label">Faster Detection</div>
-                            </div>
-                        </div>
-                        <a href="#contact" class="case-link">View Full Case Study</a>
-                    </div>
+                <div class="case-card"><div class="case-visual"><div class="case-visual-bg">🏦</div></div><div class="case-content"><div class="case-tags"><span class="case-tag">FinTech</span><span class="case-tag purple">NLP</span></div><h3>Global Bank Fraud Detection</h3><p>Implemented an AI-powered fraud detection system that analyzes millions of transactions in real-time, identifying suspicious patterns with 99.8% accuracy.</p><div class="case-results"><div class="case-result"><div class="case-result-value">$50M</div><div class="case-result-label">Fraud Prevented</div></div><div class="case-result"><div class="case-result-value">85%</div><div class="case-result-label">Faster Detection</div></div></div><a href="#contact" class="case-link">View Full Case Study</a></div></div>
+                <div class="case-card"><div class="case-visual"><div class="case-visual-bg">🏥</div></div><div class="case-content"><div class="case-tags"><span class="case-tag">Healthcare</span><span class="case-tag pink">Computer Vision</span></div><h3>Medical Imaging AI Diagnostics</h3><p>Built an AI system that assists radiologists in detecting anomalies in X-rays, MRIs, and CT scans, reducing diagnosis time by 60%.</p><div class="case-results"><div class="case-result"><div class="case-result-value">60%</div><div class="case-result-label">Faster Diagnosis</div></div><div class="case-result"><div class="case-result-value">94%</div><div class="case-result-label">Accuracy Rate</div></div></div><a href="#contact" class="case-link">View Full Case Study</a></div></div>
+                <div class="case-card"><div class="case-visual"><div class="case-visual-bg">🛒</div></div><div class="case-content"><div class="case-tags"><span class="case-tag">E-Commerce</span><span class="case-tag purple">Predictive AI</span></div><h3>Retail Giant Demand Forecasting</h3><p>Developed a predictive analytics system that forecasts product demand with 97% accuracy, optimizing inventory and reducing waste by 40%.</p><div class="case-results"><div class="case-result"><div class="case-result-value">40%</div><div class="case-result-label">Less Waste</div></div><div class="case-result"><div class="case-result-value">$12M</div><div class="case-result-label">Annual Savings</div></div></div><a href="#contact" class="case-link">View Full Case Study</a></div></div>
+                <div class="case-card"><div class="case-visual"><div class="case-visual-bg">📞</div></div><div class="case-content"><div class="case-tags"><span class="case-tag">Telecom</span><span class="case-tag pink">AI Agents</span></div><h3>Telecom Customer Support AI</h3><p>Deployed autonomous AI agents that handle customer inquiries 24/7, resolving 70% of issues without human intervention.</p><div class="case-results"><div class="case-result"><div class="case-result-value">70%</div><div class="case-result-label">Auto-Resolved</div></div><div class="case-result"><div class="case-result-value">50%</div><div class="case-result-label">Cost Reduction</div></div></div><a href="#contact" class="case-link">View Full Case Study</a></div></div>
+            </div>
+        </div>
+    </section>
+    <section class="contact" id="contact">
+        <div class="section-container">
+            <div class="section-header"><span class="section-label">Contact Us</span><h2 class="section-title">Let's Build the Future Together</h2><p class="section-subtitle">Ready to transform your business with AI? Get in touch with our team today.</p></div>
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <h2>Ready to Get Started?</h2>
+                    <p>Whether you're looking to implement AI solutions or just want to explore possibilities, we're here to help. Reach out and let's discuss how autonomous AI can transform your business.</p>
+                    <ul class="contact-details">
+                        <li class="contact-item"><div class="contact-icon">📧</div><div class="contact-text"><h4>Email</h4><span>hello@researchv3.com</span></div></li>
+                        <li class="contact-item"><div class="contact-icon">📍</div><div class="contact-text"><h4>Location</h4><span>San Francisco, CA</span></div></li>
+                        <li class="contact-item"><div class="contact-icon">📱</div><div class="contact-text"><h4>Phone</h4><span>+1 (555) 123-4567</span></div></li>
+                    </ul>
+                    <div class="social-links"><a href="#" class="social-link">𝕏</a><a href="#" class="social-link">in</a><a href="#" class="social-link">▶</a><a href="#" class="social-link">◆</a></div>
                 </div>
-
-                <div class="case-card">
-                    <div class="case-visual">
-                        <div class="case-visual-bg">🏥</div>
-                    </div>
-                    <div class="case-content">
-                        <div class="case-tags">
-                            <span class="case-tag">Healthcare</span>
-                            <span class="case-tag pink">Computer Vision</span>
-                        </div>
-                        <h3>Medical Imaging AI Diagnostics</h3>
-                        <p>Built an AI system that assists radiologists in detecting anomalies in X-rays, MRIs, and CT scans, reducing diagnosis time by 60%.</p>
-                        <div class="case-results">
-                            <div class="case-result">
-                                <div class="case-result-value">60%</div>
-                                <div class="case-result-label">Faster Diagnosis</div>
-                            </div>
-                            <div class="case-result">
-                                <div class="case-result-value">94%</div>
-                                <div class="case-result-label">Accuracy Rate</div>
-                            </div>
-                        </div>
-                        <a href="#contact" class="case-link">View Full Case Study</a>
-                    </div>
-                </div>
-
-                <div class="case-card">
-                    <div class="case-visual">
-                        <div class="case-visual-bg">🛒</div>
-                    </div>
-                    <div class="case-content">
-                        <div class="case-tags">
-                            <span class="case-tag">E-Commerce</span>
-                            <span class="case-tag purple">Predictive AI</span>
-                        </div>
-                        <h3>Retail Giant Demand Forecasting</h3>
-                        <p>Developed a predictive analytics system that forecasts product demand with 97% accuracy, optimizing inventory and reducing waste by 40%.</p>
-                        <div class="case-results">
-                            <div class="case-result">
-                                <div class="case-result-value">40%</div>
-                                <div class="case-result-label">Less Waste</div>
-                            </div>
-                            <div class="case-result">
-                                <div class="case-result-value">$12M</div>
-                                <div class="case-result-label">Annual Savings</div>
-                            </div>
-                        </div>
-                        <a href="#contact" class="case-link">View Full Case Study</a>
-                    </div>
-                </div>
-
-                <div class="case-card">
-                    <div class="case-visual">
-                        <div class="case-visual-bg">📞</div>
-                    </div>
-                    <div class="case-content">
-                        <div class="case-tags">
-                            <span class="case-tag">Telecom</span>
-                            <span class="case-tag pink">AI Agents</span>
-                        </div>
-                        <h3>Telecom Customer Support AI</h3>
-                        <p>Deployed autonomous AI agents that handle customer inquiries 24/7, resolving 70% of issues without human intervention.</p>
-                        <div class="case-results">
-                            <div class="case-result">
-                                <div class="case-result-value">70%</div>
-                                <div class="case-result-label">Auto-Resolved</div>
-                            </div>
-                            <div class="case-result">
-                                <div class="case-result-value">50%</div>
-                                <div class="case-result-label">Cost Reduction</div>
-                            </div>
-                        </div>
-                        <a href="#contact" class="case-link">View Full Case Study</a>
-                    </div>
+                <div class="contact-form">
+                    <h3>Send Us a Message</h3>
+                    <p>Fill out the form below and we'll get back to you within 24 hours.</p>
+                    <form>
+                        <div class="form-group"><label>Name</label><input type="text" placeholder="Your name"></div>
+                        <div class="form-group"><label>Email</label><input type="email" placeholder="your@email.com"></div>
+                        <div class="form-group"><label>Message</label><textarea placeholder="Tell us about your project..."></textarea></div>
+                        <button type="submit" class="form-submit">Send Message</button>
+                    </form>
                 </div>
             </div>
         </div>
     </section>
-
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-brand"><div class="logo">Research<span>V3</span></div><p>Building the future of autonomous AI. We're pioneering agentic systems that think, learn, and evolve to transform enterprises worldwide.</p></div>
+            <div class="footer-column"><h4>Company</h4><ul><li><a href="#about">About</a></li><li><a href="#services">Services</a></li><li><a href="#cases">Case Studies</a></li><li><a href="#contact">Contact</a></li></ul></div>
+            <div class="footer-column"><h4>Technology</h4><ul><li><a href="#technology">AI & ML</a></li><li><a href="#technology">Cloud</a></li><li><a href="#technology">Security</a></li><li><a href="#technology">Integration</a></li></ul></div>
+            <div class="footer-column"><h4>Resources</h4><ul><li><a href="#">Blog</a></li><li><a href="#">Documentation</a></li><li><a href="#">API Reference</a></li><li><a href="#">Support</a></li></ul></div>
+        </div>
+        <div class="footer-bottom"><p>© 2025 ResearchV3. All rights reserved.</p><div class="footer-legal"><a href="#">Privacy Policy</a><a href="#">Terms of Service</a></div></div>
+    </footer>
     <script>
-        /* NEURAL PARTICLE SYSTEM */
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         let particles = [];
         let mouse = { x: null, y: null };
-        let animationId;
-        
-        const config = {
-            particleCount: 80,
-            connectionDistance: 150,
-            mouseDistance: 200,
-            particleSize: 2,
-            particleColor: '#00f0ff',
-            connectionColor: 'rgba(0, 240, 255, 0.15)',
-            mouseConnectionColor: 'rgba(139, 92, 246, 0.4)'
-        };
-        
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        }
-        
+        const config = { particleCount: 80, connectionDistance: 150, mouseDistance: 200, particleSize: 2, particleColor: '#00f0ff', connectionColor: 'rgba(0, 240, 255, 0.15)', mouseConnectionColor: 'rgba(139, 92, 246, 0.4)' };
+        function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; }
         class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.vx = (Math.random() - 0.5) * 0.5;
-                this.vy = (Math.random() - 0.5) * 0.5;
-                this.size = Math.random() * config.particleSize + 1;
-                this.color = config.particleColor;
-            }
-            
+            constructor() { this.x = Math.random() * canvas.width; this.y = Math.random() * canvas.height; this.vx = (Math.random() - 0.5) * 0.5; this.vy = (Math.random() - 0.5) * 0.5; this.size = Math.random() * config.particleSize + 1; this.color = config.particleColor; }
             update() {
-                this.x += this.vx;
-                this.y += this.vy;
+                this.x += this.vx; this.y += this.vy;
                 if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
                 if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
-                
-                if (mouse.x !== null) {
-                    const dx = mouse.x - this.x;
-                    const dy = mouse.y - this.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    if (distance < config.mouseDistance) {
-                        const force = (config.mouseDistance - distance) / config.mouseDistance;
-                        this.vx += (dx / distance) * force * 0.02;
-                        this.vy += (dy / distance) * force * 0.02;
-                    }
-                }
+                if (mouse.x !== null) { const dx = mouse.x - this.x; const dy = mouse.y - this.y; const distance = Math.sqrt(dx * dx + dy * dy); if (distance < config.mouseDistance) { const force = (config.mouseDistance - distance) / config.mouseDistance; this.vx += (dx / distance) * force * 0.02; this.vy += (dy / distance) * force * 0.02; } }
             }
-            
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = this.color;
-                ctx.fill();
-            }
+            draw() { ctx.beginPath(); ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2); ctx.fillStyle = this.color; ctx.fill(); }
         }
-        
-        function initParticles() {
-            particles = [];
-            for (let i = 0; i < config.particleCount; i++) {
-                particles.push(new Particle());
-            }
-        }
-        
-        function drawConnections() {
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    if (distance < config.connectionDistance) {
-                        const opacity = (1 - distance / config.connectionDistance) * 0.3;
-                        ctx.beginPath();
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.strokeStyle = config.connectionColor.replace('0.15', opacity.toString());
-                        ctx.lineWidth = 1;
-                        ctx.stroke();
-                    }
-                }
-            }
-        }
-        
-        function drawMouseConnections() {
-            if (mouse.x === null) return;
-            for (let i = 0; i < particles.length; i++) {
-                const dx = mouse.x - particles[i].x;
-                const dy = mouse.y - particles[i].y;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                if (distance < config.mouseDistance) {
-                    const opacity = (1 - distance / config.mouseDistance) * 0.6;
-                    ctx.beginPath();
-                    ctx.moveTo(mouse.x, mouse.y);
-                    ctx.lineTo(particles[i].x, particles[i].y);
-                    ctx.strokeStyle = config.mouseConnectionColor.replace('0.4', opacity.toString());
-                    ctx.lineWidth = 1.5;
-                    ctx.stroke();
-                }
-            }
-        }
-        
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            particles.forEach(particle => { particle.update(); particle.draw(); });
-            drawConnections();
-            drawMouseConnections();
-            animationId = requestAnimationFrame(animate);
-        }
-        
+        function initParticles() { particles = []; for (let i = 0; i < config.particleCount; i++) { particles.push(new Particle()); } }
+        function drawConnections() { for (let i = 0; i < particles.length; i++) { for (let j = i + 1; j < particles.length; j++) { const dx = particles[i].x - particles[j].x; const dy = particles[i].y - particles[j].y; const distance = Math.sqrt(dx * dx + dy * dy); if (distance < config.connectionDistance) { const opacity = (1 - distance / config.connectionDistance) * 0.3; ctx.beginPath(); ctx.moveTo(particles[i].x, particles[i].y); ctx.lineTo(particles[j].x, particles[j].y); ctx.strokeStyle = config.connectionColor.replace('0.15', opacity.toString()); ctx.lineWidth = 1; ctx.stroke(); } } } }
+        function drawMouseConnections() { if (mouse.x === null) return; for (let i = 0; i < particles.length; i++) { const dx = mouse.x - particles[i].x; const dy = mouse.y - particles[i].y; const distance = Math.sqrt(dx * dx + dy * dy); if (distance < config.mouseDistance) { const opacity = (1 - distance / config.mouseDistance) * 0.6; ctx.beginPath(); ctx.moveTo(mouse.x, mouse.y); ctx.lineTo(particles[i].x, particles[i].y); ctx.strokeStyle = config.mouseConnectionColor.replace('0.4', opacity.toString()); ctx.lineWidth = 1.5; ctx.stroke(); } } }
+        function animate() { ctx.clearRect(0, 0, canvas.width, canvas.height); particles.forEach(particle => { particle.update(); particle.draw(); }); drawConnections(); drawMouseConnections(); requestAnimationFrame(animate); }
         window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
         window.addEventListener('mouseleave', () => { mouse.x = null; mouse.y = null; });
         window.addEventListener('resize', () => { resizeCanvas(); initParticles(); });
-        
-        resizeCanvas();
-        initParticles();
-        animate();
-        
-        /* NAVBAR SCROLL EFFECT */
+        resizeCanvas(); initParticles(); animate();
         const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('scrolled');
-            } else {
-                navbar.classList.remove('scrolled');
-            }
-        });
-        
-        /* SCROLL ANIMATIONS */
+        window.addEventListener('scroll', () => { if (window.scrollY > 50) { navbar.classList.add('scrolled'); } else { navbar.classList.remove('scrolled'); } });
         const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, observerOptions);
-        
-        document.querySelectorAll('.stat-item, .mission-card, .team-card, .value-card, .service-card, .process-step, .tech-item, .innovation-card, .case-card').forEach((item, index) => {
-            item.style.opacity = '0';
-            item.style.transform = 'translateY(20px)';
-            item.style.transition = `all 0.6s ease ${index * 0.05}s`;
-            observer.observe(item);
-        });
-        
-        const style = document.createElement('style');
-        style.textContent = `
-            .visible {
-                opacity: 1 !important;
-                transform: translateY(0) !important;
-            }
-        `;
-        document.head.appendChild(style);
-        
-        /* SMOOTH SCROLL */
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
+        const observer = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); } }); }, observerOptions);
+        document.querySelectorAll('.stat-item, .mission-card, .team-card, .value-card, .service-card, .process-step, .tech-item, .innovation-card, .case-card, .contact-item').forEach((item, index) => { item.style.opacity = '0'; item.style.transform = 'translateY(20px)'; item.style.transition = `all 0.6s ease ${index * 0.05}s`; observer.observe(item); });
+        const style = document.createElement('style'); style.textContent = `.visible { opacity: 1 !important; transform: translateY(0) !important; }`; document.head.appendChild(style);
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => { anchor.addEventListener('click', function(e) { e.preventDefault(); const target = document.querySelector(this.getAttribute('href')); if (target) { target.scrollIntoView({ behavior: 'smooth', block: 'start' }); } }); });
     </script>
 </body>
 </html>
