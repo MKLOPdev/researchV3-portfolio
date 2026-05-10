@@ -9,12 +9,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* ============================================
-           RESEARCHV3 PORTFOLIO - ITERATION 3
-           Hero + About + Services Section
+           RESEARCHV3 PORTFOLIO - ITERATIONS 1-3
+           Hero + About + Services
            ============================================ */
 
-
         :root {
+            /* Color Palette */
             --bg-primary: #0a0a0f;
             --bg-secondary: #0d0d14;
             --bg-tertiary: #12121a;
@@ -23,6 +23,7 @@
             --accent-pink: #ff0080;
             --accent-blue: #3b82f6;
             --accent-green: #10b981;
+            --accent-orange: #f97316;
             --text-primary: #ffffff;
             --text-secondary: #a1a1aa;
             --text-muted: #71717a;
@@ -43,6 +44,7 @@
             scroll-behavior: smooth;
         }
 
+
         body {
             font-family: 'Outfit', sans-serif;
             background: var(--bg-primary);
@@ -51,7 +53,9 @@
             line-height: 1.6;
         }
 
-        /* NOISE OVERLAY */
+        /* ============================================
+           NOISE & GRAIN OVERLAY
+           ============================================ */
         .noise-overlay {
             position: fixed;
             top: 0;
@@ -64,7 +68,9 @@
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
         }
 
-        /* NEURAL PARTICLE SYSTEM */
+        /* ============================================
+           NEURAL PARTICLE SYSTEM (Mouse Trail)
+           ============================================ */
         #particle-canvas {
             position: fixed;
             top: 0;
@@ -75,7 +81,9 @@
             pointer-events: none;
         }
 
-        /* GRADIENT MESH BACKGROUND */
+        /* ============================================
+           ANIMATED BACKGROUND GRADIENT MESH
+           ============================================ */
         .gradient-mesh {
             position: fixed;
             top: 0;
@@ -107,6 +115,7 @@
             75% { transform: translate(3%, -2%) rotate(2deg); }
         }
 
+        /* Floating orbs */
         .orb {
             position: absolute;
             border-radius: 50%;
@@ -115,10 +124,32 @@
             animation: float 15s ease-in-out infinite;
         }
 
-        .orb-1 { width: 400px; height: 400px; background: var(--accent-purple); top: 10%; left: 10%; animation-delay: 0s; }
-        .orb-2 { width: 300px; height: 300px; background: var(--accent-cyan); top: 60%; right: 10%; animation-delay: -5s; }
-        .orb-3 { width: 250px; height: 250px; background: var(--accent-pink); bottom: 20%; left: 30%; animation-delay: -10s; }
+        .orb-1 {
+            width: 400px;
+            height: 400px;
+            background: var(--accent-purple);
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
 
+        .orb-2 {
+            width: 300px;
+            height: 300px;
+            background: var(--accent-cyan);
+            top: 60%;
+            right: 10%;
+            animation-delay: -5s;
+        }
+
+        .orb-3 {
+            width: 250px;
+            height: 250px;
+            background: var(--accent-pink);
+            bottom: 20%;
+            left: 30%;
+            animation-delay: -10s;
+        }
 
         @keyframes float {
             0%, 100% { transform: translate(0, 0) scale(1); }
@@ -126,7 +157,9 @@
             66% { transform: translate(-20px, 20px) scale(0.9); }
         }
 
-        /* NAVIGATION */
+        /* ============================================
+           NAVIGATION
+           ============================================ */
         nav {
             position: fixed;
             top: 0;
@@ -173,6 +206,7 @@
             list-style: none;
         }
 
+
         .nav-links a {
             color: var(--text-secondary);
             text-decoration: none;
@@ -193,8 +227,13 @@
             transition: width 0.3s ease;
         }
 
-        .nav-links a:hover { color: var(--text-primary); }
-        .nav-links a:hover::after { width: 100%; }
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
 
         .nav-cta {
             padding: 0.75rem 1.5rem;
@@ -221,10 +260,18 @@
             transition: left 0.5s ease;
         }
 
-        .nav-cta:hover::before { left: 100%; }
-        .nav-cta:hover { transform: translateY(-2px); box-shadow: var(--glow-cyan); }
+        .nav-cta:hover::before {
+            left: 100%;
+        }
 
-        /* HERO SECTION */
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--glow-cyan);
+        }
+
+        /* ============================================
+           HERO SECTION
+           ============================================ */
         .hero {
             position: relative;
             min-height: 100vh;
@@ -280,7 +327,9 @@
             opacity: 0;
         }
 
-        .hero-title .line { display: block; }
+        .hero-title .line {
+            display: block;
+        }
 
         .hero-title .gradient-text {
             background: linear-gradient(135deg, var(--accent-cyan) 0%, var(--accent-purple) 50%, var(--accent-pink) 100%);
@@ -329,6 +378,7 @@
             overflow: hidden;
         }
 
+
         .btn-primary::before {
             content: '';
             position: absolute;
@@ -341,8 +391,14 @@
             transition: opacity 0.3s ease;
         }
 
-        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 20px 40px rgba(0, 240, 255, 0.3); }
-        .btn-primary:hover::before { opacity: 1; }
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 20px 40px rgba(0, 240, 255, 0.3);
+        }
+
+        .btn-primary:hover::before {
+            opacity: 1;
+        }
 
         .btn-secondary {
             padding: 1rem 2.5rem;
@@ -357,9 +413,15 @@
             backdrop-filter: blur(10px);
         }
 
-        .btn-secondary:hover { background: rgba(255, 255, 255, 0.08); border-color: var(--accent-cyan); transform: translateY(-3px); }
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: var(--accent-cyan);
+            transform: translateY(-3px);
+        }
 
-        /* HERO VISUAL */
+        /* ============================================
+           HERO VISUAL - AI BRAIN ANIMATION
+           ============================================ */
         .hero-visual {
             position: absolute;
             top: 50%;
@@ -377,7 +439,6 @@
             height: 100%;
         }
 
-
         .brain-ring {
             position: absolute;
             top: 50%;
@@ -388,9 +449,27 @@
             animation: rotate 20s linear infinite;
         }
 
-        .brain-ring:nth-child(1) { width: 100%; height: 100%; border-color: rgba(0, 240, 255, 0.3); animation-duration: 30s; }
-        .brain-ring:nth-child(2) { width: 80%; height: 80%; border-color: rgba(139, 92, 246, 0.3); animation-direction: reverse; animation-duration: 25s; }
-        .brain-ring:nth-child(3) { width: 60%; height: 60%; border-color: rgba(255, 0, 128, 0.3); animation-duration: 20s; }
+        .brain-ring:nth-child(1) {
+            width: 100%;
+            height: 100%;
+            border-color: rgba(0, 240, 255, 0.3);
+            animation-duration: 30s;
+        }
+
+        .brain-ring:nth-child(2) {
+            width: 80%;
+            height: 80%;
+            border-color: rgba(139, 92, 246, 0.3);
+            animation-direction: reverse;
+            animation-duration: 25s;
+        }
+
+        .brain-ring:nth-child(3) {
+            width: 60%;
+            height: 60%;
+            border-color: rgba(255, 0, 128, 0.3);
+            animation-duration: 20s;
+        }
 
         .brain-core {
             position: absolute;
@@ -405,12 +484,29 @@
             animation: corePulse 3s ease-in-out infinite;
         }
 
-        @keyframes rotate { from { transform: translate(-50%, -50%) rotate(0deg); } to { transform: translate(-50%, -50%) rotate(360deg); } }
-        @keyframes corePulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; } 50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; } }
-        @keyframes fadeInUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes rotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
 
-        /* SCROLL INDICATOR */
+        @keyframes corePulse {
+            0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+            50% { transform: translate(-50%, -50%) scale(1.2); opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* ============================================
+           SCROLL INDICATOR
+           ============================================ */
         .scroll-indicator {
             position: absolute;
             bottom: 3rem;
@@ -440,10 +536,20 @@
             animation: arrowBounce 2s ease-in-out infinite;
         }
 
-        @keyframes bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(10px); } }
-        @keyframes arrowBounce { 0%, 100% { transform: rotate(45deg) translateY(0); opacity: 1; } 50% { transform: rotate(45deg) translateY(5px); opacity: 0.5; } }
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
 
-        /* STATS BAR */
+
+        @keyframes arrowBounce {
+            0%, 100% { transform: rotate(45deg) translateY(0); opacity: 1; }
+            50% { transform: rotate(45deg) translateY(5px); opacity: 0.5; }
+        }
+
+        /* ============================================
+           STATS BAR
+           ============================================ */
         .stats-bar {
             position: absolute;
             bottom: 0;
@@ -458,7 +564,9 @@
             opacity: 0;
         }
 
-        .stat-item { text-align: center; }
+        .stat-item {
+            text-align: center;
+        }
 
         .stat-number {
             font-family: 'Syne', sans-serif;
@@ -477,63 +585,81 @@
             letter-spacing: 0.1em;
         }
 
-        /* ABOUT SECTION */
+        /* ============================================
+           ABOUT SECTION
+           ============================================ */
         .about {
             position: relative;
             padding: 10rem 4rem;
             z-index: 2;
-            background: var(--bg-secondary);
+            background: linear-gradient(to bottom, transparent, rgba(13, 13, 20, 0.5), var(--bg-secondary));
         }
 
-        .about-container {
+        .section-container {
             max-width: 1400px;
             margin: 0 auto;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6rem;
-            align-items: center;
         }
 
-        .about-content {
-            opacity: 0;
-            transform: translateX(-50px);
-            transition: all 0.8s ease;
+        .section-header {
+            text-align: center;
+            margin-bottom: 6rem;
         }
-
-        .about-content.visible { opacity: 1; transform: translateX(0); }
 
         .section-label {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
+            display: inline-block;
             font-size: 0.85rem;
+            font-weight: 600;
             color: var(--accent-cyan);
             text-transform: uppercase;
             letter-spacing: 0.2em;
-            margin-bottom: 1.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .section-label::before,
+        .section-label::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 40px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--accent-cyan));
         }
 
         .section-label::before {
-            content: '';
-            width: 30px;
-            height: 2px;
-            background: var(--accent-cyan);
+            right: calc(100% + 15px);
         }
 
-        .about-title {
+        .section-label::after {
+            left: calc(100% + 15px);
+            background: linear-gradient(90deg, var(--accent-cyan), transparent);
+        }
+
+        .section-title {
             font-family: 'Syne', sans-serif;
             font-size: clamp(2.5rem, 5vw, 4rem);
             font-weight: 800;
             line-height: 1.2;
-            letter-spacing: -0.02em;
             margin-bottom: 1.5rem;
         }
 
-        .about-title span {
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
+        .section-subtitle {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* About Grid */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-content {
+            position: relative;
         }
 
         .about-text {
@@ -543,265 +669,319 @@
             margin-bottom: 2rem;
         }
 
-        .about-features {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
+        .about-text p {
+            margin-bottom: 1.5rem;
         }
 
-        .feature-item {
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-            padding: 1rem;
+        .about-highlight {
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(139, 92, 246, 0.1));
+            border-left: 3px solid var(--accent-cyan);
+            padding: 1.5rem;
+            border-radius: 0 12px 12px 0;
+            margin: 2rem 0;
+        }
+
+        .about-highlight p {
+            font-size: 1.15rem;
+            color: var(--text-primary);
+            font-weight: 500;
+            margin: 0;
+        }
+
+        /* Mission Cards */
+        .mission-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .mission-card {
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
-            border-radius: 12px;
+            border-radius: 16px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
             transition: all 0.3s ease;
         }
 
-        .feature-item:hover {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: var(--accent-cyan);
-            transform: translateY(-3px);
+        .mission-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-purple);
+            box-shadow: 0 20px 40px rgba(139, 92, 246, 0.2);
         }
 
-        .feature-icon {
-            width: 40px;
-            height: 40px;
+        .mission-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            border-radius: 10px;
-            font-size: 1.2rem;
-            flex-shrink: 0;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
         }
 
-        .feature-text h4 { font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem; }
-        .feature-text p { font-size: 0.85rem; color: var(--text-muted); }
+        .mission-card h4 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
 
-        /* ABOUT VISUAL */
+        .mission-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        /* About Visual */
         .about-visual {
             position: relative;
-            opacity: 0;
-            transform: translateX(50px);
-            transition: all 0.8s ease 0.2s;
+            height: 500px;
         }
 
-        .about-visual.visible { opacity: 1; transform: translateX(0); }
-
-        .about-card {
+        .visual-container {
             position: relative;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 24px;
-            padding: 3rem;
-            backdrop-filter: blur(20px);
+            width: 100%;
+            height: 100%;
         }
 
-        .about-card::before {
-            content: '';
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple), var(--accent-pink));
-            border-radius: 26px;
-            z-index: -1;
-            opacity: 0.5;
-            filter: blur(10px);
-        }
-
-        .card-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            padding-bottom: 1.5rem;
-            border-bottom: 1px solid var(--glass-border);
-        }
-
-        .card-avatar {
-            width: 60px;
-            height: 60px;
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'Syne', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 800;
-        }
-
-        .card-title h3 { font-size: 1.25rem; font-weight: 700; }
-        .card-title p { font-size: 0.85rem; color: var(--text-muted); }
-
-        .card-stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
-            margin-bottom: 2rem;
-        }
-
-        .card-stat {
-            text-align: center;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.03);
-            border-radius: 12px;
-        }
-
-        .card-stat-value {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--accent-cyan);
-        }
-
-        .card-stat-label {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        .card-skills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .skill-tag {
-            padding: 0.5rem 1rem;
-            background: rgba(0, 240, 255, 0.1);
-            border: 1px solid rgba(0, 240, 255, 0.3);
-            border-radius: 20px;
-            font-size: 0.8rem;
-            color: var(--accent-cyan);
-        }
-
-        /* TIMELINE */
-        .about-timeline {
-            margin-top: 3rem;
-            padding-top: 3rem;
-            border-top: 1px solid var(--glass-border);
-        }
-
-        .timeline-title {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            color: var(--text-secondary);
-        }
-
-        .timeline-items {
-            display: flex;
-            gap: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .timeline-item {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .timeline-dot {
-            width: 12px;
-            height: 12px;
-            background: var(--accent-cyan);
-            border-radius: 50%;
-            position: relative;
-        }
-
-        .timeline-dot::after {
-            content: '';
+        /* Neural Network Visualization */
+        .neural-network {
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            width: 24px;
-            height: 24px;
-            border: 2px solid var(--accent-cyan);
-            border-radius: 50%;
-            opacity: 0.3;
-            animation: timelinePulse 2s ease-in-out infinite;
+            width: 350px;
+            height: 350px;
         }
 
-        @keyframes timelinePulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.3; } 50% { transform: translate(-50%, -50%) scale(1.5); opacity: 0; } }
+        .node {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--accent-cyan);
+            border-radius: 50%;
+            filter: blur(2px);
+            animation: nodeGlow 2s ease-in-out infinite;
+        }
 
-        .timeline-year { font-family: 'Syne', sans-serif; font-size: 1.25rem; font-weight: 700; }
-        .timeline-text { font-size: 0.9rem; color: var(--text-muted); }
+        .node.purple { background: var(--accent-purple); animation-delay: -0.5s; }
+        .node.pink { background: var(--accent-pink); animation-delay: -1s; }
+
+        @keyframes nodeGlow {
+            0%, 100% { transform: scale(1); opacity: 0.8; box-shadow: 0 0 10px currentColor; }
+            50% { transform: scale(1.3); opacity: 1; box-shadow: 0 0 20px currentColor; }
+        }
+
+        /* Floating AI Cards */
+        .ai-card {
+            position: absolute;
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 12px;
+            padding: 1rem;
+            backdrop-filter: blur(10px);
+            animation: floatCard 6s ease-in-out infinite;
+        }
+
+        .ai-card-1 {
+            top: 10%;
+            left: 10%;
+            animation-delay: 0s;
+        }
+
+        .ai-card-2 {
+            top: 20%;
+            right: 5%;
+            animation-delay: -2s;
+        }
+
+        .ai-card-3 {
+            bottom: 20%;
+            left: 20%;
+            animation-delay: -4s;
+        }
+
+        @keyframes floatCard {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(2deg); }
+        }
+
+
+        .ai-card-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .ai-card-text {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* Team Section */
+        .team-section {
+            margin-top: 8rem;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .team-card {
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .team-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .team-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            padding: 3px;
+        }
+
+        .team-avatar-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: var(--bg-secondary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+        }
+
+        .team-name {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .team-role {
+            font-size: 0.9rem;
+            color: var(--accent-cyan);
+            margin-bottom: 0.5rem;
+        }
+
+        .team-bio {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Values Section */
+        .values-section {
+            margin-top: 8rem;
+            padding-top: 6rem;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .value-card {
+            background: var(--glass-bg);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .value-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple), var(--accent-pink));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .value-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .value-card:hover {
+            transform: translateY(-10px);
+            border-color: transparent;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .value-icon {
+            width: 64px;
+            height: 64px;
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(139, 92, 246, 0.2));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1.5rem;
+        }
+
+        .value-card h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .value-card p {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+        }
 
         /* ============================================
-           SERVICES SECTION
+           SERVICES SECTION (ITERATION 3)
            ============================================ */
         .services {
             position: relative;
             padding: 10rem 4rem;
             z-index: 2;
-            background: var(--bg-primary);
+            background: var(--bg-secondary);
         }
 
-        .services-header {
-            text-align: center;
-            max-width: 800px;
-            margin: 0 auto 5rem;
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.8s ease;
-        }
-
-        .services-header.visible { opacity: 1; transform: translateY(0); }
-
-        .services-title {
-            font-family: 'Syne', sans-serif;
-            font-size: clamp(2.5rem, 5vw, 4rem);
-            font-weight: 800;
-            line-height: 1.2;
-            letter-spacing: -0.02em;
-            margin-bottom: 1.5rem;
-        }
-
-        .services-title span {
-            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .services-subtitle {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            line-height: 1.7;
-        }
-
-        /* Services Grid */
         .services-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             gap: 2rem;
-            max-width: 1400px;
-            margin: 0 auto;
+            margin-top: 4rem;
         }
 
         .service-card {
-            position: relative;
             background: var(--glass-bg);
             border: 1px solid var(--glass-border);
             border-radius: 24px;
             padding: 2.5rem;
-            transition: all 0.4s ease;
+            backdrop-filter: blur(10px);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
             overflow: hidden;
-            opacity: 0;
-            transform: translateY(30px);
-        }
-
-        .service-card.visible {
-            opacity: 1;
-            transform: translateY(0);
         }
 
         .service-card::before {
@@ -816,179 +996,377 @@
             transition: opacity 0.4s ease;
         }
 
-        .service-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--accent-cyan);
-            box-shadow: 0 30px 60px rgba(0, 240, 255, 0.1);
-        }
-
         .service-card:hover::before {
             opacity: 1;
         }
 
+        .service-card:hover {
+            transform: translateY(-15px) scale(1.02);
+            border-color: var(--accent-cyan);
+            box-shadow: 
+                0 30px 60px rgba(0, 240, 255, 0.15),
+                0 0 0 1px var(--accent-cyan);
+        }
 
-        .service-icon {
-            width: 70px;
-            height: 70px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .service-icon-wrapper {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-icon-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
             border-radius: 20px;
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-            position: relative;
-            z-index: 1;
-            transition: transform 0.3s ease;
+            animation: iconPulse 3s ease-in-out infinite;
         }
 
-        .service-card:hover .service-icon {
-            transform: scale(1.1) rotate(5deg);
+        @keyframes iconPulse {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
         }
 
-        .service-number {
+        .service-icon {
             position: absolute;
-            top: 2rem;
-            right: 2rem;
-            font-family: 'Syne', sans-serif;
-            font-size: 3rem;
-            font-weight: 800;
-            color: var(--glass-border);
-            opacity: 0.5;
-            transition: all 0.3s ease;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2.2rem;
+            z-index: 1;
         }
 
-        .service-card:hover .service-number {
-            color: var(--accent-cyan);
-            opacity: 0.3;
-        }
-
-        .service-title {
+        .service-card h3 {
             font-family: 'Syne', sans-serif;
             font-size: 1.5rem;
             font-weight: 700;
             margin-bottom: 1rem;
             position: relative;
-            z-index: 1;
         }
 
-        .service-description {
-            font-size: 0.95rem;
+        .service-card > p {
+            font-size: 1rem;
             color: var(--text-secondary);
             line-height: 1.7;
             margin-bottom: 1.5rem;
             position: relative;
-            z-index: 1;
         }
 
         .service-features {
             list-style: none;
+            margin-bottom: 2rem;
             position: relative;
-            z-index: 1;
         }
 
         .service-features li {
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            font-size: 0.85rem;
+            font-size: 0.9rem;
             color: var(--text-muted);
+            margin-bottom: 0.75rem;
             padding: 0.5rem 0;
-            border-bottom: 1px solid var(--glass-border);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
         }
+
 
         .service-features li:last-child {
             border-bottom: none;
         }
 
-        .service-features li::before {
-            content: '→';
-            color: var(--accent-cyan);
-            font-weight: 600;
+        .feature-check {
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, var(--accent-cyan), var(--accent-purple));
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            flex-shrink: 0;
         }
-
 
         .service-cta {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            margin-top: 1.5rem;
-            padding: 0.75rem 1.5rem;
-            background: transparent;
-            border: 1px solid var(--accent-cyan);
-            border-radius: 8px;
             color: var(--accent-cyan);
-            font-size: 0.9rem;
             font-weight: 600;
-            cursor: pointer;
+            font-size: 0.95rem;
+            text-decoration: none;
             transition: all 0.3s ease;
             position: relative;
-            z-index: 1;
         }
 
-        .service-cta:hover {
-            background: var(--accent-cyan);
-            color: var(--bg-primary);
-        }
-
-        .service-cta svg {
+        .service-cta::after {
+            content: '→';
             transition: transform 0.3s ease;
         }
 
-        .service-cta:hover svg {
+
+        .service-card:hover .service-cta::after {
             transform: translateX(5px);
         }
 
-        /* Special service card styling */
-        .service-card.featured {
-            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1), rgba(0, 240, 255, 0.1));
-            border-color: var(--accent-purple);
+        .service-card:hover .service-cta {
+            color: var(--accent-purple);
         }
 
-        .service-card.featured::after {
-            content: 'POPULAR';
-            position: absolute;
-            top: 1rem;
-            left: 1rem;
-            padding: 0.25rem 0.75rem;
-            background: linear-gradient(135deg, var(--accent-purple), var(--accent-pink));
-            border-radius: 4px;
-            font-size: 0.7rem;
+        /* Service Card Color Variants */
+        .service-card.cyan .service-icon-bg {
+            background: linear-gradient(135deg, #00f0ff, #00a8b5);
+        }
+
+        .service-card.purple .service-icon-bg {
+            background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+        }
+
+        .service-card.pink .service-icon-bg {
+            background: linear-gradient(135deg, #ff0080, #cc0066);
+        }
+
+        .service-card.orange .service-icon-bg {
+            background: linear-gradient(135deg, #f97316, #ea580c);
+        }
+
+        .service-card.green .service-icon-bg {
+            background: linear-gradient(135deg, #10b981, #059669);
+        }
+
+        .service-card.blue .service-icon-bg {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+        }
+
+        /* Process Steps */
+        .process-section {
+            margin-top: 8rem;
+            padding-top: 6rem;
+            border-top: 1px solid var(--glass-border);
+        }
+
+        .process-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .process-step {
+            text-align: center;
+            position: relative;
+        }
+
+        .process-number {
+            font-family: 'Syne', sans-serif;
+            font-size: 4rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(139, 92, 246, 0.2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+            margin-bottom: 1rem;
+        }
+
+        .process-step h4 {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.3rem;
             font-weight: 700;
-            letter-spacing: 0.1em;
+            margin-bottom: 0.75rem;
+        }
+
+        .process-step p {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+
+
+        .process-connector {
+            position: absolute;
+            top: 40px;
+            right: -1rem;
+            width: calc(100% + 2rem);
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple), var(--accent-pink));
+            opacity: 0.3;
+            z-index: 0;
+        }
+
+
+        .process-step:last-child .process-connector {
+            display: none;
+        }
+
+        /* CTA Banner */
+        .cta-banner {
+            margin-top: 8rem;
+            padding: 4rem;
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(139, 92, 246, 0.1));
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-banner::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(0, 240, 255, 0.1) 0%, transparent 50%);
+            animation: ctaGlow 5s ease-in-out infinite;
+        }
+
+        @keyframes ctaGlow {
+            0%, 100% { transform: scale(1); opacity: 0.5; }
+            50% { transform: scale(1.2); opacity: 0.8; }
+        }
+
+        .cta-banner h3 {
+            font-family: 'Syne', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .cta-banner p {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .cta-banner .btn-primary {
+            position: relative;
+            padding: 1rem 3rem;
+            font-size: 1.1rem;
         }
 
         /* ============================================
            RESPONSIVE
            ============================================ */
-        @media (max-width: 1200px) {
+        @media (max-width: 1024px) {
+            .hero-visual {
+                display: none;
+            }
+
+            .hero {
+                padding: 6rem 2rem 4rem;
+            }
+
+
+            nav {
+                padding: 1rem 2rem;
+            }
+
+
+            .nav-links {
+                display: none;
+            }
+
+
+            .stats-bar {
+                padding: 1.5rem 2rem;
+                flex-wrap: wrap;
+                gap: 1.5rem;
+                justify-content: center;
+            }
+
+            .about, .services {
+                padding: 6rem 2rem;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .about-visual {
+                height: 400px;
+            }
+
+            .team-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .values-grid {
+                grid-template-columns: 1fr;
+            }
+
             .services-grid {
                 grid-template-columns: repeat(2, 1fr);
             }
-        }
 
-        @media (max-width: 1024px) {
-            .hero-visual { display: none; }
-            .hero { padding: 6rem 2rem 4rem; }
-            nav { padding: 1rem 2rem; }
-            .nav-links { display: none; }
-            .stats-bar { padding: 1.5rem 2rem; flex-wrap: wrap; gap: 1.5rem; justify-content: center; }
-            .about-container { grid-template-columns: 1fr; gap: 3rem; }
-            .about { padding: 6rem 2rem; }
-            .services { padding: 6rem 2rem; }
+            .process-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+
+            .process-connector {
+                display: none;
+            }
         }
 
         @media (max-width: 768px) {
-            .hero-title { font-size: clamp(2.5rem, 10vw, 4rem); }
-            .hero-subtitle { font-size: 1rem; }
-            .hero-cta-group { flex-direction: column; width: 100%; max-width: 300px; margin: 0 auto; }
-            .btn-primary, .btn-secondary { width: 100%; text-align: center; }
-            .stat-number { font-size: 2rem; }
-            .about-features { grid-template-columns: 1fr; }
-            .about-title { font-size: 2rem; }
-            .timeline-items { flex-direction: column; gap: 1rem; }
-            .card-stats { grid-template-columns: 1fr; }
-            .services-grid { grid-template-columns: 1fr; }
+            .hero-title {
+                font-size: clamp(2.5rem, 10vw, 4rem);
+            }
+
+
+            .hero-subtitle {
+                font-size: 1rem;
+            }
+
+            .hero-cta-group {
+                flex-direction: column;
+                width: 100%;
+                max-width: 300px;
+                margin: 0 auto;
+            }
+
+            .btn-primary, .btn-secondary {
+                width: 100%;
+                text-align: center;
+            }
+
+            .stat-number {
+                font-size: 2rem;
+            }
+
+            .mission-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .team-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .process-grid {
+                grid-template-columns: 1fr;
+            }
+
+
+            .section-label::before,
+            .section-label::after {
+                display: none;
+            }
+
+            .cta-banner {
+                padding: 2rem;
+            }
         }
     </style>
 </head>
@@ -1002,6 +1380,7 @@
         <div class="orb orb-2"></div>
         <div class="orb orb-3"></div>
     </div>
+
 
     <!-- Neural Particle Canvas -->
     <canvas id="particle-canvas"></canvas>
@@ -1077,257 +1456,335 @@
         </div>
     </section>
 
-
     <!-- About Section -->
     <section class="about" id="about">
-        <div class="about-container">
-            <div class="about-content">
-                <div class="section-label">About Us</div>
-                <h2 class="about-title">
-                    Pioneering the <span>Agentic AI</span> Revolution
-                </h2>
-                <p class="about-text">
-                    ResearchV3 is at the forefront of artificial intelligence innovation. We don't just build AI — we create autonomous agents that transform how businesses operate, decide, and grow. Our team of leading AI researchers and engineers has developed proprietary agentic frameworks that enable machines to reason, adapt, and act independently.
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-label">About Us</span>
+                <h2 class="section-title">Pioneering the Agentic AI Revolution</h2>
+                <p class="section-subtitle">
+                    We're not just building AI. We're creating autonomous systems that transform how businesses operate.
                 </p>
-                <p class="about-text">
-                    From concept to deployment, we engineer intelligent systems that don't just respond — they anticipate. Our agentic AI solutions power decision-making for Fortune 500 companies, startups, and visionary enterprises ready to embrace the future.
-                </p>
-                <div class="about-features">
-                    <div class="feature-item">
-                        <div class="feature-icon">🧠</div>
-                        <div class="feature-text">
-                            <h4>Autonomous Reasoning</h4>
-                            <p>Agents that think and decide independently</p>
-                        </div>
+            </div>
+
+            <div class="about-grid">
+                <div class="about-content">
+                    <div class="about-text">
+                        <p>
+                            ResearchV3 was founded with a singular vision: to build AI systems that don't just respond—they <strong>think</strong>, <strong>learn</strong>, and <strong>act autonomously</strong>. We believe the future of enterprise lies in agentic AI—systems that can make decisions, execute complex workflows, and continuously improve without constant human intervention.
+                        </p>
+                        <p>
+                            Our team combines decades of expertise in machine learning, neural networks, and cognitive computing to deliver cutting-edge AI solutions that push the boundaries of what's possible.
+                        </p>
                     </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">⚡</div>
-                        <div class="feature-text">
-                            <h4>Real-time Learning</h4>
-                            <p>Systems that evolve with every interaction</p>
-                        </div>
+
+
+                    <div class="about-highlight">
+                        <p>"We don't build tools. We build autonomous intelligence that becomes an extension of your team."</p>
                     </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">🔗</div>
-                        <div class="feature-text">
-                            <h4>Seamless Integration</h4>
-                            <p>Works with your existing infrastructure</p>
+
+                    <div class="mission-grid">
+                        <div class="mission-card">
+                            <div class="mission-icon">🧠</div>
+                            <h4>Intelligent Automation</h4>
+                            <p>AI that thinks and acts for you</p>
                         </div>
-                    </div>
-                    <div class="feature-item">
-                        <div class="feature-icon">🛡️</div>
-                        <div class="feature-text">
+                        <div class="mission-card">
+                            <div class="mission-icon">🔄</div>
+                            <h4>Continuous Learning</h4>
+                            <p>Systems that evolve over time</p>
+                        </div>
+                        <div class="mission-card">
+                            <div class="mission-icon">⚡</div>
+                            <h4>Real-Time Decision</h4>
+                            <p>Instant responses at scale</p>
+                        </div>
+                        <div class="mission-card">
+                            <div class="mission-icon">🔒</div>
                             <h4>Enterprise Security</h4>
-                            <p>Bank-grade protection for your data</p>
+                            <p>Bank-grade protection</p>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="about-visual">
+                    <div class="visual-container">
+                        <div class="neural-network">
+                            <div class="node" style="top: 20%; left: 50%;"></div>
+                            <div class="node purple" style="top: 35%; left: 25%;"></div>
+                            <div class="node purple" style="top: 35%; left: 75%;"></div>
+                            <div class="node pink" style="top: 50%; left: 15%;"></div>
+                            <div class="node" style="top: 50%; left: 40%;"></div>
+                            <div class="node purple" style="top: 50%; left: 60%;"></div>
+                            <div class="node pink" style="top: 50%; left: 85%;"></div>
+                            <div class="node" style="top: 65%; left: 30%;"></div>
+                            <div class="node purple" style="top: 65%; left: 70%;"></div>
+                            <div class="node pink" style="top: 80%; left: 50%;"></div>
+                        </div>
+
+                        <div class="ai-card ai-card-1">
+                            <div class="ai-card-icon">🤖</div>
+                            <div class="ai-card-text">NLP Processing</div>
+                        </div>
+                        <div class="ai-card ai-card-2">
+                            <div class="ai-card-icon">🧩</div>
+                            <div class="ai-card-text">Pattern Recognition</div>
+                        </div>
+                        <div class="ai-card ai-card-3">
+                            <div class="ai-card-icon">⚡</div>
+                            <div class="ai-card-text">Real-time Analytics</div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="about-visual">
-                <div class="about-card">
-                    <div class="card-header">
-                        <div class="card-avatar">RV3</div>
-                        <div class="card-title">
-                            <h3>ResearchV3</h3>
-                            <p>AI & Agentic Development</p>
+            <!-- Team Section -->
+            <div class="team-section">
+                <div class="section-header">
+                    <span class="section-label">Our Team</span>
+                    <h2 class="section-title">The Minds Behind the Machines</h2>
+                </div>
+
+                <div class="team-grid">
+                    <div class="team-card">
+                        <div class="team-avatar">
+                            <div class="team-avatar-inner">👨‍💻</div>
                         </div>
+                        <h4 class="team-name">Dr. Alex Chen</h4>
+                        <div class="team-role">Chief AI Architect</div>
+                        <p class="team-bio">Former Google Brain researcher with 15+ years in deep learning</p>
                     </div>
-                    <div class="card-stats">
-                        <div class="card-stat">
-                            <div class="card-stat-value">5+</div>
-                            <div class="card-stat-label">Years</div>
+                    <div class="team-card">
+                        <div class="team-avatar">
+                            <div class="team-avatar-inner">👩‍🔬</div>
                         </div>
-                        <div class="card-stat">
-                            <div class="card-stat-value">50+</div>
-                            <div class="card-stat-label">Projects</div>
-                        </div>
-                        <div class="card-stat">
-                            <div class="card-stat-value">24/7</div>
-                            <div class="card-stat-label">Support</div>
-                        </div>
+                        <h4 class="team-name">Sarah Mitchell</h4>
+                        <div class="team-role">Head of Research</div>
+                        <p class="team-bio">PhD in Cognitive Computing from MIT</p>
                     </div>
-                    <div class="card-skills">
-                        <span class="skill-tag">Machine Learning</span>
-                        <span class="skill-tag">NLP</span>
-                        <span class="skill-tag">Computer Vision</span>
-                        <span class="skill-tag">Agentic AI</span>
-                        <span class="skill-tag">LLMs</span>
-                        <span class="skill-tag">RAG Systems</span>
-                    </div>
-                    <div class="about-timeline">
-                        <div class="timeline-title">Our Journey</div>
-                        <div class="timeline-items">
-                            <div class="timeline-item">
-                                <div class="timeline-dot"></div>
-                                <div>
-                                    <div class="timeline-year">2019</div>
-                                    <div class="timeline-text">Founded</div>
-                                </div>
-                            </div>
-                            <div class="timeline-item">
-                                <div class="timeline-dot"></div>
-                                <div>
-                                    <div class="timeline-year">2021</div>
-                                    <div class="timeline-text">First Agent</div>
-                                </div>
-                            </div>
-                            <div class="timeline-item">
-                                <div class="timeline-dot"></div>
-                                <div>
-                                    <div class="timeline-year">2024</div>
-                                    <div class="timeline-text">Agentic V3</div>
-                                </div>
-                            </div>
+                    <div class="team-card">
+                        <div class="team-avatar">
+                            <div class="team-avatar-inner">👨‍💼</div>
                         </div>
+                        <h4 class="team-name">Marcus Johnson</h4>
+                        <div class="team-role">CEO & Co-Founder</div>
+                        <p class="team-bio">Serial entrepreneur, 3x AI startup exits</p>
+                    </div>
+                    <div class="team-card">
+                        <div class="team-avatar">
+                            <div class="team-avatar-inner">👩‍💻</div>
+                        </div>
+                        <h4 class="team-name">Elena Rodriguez</h4>
+                        <div class="team-role">Lead Engineer</div>
+                        <p class="team-bio">Expert in distributed AI systems</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Values Section -->
+            <div class="values-section">
+                <div class="section-header">
+                    <span class="section-label">Our Values</span>
+                    <h2 class="section-title">What Drives Us</h2>
+                </div>
+
+                <div class="values-grid">
+                    <div class="value-card">
+                        <div class="value-icon">🎯</div>
+                        <h3>Innovation First</h3>
+                        <p>We push the boundaries of what's possible, constantly exploring new frontiers in AI technology.</p>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-icon">🤝</div>
+                        <h3>Partnership</h3>
+                        <p>Your success is our success. We work as an extension of your team, not just a vendor.</p>
+                    </div>
+                    <div class="value-card">
+                        <div class="value-icon">🔐</div>
+                        <h3>Trust & Security</h3>
+                        <p>Enterprise-grade security and privacy are built into everything we create.</p>
                     </div>
                 </div>
             </div>
         </div>
     </section>
+
 
     <!-- Services Section -->
     <section class="services" id="services">
-        <div class="services-header">
-            <div class="section-label" style="justify-content: center;">Our Services</div>
-            <h2 class="services-title">
-                Comprehensive <span>AI Solutions</span> for Every Need
-            </h2>
-            <p class="services-subtitle">
-                From custom agent development to enterprise-wide AI integration, we provide end-to-end solutions that transform your business operations and unlock unprecedented value.
-            </p>
-        </div>
-
-        <div class="services-grid">
-            <!-- Service Card 1 -->
-            <div class="service-card featured">
-                <div class="service-number">01</div>
-                <div class="service-icon">🤖</div>
-                <h3 class="service-title">Agentic AI Development</h3>
-                <p class="service-description">
-                    Build autonomous AI agents that can reason, plan, and execute complex tasks with minimal human oversight. Our proprietary agent frameworks enable true autonomy.
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-label">Services</span>
+                <h2 class="section-title">AI Solutions That Drive Results</h2>
+                <p class="section-subtitle">
+                    From custom AI agents to enterprise automation, we build intelligent systems that transform your business.
                 </p>
-                <ul class="service-features">
-                    <li>Multi-agent orchestration</li>
-                    <li>Reasoning & planning engines</li>
-                    <li>Tool use & API integration</li>
-                    <li>Continuous learning pipelines</li>
-                </ul>
-                <button class="service-cta">
-                    Learn More
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                </button>
             </div>
 
-            <!-- Service Card 2 -->
-            <div class="service-card">
-                <div class="service-number">02</div>
-                <div class="service-icon">🧠</div>
-                <h3 class="service-title">Large Language Models</h3>
-                <p class="service-description">
-                    Custom LLM solutions including fine-tuning, prompt engineering, and RAG systems. We help you leverage the power of GPT, Claude, and open-source models.
-                </p>
-                <ul class="service-features">
-                    <li>Model fine-tuning & customization</li>
-                    <li>Enterprise RAG implementations</li>
-                    <li>Prompt engineering & optimization</li>
-                    <li>Knowledge base integration</li>
-                </ul>
-                <button class="service-cta">
-                    Learn More
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                </button>
+            <div class="services-grid">
+                <!-- Service Card 1 -->
+                <div class="service-card cyan">
+                    <div class="service-icon-wrapper">
+                        <div class="service-icon-bg"></div>
+                        <div class="service-icon">🧠</div>
+                    </div>
+                    <h3>AI Agent Development</h3>
+                    <p>Custom autonomous agents designed to handle complex workflows, make decisions, and learn from interactions.</p>
+                    <ul class="service-features">
+                        <li><span class="feature-check">✓</span>Multi-agent orchestration</li>
+                        <li><span class="feature-check">✓</span>Context-aware decision making</li>
+                        <li><span class="feature-check">✓</span>Continuous learning pipelines</li>
+                        <li><span class="feature-check">✓</span>Enterprise integration APIs</li>
+                    </ul>
+                    <a href="#contact" class="service-cta">Learn More</a>
+                </div>
+
+
+                <!-- Service Card 2 -->
+                <div class="service-card purple">
+                    <div class="service-icon-wrapper">
+                        <div class="service-icon-bg"></div>
+                        <div class="service-icon">💬</div>
+                    </div>
+                    <h3>Natural Language Processing</h3>
+                    <p>Advanced NLP solutions for understanding, generating, and responding to human language at scale.</p>
+                    <ul class="service-features">
+                        <li><span class="feature-check">✓</span>Custom LLM fine-tuning</li>
+                        <li><span class="feature-check">✓</span>Sentiment analysis engines</li>
+                        <li><span class="feature-check">✓</span>Multi-language support</li>
+                        <li><span class="feature-check">✓</span>Conversational AI chatbots</li>
+                    </ul>
+                    <a href="#contact" class="service-cta">Learn More</a>
+                </div>
+
+                <!-- Service Card 3 -->
+                <div class="service-card pink">
+                    <div class="service-icon-wrapper">
+                        <div class="service-icon-bg"></div>
+                        <div class="service-icon">📊</div>
+                    </div>
+                    <h3>Predictive Analytics</h3>
+                    <p>Machine learning models that forecast trends, predict outcomes, and uncover hidden patterns in your data.</p>
+                    <ul class="service-features">
+                        <li><span class="feature-check">✓</span>Time series forecasting</li>
+                        <li><span class="feature-check">✓</span>Anomaly detection systems</li>
+                        <li><span class="feature-check">✓</span>Customer behavior prediction</li>
+                        <li><span class="feature-check">✓</span>Risk assessment models</li>
+                    </ul>
+                    <a href="#contact" class="service-cta">Learn More</a>
+                </div>
+
+                <!-- Service Card 4 -->
+                <div class="service-card orange">
+                    <div class="service-icon-wrapper">
+                        <div class="service-icon-bg"></div>
+                        <div class="service-icon">🔄</div>
+                    </div>
+                    <h3>Process Automation</h3>
+                    <p>Intelligent automation solutions that streamline operations, reduce costs, and eliminate repetitive tasks.</p>
+                    <ul class="service-features">
+                        <li><span class="feature-check">✓</span>Workflow optimization</li>
+                        <li><span class="feature-check">✓</span>Intelligent document processing</li>
+                        <li><span class="feature-check">✓</span>Robotic process automation</li>
+                        <li><span class="feature-check">✓</span>Custom automation pipelines</li>
+                    </ul>
+                    <a href="#contact" class="service-cta">Learn More</a>
+                </div>
+
+                <!-- Service Card 5 -->
+                <div class="service-card green">
+                    <div class="service-icon-wrapper">
+                        <div class="service-icon-bg"></div>
+                        <div class="service-icon">🔍</div>
+                    </div>
+                    <h3>Computer Vision</h3>
+                    <p>State-of-the-art computer vision systems for image recognition, object detection, and visual analysis.</p>
+                    <ul class="service-features">
+                        <li><span class="feature-check">✓</span>Object detection & tracking</li>
+                        <li><span class="feature-check">✓</span>Facial recognition systems</li>
+                        <li><span class="feature-check">✓</span>Quality control automation</li>
+                        <li><span class="feature-check">✓</span>Medical imaging analysis</li>
+                    </ul>
+                    <a href="#contact" class="service-cta">Learn More</a>
+                </div>
+
+                <!-- Service Card 6 -->
+                <div class="service-card blue">
+                    <div class="service-icon-wrapper">
+                        <div class="service-icon-bg"></div>
+                        <div class="service-icon">🛡️</div>
+                    </div>
+                    <h3>AI Security & Compliance</h3>
+                    <p>Enterprise-grade AI security solutions ensuring your AI systems are protected and compliant.</p>
+                    <ul class="service-features">
+                        <li><span class="feature-check">✓</span>Threat detection systems</li>
+                        <li><span class="feature-check">✓</span>Data privacy protection</li>
+                        <li><span class="feature-check">✓</span>Regulatory compliance automation</li>
+                        <li><span class="feature-check">✓</span>Audit trail & monitoring</li>
+                    </ul>
+                    <a href="#contact" class="service-cta">Learn More</a>
+                </div>
             </div>
 
-            <!-- Service Card 3 -->
-            <div class="service-card">
-                <div class="service-number">03</div>
-                <div class="service-icon">👁️</div>
-                <h3 class="service-title">Computer Vision</h3>
-                <p class="service-description">
-                    Advanced image recognition, object detection, and visual AI systems. From quality control to security surveillance, we make machines see.
-                </p>
-                <ul class="service-features">
-                    <li>Object detection & classification</li>
-                    <li>Facial recognition systems</li>
-                    <li>Quality inspection automation</li>
-                    <li>Video analytics & tracking</li>
-                </ul>
-                <button class="service-cta">
-                    Learn More
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                </button>
+            <!-- Process Section -->
+            <div class="process-section">
+                <div class="section-header">
+                    <span class="section-label">Our Process</span>
+                    <h2 class="section-title">How We Work</h2>
+                </div>
+
+
+                <div class="process-grid">
+                    <div class="process-step">
+                        <div class="process-connector"></div>
+                        <div class="process-number">01</div>
+                        <h4>Discovery</h4>
+                        <p>We analyze your business needs, existing systems, and goals to identify AI opportunities.</p>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-connector"></div>
+                        <div class="process-number">02</div>
+                        <h4>Strategy</h4>
+                        <p>We design a custom AI roadmap with technical architecture and implementation timeline.</p>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-connector"></div>
+                        <div class="process-number">03</div>
+                        <h4>Development</h4>
+                        <p>Our team builds, trains, and deploys your AI solution with continuous iteration.</p>
+                    </div>
+                    <div class="process-step">
+                        <div class="process-connector"></div>
+                        <div class="process-number">04</div>
+                        <h4>Optimization</h4>
+                        <p>We monitor, refine, and improve your AI systems for ongoing peak performance.</p>
+                    </div>
+                </div>
             </div>
 
-            <!-- Service Card 4 -->
-            <div class="service-card">
-                <div class="service-number">04</div>
-                <div class="service-icon">💬</div>
-                <h3 class="service-title">NLP & Conversational AI</h3>
-                <p class="service-description">
-                    Natural language processing solutions that understand, interpret, and respond to human language with context and nuance.
-                </p>
-                <ul class="service-features">
-                    <li>Intelligent chatbots & assistants</li>
-                    <li>Sentiment analysis systems</li>
-                    <li>Text classification & extraction</li>
-                    <li>Multi-language support</li>
-                </ul>
-                <button class="service-cta">
-                    Learn More
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                </button>
-            </div>
-
-            <!-- Service Card 5 -->
-            <div class="service-card">
-                <div class="service-number">05</div>
-                <div class="service-icon">🔄</div>
-                <h3 class="service-title">AI Integration</h3>
-                <p class="service-description">
-                    Seamlessly integrate AI capabilities into your existing systems, workflows, and infrastructure with minimal disruption.
-                </p>
-                <ul class="service-features">
-                    <li>API development & deployment</li>
-                    <li>Legacy system modernization</li>
-                    <li>Workflow automation</li>
-                    <li>Cloud & on-premise solutions</li>
-                </ul>
-                <button class="service-cta">
-                    Learn More
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                </button>
-            </div>
-
-            <!-- Service Card 6 -->
-            <div class="service-card">
-                <div class="service-number">06</div>
-                <div class="service-icon">📊</div>
-                <h3 class="service-title">AI Consulting</h3>
-                <p class="service-description">
-                    Strategic guidance on AI adoption, implementation roadmaps, and technology selection. We help you navigate the AI landscape.
-                </p>
-                <ul class="service-features">
-                    <li>AI strategy & roadmapping</li>
-                    <li>Technology assessment</li>
-                    <li>Team training & enablement</li>
-                    <li>Proof of concept development</li>
-                </ul>
-                <button class="service-cta">
-                    Learn More
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                </button>
+            <!-- CTA Banner -->
+            <div class="cta-banner">
+                <h3>Ready to Transform Your Business with AI?</h3>
+                <p>Let's discuss how autonomous AI agents can revolutionize your operations.</p>
+                <button class="btn-primary">Schedule a Consultation</button>
             </div>
         </div>
     </section>
 
+
     <script>
-        /* NEURAL PARTICLE SYSTEM */
+        /* ============================================
+           NEURAL PARTICLE SYSTEM
+           Mouse-following particle network
+           ============================================ */
+        
         const canvas = document.getElementById('particle-canvas');
         const ctx = canvas.getContext('2d');
         
         let particles = [];
         let mouse = { x: null, y: null };
+        let animationId;
         
         const config = {
             particleCount: 80,
@@ -1440,7 +1897,7 @@
             drawConnections();
             drawMouseConnections();
             
-            requestAnimationFrame(animate);
+            animationId = requestAnimationFrame(animate);
         }
         
         window.addEventListener('mousemove', (e) => {
@@ -1462,7 +1919,10 @@
         initParticles();
         animate();
         
-        /* NAVIGATION SCROLL EFFECT */
+        /* ============================================
+           NAVBAR SCROLL EFFECT
+           ============================================ */
+        
         const navbar = document.getElementById('navbar');
         
         window.addEventListener('scroll', () => {
@@ -1473,7 +1933,11 @@
             }
         });
         
-        /* SCROLL ANIMATIONS */
+        /* ============================================
+           SCROLL ANIMATIONS
+           Intersection Observer
+           ============================================ */
+        
         const observerOptions = {
             threshold: 0.1,
             rootMargin: '0px 0px -50px 0px'
@@ -1487,18 +1951,10 @@
             });
         }, observerOptions);
         
-        document.querySelectorAll('.stat-item, .about-content, .about-visual, .services-header, .service-card').forEach((item, index) => {
+        document.querySelectorAll('.stat-item, .mission-card, .team-card, .value-card, .service-card, .process-step').forEach((item, index) => {
             item.style.opacity = '0';
-            if (item.classList.contains('about-content')) {
-                item.style.transform = 'translateX(-50px)';
-            } else if (item.classList.contains('about-visual')) {
-                item.style.transform = 'translateX(50px)';
-            } else if (item.classList.contains('service-card')) {
-                item.style.transform = 'translateY(30px)';
-            } else {
-                item.style.transform = 'translateY(20px)';
-            }
-            item.style.transition = `all 0.8s ease ${index * 0.1}s`;
+            item.style.transform = 'translateY(20px)';
+            item.style.transition = `all 0.6s ease ${index * 0.1}s`;
             observer.observe(item);
         });
         
@@ -1506,12 +1962,15 @@
         style.textContent = `
             .visible {
                 opacity: 1 !important;
-                transform: translateY(0) translateX(0) !important;
+                transform: translateY(0) !important;
             }
         `;
         document.head.appendChild(style);
         
-        /* SMOOTH SCROLL */
+        /* ============================================
+           SMOOTH SCROLL FOR NAV LINKS
+           ============================================ */
+        
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
